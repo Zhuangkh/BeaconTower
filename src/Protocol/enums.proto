@@ -1,0 +1,10 @@
+syntax = "proto3";
+option csharp_namespace = "BeaconTower.Protocol";
+package BeaconTower;
+
+enum NodeTypeEnum  {    
+    WebServer=0;
+    MQConsumer=1;	
+    Gateway=2;
+    AuthCentral=3;
+}

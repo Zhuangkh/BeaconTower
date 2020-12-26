@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30803.129
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{73F4DD43-4640-4270-B037-35F49066C3F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{DBF869F9-A5C7-410E-B4C3-916504EE3A44}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{2A97C844-0157-4A45-8C68-B59E12B75B25}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.Warehouse", "BeaconTower.Warehouse\BeaconTower.Warehouse.csproj", "{E84CC5C4-6124-405C-B8F7-7BF359072F88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeaconTower.Warehouse.TraceDB", "DB\BeaconTower.Warehouse.TraceDB\BeaconTower.Warehouse.TraceDB.csproj", "{71F6CB50-951E-4BDA-97DF-30A5A08E306A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z.Test.TraceDB", "Test\Z.Test.TraceDB\Z.Test.TraceDB.csproj", "{07B73BFB-D3DC-4F8F-906D-A495572CF93B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z.Example.TraceDB", "Example\Z.Example.TraceDB\Z.Example.TraceDB.csproj", "{171A9DF4-D04E-46EC-966C-7CE04F24087A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{490AFAE2-CF7A-4B7B-999B-4B90925C32C1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E84CC5C4-6124-405C-B8F7-7BF359072F88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E84CC5C4-6124-405C-B8F7-7BF359072F88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E84CC5C4-6124-405C-B8F7-7BF359072F88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E84CC5C4-6124-405C-B8F7-7BF359072F88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71F6CB50-951E-4BDA-97DF-30A5A08E306A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71F6CB50-951E-4BDA-97DF-30A5A08E306A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71F6CB50-951E-4BDA-97DF-30A5A08E306A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71F6CB50-951E-4BDA-97DF-30A5A08E306A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07B73BFB-D3DC-4F8F-906D-A495572CF93B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07B73BFB-D3DC-4F8F-906D-A495572CF93B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07B73BFB-D3DC-4F8F-906D-A495572CF93B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07B73BFB-D3DC-4F8F-906D-A495572CF93B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{171A9DF4-D04E-46EC-966C-7CE04F24087A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{171A9DF4-D04E-46EC-966C-7CE04F24087A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{171A9DF4-D04E-46EC-966C-7CE04F24087A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{171A9DF4-D04E-46EC-966C-7CE04F24087A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{71F6CB50-951E-4BDA-97DF-30A5A08E306A} = {73F4DD43-4640-4270-B037-35F49066C3F5}
+		{07B73BFB-D3DC-4F8F-906D-A495572CF93B} = {DBF869F9-A5C7-410E-B4C3-916504EE3A44}
+		{171A9DF4-D04E-46EC-966C-7CE04F24087A} = {2A97C844-0157-4A45-8C68-B59E12B75B25}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7C1D5E3F-9346-4028-90C4-458D0E5B48E4}
+	EndGlobalSection
+EndGlobal

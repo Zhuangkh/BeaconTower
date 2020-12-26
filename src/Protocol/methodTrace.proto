@@ -1,0 +1,15 @@
+syntax = "proto3";
+option csharp_namespace = "BeaconTower.Protocol";
+package BeaconTower;
+
+
+
+import "request.proto";
+import "common.proto";
+import "response.proto";
+ 
+service MethodTrace { 
+  rpc BeforMethodInvoke (BeforMethodInvokeReuqest) returns (NullResponse);
+  rpc AfterMethodInvoked (AfterMethodInvokedReuqest) returns (NullResponse);
+}
+  

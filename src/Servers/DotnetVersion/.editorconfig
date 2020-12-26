@@ -1,0 +1,36 @@
+ 
+# All files
+[*]
+indent_style = space
+
+# Xml files
+[*.xml]
+indent_size = 2
+root = true
+
+[*.cs]
+dotnet_naming_rule.camel_case_for_private_internal_fields.severity = suggestion
+dotnet_naming_rule.camel_case_for_private_internal_fields.symbols  = private_internal_fields
+dotnet_naming_rule.camel_case_for_private_internal_fields.style    = camel_case_underscore_style
+dotnet_naming_symbols.private_internal_fields.applicable_kinds = field
+dotnet_naming_symbols.private_internal_fields.applicable_accessibilities = private, internal
+dotnet_naming_style.camel_case_underscore_style.required_prefix = _
+dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case 
+dotnet_code_quality.CA1802.required_modifiers = none 
+dotnet_diagnostic.CA1031.severity = none 
+dotnet_code_quality_unused_parameters = error
+dotnet_diagnostic.CA1822.severity = error
+dotnet_diagnostic.IDE1006.severity = error
+dotnet_diagnostic.CA1062.severity = error 
+dotnet_diagnostic.CS1591.severity = error 
+dotnet_diagnostic.IDE0069.severity = error   
+dotnet_diagnostic.CA1822.severity = none
+dotnet_code_quality_unused_parameters = all:error
+dotnet_diagnostic.CS0168.severity = error 
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:error
+dotnet_style_readonly_field = true:error
+dotnet_diagnostic.CS0219.severity = error
+dotnet_diagnostic.CA1051.severity = none
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA2213.severity = error
+dotnet_diagnostic.CA2000.severity = error

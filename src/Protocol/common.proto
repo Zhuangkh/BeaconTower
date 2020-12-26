@@ -1,0 +1,9 @@
+syntax = "proto3";
+option csharp_namespace = "BeaconTower.Protocol";
+package BeaconTower;
+
+
+
+message NullResponse{
+
+}

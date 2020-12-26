@@ -1,0 +1,44 @@
+syntax = "proto3";
+option csharp_namespace = "BeaconTower.Protocol";
+package BeaconTower;
+
+
+import "enums.proto";
+
+
+message BeforeNodeActiveRequest {
+  string TraceID=1;
+  string NodeID = 2;
+  string PreviousNodeID =3;
+  NodeTypeEnum NodeType=4;
+  string SourceName=5;
+  uint64 TimeStamp=6; 
+  uint64 Timeout=7;
+  map<string,string> CustomData=8;
+}
+   
+message AfterNodeActivedRequest {
+  string TraceID=1;
+  string NodeID = 2;
+  string ParentNodeID=3; 
+  NodeTypeEnum NodeType=4;
+  uint64 TimeStamp=5;
+}
+   
+message BeforMethodInvokeReuqest{
+  string TraceID=1;
+  string NodeID=2;
+  string PreMethodID=3;
+  string MethodName=4;
+  uint64 TimeStamp=5;
+  uint64 Timeout=6;
+  map<string,string> CustomData=7;
+}
+message AfterMethodInvokedReuqest{
+  string TraceID=1;
+  string NodeID=2;
+  string PreMethodID=3;
+  string MethodName=4;
+  uint64 TimeStamp=5;
+  map<string,string> CustomData=6;
+}
