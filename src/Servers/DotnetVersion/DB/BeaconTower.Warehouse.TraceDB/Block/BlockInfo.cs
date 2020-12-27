@@ -10,7 +10,7 @@ namespace BeaconTower.Warehouse.TraceDB.Block
     /// <summary>
     /// 逻辑整合信息
     /// </summary>
-    public class BlockInfo
+    internal class BlockInfo
     {
         public long FileName { get; set; }
         public long FromTraceID { get; set; }

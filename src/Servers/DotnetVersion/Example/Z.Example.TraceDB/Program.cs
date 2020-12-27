@@ -7,10 +7,12 @@ namespace Z.Example.TraceDB
     {
         public static void Main(string[] _)
         {
-            Console.WriteLine($"{(1024 << 10) / 1024 / 1024}");
-            //BTraceDB.Instance.LoadDB();
+            BTraceDB.Instance.StartServer();
+            BTraceDB.Instance.SaveItem(123123123, new byte[] { 0x01, 0x02 });
+
             //Console.ReadLine();
             Console.WriteLine("Hello World!");
+
         }
     }
 }

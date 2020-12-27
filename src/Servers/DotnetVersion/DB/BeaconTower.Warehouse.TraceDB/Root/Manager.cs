@@ -22,8 +22,9 @@ namespace BeaconTower.Warehouse.TraceDB.Root
             throw new NotImplementedException($"Next version..");
         }
 
-        public partial Task Init();
+        public partial void Init();
 
-
+        public partial void GetCurrentBlock();
+        
     }
 }

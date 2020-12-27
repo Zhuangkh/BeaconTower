@@ -11,8 +11,8 @@ namespace BeaconTower.Warehouse.TraceDB.Block
     internal class Tools
     {
 
-        public static BlockMetadata CreateBlockItem(DirectoryInfo directoryInfo)
-        {
+        public  static BlockMetadata CreateBlockItem(DirectoryInfo directoryInfo)
+        { 
             var fi = new FileInfo(Path.Combine(directoryInfo.FullName, Metadata_File_Name));
             if (!fi.Exists)
             {
@@ -21,24 +21,24 @@ namespace BeaconTower.Warehouse.TraceDB.Block
             try
             {
                 using var fs = fi.OpenRead();
-                using var headBufferRent = MemoryPool<byte>.Shared.Rent(Metadata_Head_Valid_Size);
-                var headBuffer = headBufferRent.Memory.Slice(0, Metadata_Head_Valid_Size);
-                fs.ReadAsync(headBuffer);
+                using var headBufferRent = MemoryPool<byte>.Shared.Rent(Metadata_Head_Reserve_Position);
+                var headBuffer = headBufferRent.Memory.Slice(0, Metadata_Head_Reserve_Position).Span;
+                fs.Read(headBuffer);
                 BlockMetadata res = new();
-                res.CRC16 = BitConverter.ToUInt16(headBuffer.Span[Metadata_Head_CRC16_Position..Metadata_Head_FromTraceID_Position]);
-                res.FromTraceID = BitConverter.ToInt64(headBuffer.Span[Metadata_Head_FromTraceID_Position..Metadata_Head_ToTraceID_Position]);
-                res.ToTraceID = BitConverter.ToInt64(headBuffer.Span[Metadata_Head_ToTraceID_Position..Metadata_Head_CurrentItemsCount_Position]);
-                res.CurrentItemsCount = BitConverter.ToInt32(headBuffer.Span[Metadata_Head_CurrentItemsCount_Position..Metadata_Head_Reserve_Position]);
+                res.CRC16 = BitConverter.ToUInt16(headBuffer[Metadata_Head_CRC16_Position..Metadata_Head_FromTraceID_Position]);
+                res.FromTraceID = BitConverter.ToInt64(headBuffer[Metadata_Head_FromTraceID_Position..Metadata_Head_ToTraceID_Position]);
+                res.ToTraceID = BitConverter.ToInt64(headBuffer[Metadata_Head_ToTraceID_Position..Metadata_Head_CurrentItemsCount_Position]);
+                res.CurrentItemsCount = BitConverter.ToInt32(headBuffer[Metadata_Head_CurrentItemsCount_Position..Metadata_Head_Reserve_Position]);
                 res.Items = new List<BlockInfo>();
 
                 var traceItemsBufferSize = res.CurrentItemsCount * Metadata_TraceDataItem_Size;
                 using var traceItemBufferRent = MemoryPool<byte>.Shared.Rent(traceItemsBufferSize);
-                var traceItemBuffer = traceItemBufferRent.Memory.Slice(0, traceItemsBufferSize).Span;
+                var traceItemBuffer = traceItemBufferRent.Memory.Slice(0, traceItemsBufferSize);
 
                 fs.Position = Metadata_TraceDataItem_Position;
-                fs.Read(traceItemBuffer);
+                fs.Read(traceItemBuffer.Span);
 
-                var traceItems = MemoryMarshal.Cast<byte, TraceMetadataItem>(traceItemBuffer);
+                var traceItems = MemoryMarshal.Cast<byte, TraceMetadataItem>(traceItemBuffer.Span);
 
                 //Todo 在这里整理一下~                
                 return res;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using RootManager = BeaconTower.Warehouse.TraceDB.Root.Manager;
 
 namespace BeaconTower.Warehouse.TraceDB
@@ -16,15 +17,25 @@ namespace BeaconTower.Warehouse.TraceDB
 
 
 
-        public BTraceDB()
+        private BTraceDB()
         {
-            _rootManager = new RootManager();            
+            _rootManager = new RootManager();
         }
 
-        public async void LoadDB()
+        public void StartServer()
         {
-            await _rootManager.Init();
+            _rootManager.Init();
         }
+
+
+        public void SaveItem(long traceID, Memory<byte> data)
+        {
+            _rootManager.GetCurrentBlock();
+        }
+
+
+
+       
 
     }
 }

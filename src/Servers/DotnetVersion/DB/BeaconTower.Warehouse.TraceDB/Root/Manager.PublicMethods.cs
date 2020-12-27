@@ -13,7 +13,7 @@ namespace BeaconTower.Warehouse.TraceDB.Root
     internal partial class Manager
     {
 
-        public async partial Task Init()
+        public partial void Init()
         {
             if (_initialized)
             {
@@ -34,6 +34,11 @@ namespace BeaconTower.Warehouse.TraceDB.Root
                 }
                 _initialized = true;
             }
+        }
+
+        public partial void GetCurrentBlock()
+        {
+            
         }
     }
 }

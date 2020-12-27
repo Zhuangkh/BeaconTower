@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 namespace BeaconTower.Warehouse.TraceDB.Data
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct TraceMetadataItem
+    internal struct TraceMetadataItem
     {
         public long TraceID;
-        public int Length;
         public long FileName;
     }
 }

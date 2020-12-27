@@ -18,7 +18,10 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         public const int Metadata_Head_CRC16_Position = 0;
         public const int Metadata_Head_CRC16_Size = sizeof(UInt16);
 
-        public const int Metadata_Head_FromTraceID_Position = Metadata_Head_CRC16_Position + Metadata_Head_CRC16_Size;
+        public const int Metadata_Head_Version_Position = Metadata_Head_CRC16_Position + Metadata_Head_CRC16_Size;
+        public const int Metadata_Head_Version_Size = sizeof(UInt16);
+
+        public const int Metadata_Head_FromTraceID_Position = Metadata_Head_Version_Position + Metadata_Head_Version_Size;
         public const int Metadata_Head_FromTraceID_Size = sizeof(long);
 
 
@@ -28,18 +31,13 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         public const int Metadata_Head_CurrentItemsCount_Position = Metadata_Head_ToTraceID_Position + Metadata_Head_ToTraceID_Size;
         public const int Metadata_Head_CurrentItemsCount_Size = sizeof(int);
 
-
-        public const int Metadata_Head_Valid_Size = Metadata_Head_CRC16_Size + Metadata_Head_FromTraceID_Size + Metadata_Head_ToTraceID_Size + Metadata_Head_CurrentItemsCount_Size;
-
-
         public const int Metadata_Head_Reserve_Position = Metadata_Head_CurrentItemsCount_Position + Metadata_Head_CurrentItemsCount_Size;
 
 
         public const int Metadata_TraceDataItem_Position = Metadata_Head_Size;
         public const int Metadata_TraceDataItem_TraceID_Size = sizeof(long);
-        public const int Metadata_TraceDataItem_Length_Size = sizeof(int);
         public const int Metadata_TraceDataItem_FileName_Size = sizeof(long);
-        public const int Metadata_TraceDataItem_Size = Metadata_TraceDataItem_TraceID_Size + Metadata_TraceDataItem_Length_Size + Metadata_TraceDataItem_FileName_Size;
+        public const int Metadata_TraceDataItem_Size = Metadata_TraceDataItem_TraceID_Size + Metadata_TraceDataItem_FileName_Size;
         public const int Metadata_BlockInfo_Size = Metadata_TraceDataItem_Size * Block_TraceItem_Maximum;
 
         public const string Metadata_File_Name = "metadata.btd";
