@@ -15,6 +15,6 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         public long FileName { get; set; }
         public long FromTraceID { get; set; }
         public long ToTraceID { get; set; } 
-        public List<TraceMetadataItem> ItemsInfo { get; set; }
+        public List<TraceMetadataItem> ItemsInfo { get; set; } 
     }
 }

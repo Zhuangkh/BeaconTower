@@ -9,10 +9,10 @@ namespace BeaconTower.Warehouse.TraceDB.Block
     /// <summary>
     /// TraceDB block manager
     /// </summary>
-    internal class Manager
+    internal partial class Manager
     {
 
-
+        public partial BlockInfo CreateBlock(); 
 
     }
 }

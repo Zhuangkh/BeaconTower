@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BeaconTower.Warehouse.TraceDB.Block;
 using static BeaconTower.Warehouse.TraceDB.Root.CommonDefinition;
+using BlockManager = BeaconTower.Warehouse.TraceDB.Block.Manager;
 
 namespace BeaconTower.Warehouse.TraceDB.Root
 {
@@ -36,9 +37,21 @@ namespace BeaconTower.Warehouse.TraceDB.Root
             }
         }
 
-        public partial void GetCurrentBlock()
+        public partial BlockInfo GetCurrentBlock()
         {
-            
+            if (_currentBlock!=null)
+            {
+                return _currentBlock;
+            }
+            lock (_rootManagerLockKey)
+            {
+                if (_currentBlock != null)
+                {
+                    return _currentBlock;
+                }
+                
+            }
+            return _currentBlock;
         }
     }
 }

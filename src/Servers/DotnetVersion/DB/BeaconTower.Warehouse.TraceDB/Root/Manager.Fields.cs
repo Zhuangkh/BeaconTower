@@ -14,6 +14,7 @@ namespace BeaconTower.Warehouse.TraceDB.Root
         private readonly List<BlockMetadata> _blocks = new List<BlockMetadata>();
         private readonly object _rootManagerLockKey = $"{nameof(Manager)}{Guid.NewGuid().ToString("N")}";
         private bool _initialized = false;
+        private BlockInfo _currentBlock = null;
 
     }
 }
