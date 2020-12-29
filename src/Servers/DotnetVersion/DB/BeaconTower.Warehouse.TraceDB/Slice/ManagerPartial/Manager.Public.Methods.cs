@@ -25,15 +25,13 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
         {
             try
             {
-                if (_handle.Position < Metadata_Head_Size)
-                {
-                    _handle.Position = Metadata_Head_Size;
-                }
+
+                _handle.Position = _metadata.CurrentPosition;
+                _handle.Write(BitConverter.GetBytes(traceID));
+                _handle.Write(BitConverter.GetBytes(data.Length));
                 _handle.Write(data);
                 _handle.Flush();
-                _metadata.FromTraceID = traceID < _metadata.FromTraceID ? traceID : _metadata.FromTraceID;
-                _metadata.ToTraceID = traceID > _metadata.ToTraceID ? traceID : _metadata.ToTraceID; 
-                SaveMetadataInfo();
+                SaveItemMetadataHandler(traceID, data);
                 return true;
             }
             catch

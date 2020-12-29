@@ -13,6 +13,7 @@ namespace BeaconTower.Warehouse.TraceDB.Slice.Models
         public ushort CRC16;
         public uint TraceItemCount;
         public long FromTraceID;
-        public long ToTraceID;        
+        public long ToTraceID;
+        public long CurrentPosition;
     }
 }

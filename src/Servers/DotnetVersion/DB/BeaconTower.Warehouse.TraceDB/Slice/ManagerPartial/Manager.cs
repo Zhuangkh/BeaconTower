@@ -8,5 +8,6 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
 {
     internal partial class Manager
     {
+        
     }
 }
