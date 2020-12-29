@@ -13,6 +13,7 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
         public partial void LoadOrCreate();
 
         public partial bool Available();
+        public partial void Close();
         public partial bool SaveItem(long traceID, byte[] data);
     }
 }

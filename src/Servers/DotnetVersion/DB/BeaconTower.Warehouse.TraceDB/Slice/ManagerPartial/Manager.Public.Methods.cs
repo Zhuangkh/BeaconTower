@@ -20,6 +20,12 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
         {
             return _metadata.TraceItemCount < Block.BlockDefinitions.Block_One_Block_Item_TraceItem_Maximum;
         }
+        public partial void Close()
+        {
+            _handle.Close();
+            _handle.Dispose();
+            _handle = null;
+        }
 
         public partial bool SaveItem(long traceID, byte[] data)
         {

@@ -15,17 +15,18 @@ namespace BeaconTower.Warehouse.TraceDB.Block
 
         public partial bool SaveItem(long traceID, byte[] data)
         {
-            if (_currentSlice == null)
+            if (_currentSlice == null|| !_currentSlice.Available())
             {
                 lock (this)
                 {
-                    if (_currentSlice == null)
+                    if (_currentSlice == null || !_currentSlice.Available())
                     {
+                        _currentSlice?.Close();
                         MoveNextAvailableSlice();
                     }
                 }
             }
-             _currentSlice.SaveItem(traceID, data);
+            _currentSlice.SaveItem(traceID, data);
             return true;
         }
     }

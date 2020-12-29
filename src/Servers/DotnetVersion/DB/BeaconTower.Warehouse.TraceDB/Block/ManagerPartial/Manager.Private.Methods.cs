@@ -92,19 +92,29 @@ namespace BeaconTower.Warehouse.TraceDB.Block
             }
             if (_allSlice.Count == 0)
             {
-                var fileName = LuanNiao.Core.IDGen.GetInstance().NextId();
-                SliceManager sliceItem = new(Path.Combine(_blockDirectory.FullName, $"{fileName}{BlockItem_File_Extension}"), fileName);
-                sliceItem.LoadOrCreate();
-                _allSlice.Add(sliceItem);
+                CreateSlice();
             }
 
+        }
+
+        private void CreateSlice()
+        {
+            var fileName = LuanNiao.Core.IDGen.GetInstance().NextId();
+            SliceManager sliceItem = new(Path.Combine(_blockDirectory.FullName, $"{fileName}{BlockItem_File_Extension}"), fileName);
+            sliceItem.LoadOrCreate();
+            _allSlice.Add(sliceItem);
         }
 
         private void MoveNextAvailableSlice()
         {
             lock (this)
             {
-                _currentSlice = _allSlice.First(item => item.Available());
+                _currentSlice = _allSlice.FirstOrDefault(item => item.Available());
+                if (_currentSlice==null)
+                {
+                    CreateSlice();
+                }
+                _currentSlice = _allSlice.FirstOrDefault(item => item.Available());
             }
         }
 
