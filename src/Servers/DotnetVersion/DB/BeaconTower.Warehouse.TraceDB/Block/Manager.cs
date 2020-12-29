@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace BeaconTower.Warehouse.TraceDB.Block
 {
@@ -12,7 +8,18 @@ namespace BeaconTower.Warehouse.TraceDB.Block
     internal partial class Manager
     {
 
-        public partial BlockInfo CreateBlock(); 
+        public Manager(DirectoryInfo directoryInfo)
+        {
+            this._blockDirectory = directoryInfo;
+        }
+
+        /// <summary>
+        /// load or create this block
+        /// <para>Will create the metadata or other init file when file not exists</para>
+        /// </summary>
+        public partial void LoadOrCreate();
+
+        public partial bool SaveItem(long traceID, byte[] data);
 
     }
 }

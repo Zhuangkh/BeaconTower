@@ -24,7 +24,7 @@ namespace BeaconTower.Warehouse.TraceDB.Root
 
         public partial void Init();
 
-        public partial BlockInfo GetCurrentBlock();
+        public partial bool SaveItem(long traceID,byte[] data);
         
     }
 }

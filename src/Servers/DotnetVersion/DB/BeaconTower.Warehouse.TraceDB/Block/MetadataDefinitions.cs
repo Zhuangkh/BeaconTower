@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BeaconTower.Warehouse.TraceDB.Data;
+using static BeaconTower.Warehouse.TraceDB.Block.BlockDefinitions;
 
 namespace BeaconTower.Warehouse.TraceDB.Block
 {
-    internal static class CommonDefinition
+    internal static class MetadataDefinitions
     {
-        public const int Block_TraceItem_Maximum = 1024 << 6;
-
-
-        public const int Metadata_Head_Size = 1024;
-
 
         public const int Metadata_Head_CRC16_Position = 0;
         public const int Metadata_Head_CRC16_Size = sizeof(UInt16);
@@ -38,9 +29,11 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         public const int Metadata_TraceDataItem_TraceID_Size = sizeof(long);
         public const int Metadata_TraceDataItem_FileName_Size = sizeof(long);
         public const int Metadata_TraceDataItem_Size = Metadata_TraceDataItem_TraceID_Size + Metadata_TraceDataItem_FileName_Size;
+
+        /// <summary>
+        /// Block info size, can use to find the payload size.
+        /// </summary>
         public const int Metadata_BlockInfo_Size = Metadata_TraceDataItem_Size * Block_TraceItem_Maximum;
 
-        public const string Metadata_File_Name = "metadata.btd";
-        public const int Block_Metadata_File_Size = Metadata_Head_Size + Metadata_BlockInfo_Size;
     }
 }
