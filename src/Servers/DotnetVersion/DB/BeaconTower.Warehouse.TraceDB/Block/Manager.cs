@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Linq;
+using static BeaconTower.Warehouse.TraceDB.Block.BlockDefinitions;
 
 namespace BeaconTower.Warehouse.TraceDB.Block
 {
@@ -19,7 +21,25 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         /// </summary>
         public partial void LoadOrCreate();
 
-        public partial bool SaveItem(long traceID, byte[] data);
+        /// <summary>
+        /// save the item to this block,
+        /// </summary>
+        /// <returns></returns>
+        public partial bool SaveItem(long traceID, long timestamp, byte[] data);
+
+        /// <summary>
+        /// can this block save this item
+        /// </summary>
+        /// <returns></returns>
+        public bool CanSave(long traceID)
+        {
+
+            return
+                (traceID - _metadata.Head.FromTraceID >= 0 && traceID - _metadata.Head.ToTraceID <= 0)
+                ||
+                _metadata.Head.CurrentItemsCount <= Block_TraceItem_Maximum;
+
+        }
 
     }
 }

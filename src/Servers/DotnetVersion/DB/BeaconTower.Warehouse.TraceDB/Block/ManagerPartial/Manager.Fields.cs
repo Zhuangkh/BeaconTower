@@ -9,8 +9,8 @@ namespace BeaconTower.Warehouse.TraceDB.Block
     {
         private readonly DirectoryInfo _blockDirectory;
         private BlockMetadata _metadata = null;
-        private readonly List<SliceManager> _allSlice = new List<SliceManager>();
-        
-        private SliceManager _currentSlice = null;
+        private readonly Dictionary<uint, SliceManager> _sliceLoop = new();
+        private uint _currentSliceIndex;
+
     }
 }

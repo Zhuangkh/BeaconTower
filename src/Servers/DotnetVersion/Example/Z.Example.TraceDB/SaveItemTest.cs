@@ -28,7 +28,7 @@ namespace Z.Example.TraceDB
         [Benchmark]
         public void SaveItem()
         {
-            BTraceDB.Instance.SaveItem(LuanNiao.Core.IDGen.GetInstance().NextId(), _data);
+            BTraceDB.Instance.SaveItem(LuanNiao.Core.IDGen.GetInstance().NextId(), DateTime.Now.Ticks, _data);
         }
     }
 }

@@ -21,14 +21,19 @@ namespace BeaconTower.Warehouse.TraceDB
         {
             _rootManager = new RootManager();
         }
-
+        /// <summary>
+        /// start he db server
+        /// </summary>
         public void StartServer()
         {
             _rootManager.Init();
         }
-        public void SaveItem(long traceID,byte[] data)
+        /// <summary>
+        /// save the item to this db instance
+        /// </summary>
+        public void SaveItem(long traceID,long timestamp,byte[] data)
         {
-            _rootManager.SaveItem(traceID, data);
+            _rootManager.SaveItem(traceID, timestamp, data);
         }
 
  

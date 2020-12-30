@@ -10,10 +10,18 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
             _fileName = fileName;
         }
 
+        /// <summary>
+        /// load or create the slice
+        /// </summary>
         public partial void LoadOrCreate();
-
-        public partial bool Available();
+        /// <summary>
+        /// close this slice 
+        /// </summary>
         public partial void Close();
-        public partial bool SaveItem(long traceID, byte[] data);
+        /// <summary>
+        /// save the trace item to db
+        /// </summary>
+        /// <returns></returns>
+        public partial bool SaveItem(long traceID,long timeStamp, byte[] data);
     }
 }

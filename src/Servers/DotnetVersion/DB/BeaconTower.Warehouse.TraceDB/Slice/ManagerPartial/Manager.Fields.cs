@@ -12,10 +12,13 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
     {
         private readonly string _fileFullPath;
         private readonly long _fileName;
-        public FileStream _handle;
-        public long _fromTraceID;
-        public long _toTraceID;
-        private Metadata _metadata;        
+        private Metadata _metadata;
+        private readonly List<long> _traceIDList = new();
+
+
+        public FileStream _sliceHandle;
+        public FileStream _traceItemIndexHandle; 
+        
 
     }
 }

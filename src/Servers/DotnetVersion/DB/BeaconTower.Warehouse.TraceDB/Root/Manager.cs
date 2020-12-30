@@ -15,7 +15,7 @@ namespace BeaconTower.Warehouse.TraceDB.Root
 
         public Manager()
         {
-            _rootFolder = "c://test/";// Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, Default_Root_Folder_Name);
+            _rootFolder =  Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, Default_Root_Folder_Name);
         }
         public Manager(string path,string folderName)
         {
@@ -24,7 +24,7 @@ namespace BeaconTower.Warehouse.TraceDB.Root
 
         public partial void Init();
 
-        public partial bool SaveItem(long traceID,byte[] data);
+        public partial bool SaveItem(long traceID,long timestamp,byte[] data);
         
     }
 }

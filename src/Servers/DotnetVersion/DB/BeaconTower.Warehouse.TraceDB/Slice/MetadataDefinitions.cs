@@ -1,4 +1,5 @@
 ﻿using System;
+using static BeaconTower.Warehouse.TraceDB.Block.BlockDefinitions;
 
 namespace BeaconTower.Warehouse.TraceDB.Slice
 {
@@ -23,6 +24,9 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
 
         public const ushort Metadata_Head_Size = 1024;
 
+
+        public const ushort Metadata_TraceID_List_Position = Metadata_Head_Size;
+        public const int Metadata_TraceID_List_Size = Block_TraceItem_Maximum / Block_Maximum_Number_Of_Slice_Count * sizeof(long);
 
 
     }

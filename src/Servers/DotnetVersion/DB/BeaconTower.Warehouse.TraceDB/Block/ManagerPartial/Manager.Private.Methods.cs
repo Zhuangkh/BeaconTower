@@ -7,12 +7,16 @@ using System.Runtime.InteropServices;
 using BeaconTower.Warehouse.TraceDB.Block.Models;
 using static BeaconTower.Warehouse.TraceDB.Block.BlockDefinitions;
 using SliceManager = BeaconTower.Warehouse.TraceDB.Slice.Manager;
+using static BeaconTower.Warehouse.TraceDB.Slice.SliceDefinitions;
 
 namespace BeaconTower.Warehouse.TraceDB.Block
 {
     internal partial class Manager
     {
-
+        /// <summary>
+        /// init metadata, call this method when creating block
+        /// </summary>
+        /// <returns></returns>
         private BlockMetadata InitMetadata()
         {
             BlockMetadata res;
@@ -28,6 +32,11 @@ namespace BeaconTower.Warehouse.TraceDB.Block
             return res;
         }
 
+        /// <summary>
+        /// create metadata, call this method when metadata not exists
+        /// </summary>
+        /// <param name="fi"></param>
+        /// <returns></returns>
         private BlockMetadata CreateMetadata(FileInfo fi)
         {
             try
@@ -56,6 +65,10 @@ namespace BeaconTower.Warehouse.TraceDB.Block
             }
         }
 
+        /// <summary>
+        /// load block metadata file, call this method when metadata exists
+        /// </summary> 
+        /// <returns></returns>
         private BlockMetadata LoadMetadataFile(FileInfo fi)
         {
             try
@@ -75,50 +88,50 @@ namespace BeaconTower.Warehouse.TraceDB.Block
             }
         }
 
+        /// <summary>
+        /// Init the slice item, call this method when loading metadata
+        /// </summary>
         private void InitSliceItem()
         {
-
+            //Get current directory all files
             var allFiles = _blockDirectory.GetFiles();
             foreach (var item in allFiles)
             {
-                if (!item.Extension.Equals(BlockItem_File_Extension)
-                    || !long.TryParse(item.Name.Replace(BlockItem_File_Extension, ""), out var fileName))
+                //find all slice file
+                if (!item.Extension.Equals(Slice_File_Extension)
+                    || !long.TryParse(item.Name.Replace(Slice_File_Extension, ""), out var fileName))
                 {
                     continue;
                 }
-                SliceManager sliceItem = new(item.FullName, fileName);
+                //load
+                SliceManager sliceItem = new(item.Directory.FullName, fileName);
                 sliceItem.LoadOrCreate();
-                _allSlice.Add(sliceItem);
+                _sliceLoop.Add((uint)_sliceLoop.Count, sliceItem);
             }
-            if (_allSlice.Count == 0)
+            //if not exists
+            if (_sliceLoop.Count == 0)
             {
+                //create slice
                 CreateSlice();
             }
 
         }
 
+        /// <summary>
+        /// create all slice file, call this method when block creating
+        /// </summary>
         private void CreateSlice()
         {
-            var fileName = LuanNiao.Core.IDGen.GetInstance().NextId();
-            SliceManager sliceItem = new(Path.Combine(_blockDirectory.FullName, $"{fileName}{BlockItem_File_Extension}"), fileName);
-            sliceItem.LoadOrCreate();
-            _allSlice.Add(sliceItem);
-        }
-
-        private void MoveNextAvailableSlice()
-        {
-            lock (this)
+            for (uint i = 0; i < Block_Maximum_Number_Of_Slice_Count; i++)
             {
-                _currentSlice = _allSlice.FirstOrDefault(item => item.Available());
-                if (_currentSlice==null)
-                {
-                    CreateSlice();
-                }
-                _currentSlice = _allSlice.FirstOrDefault(item => item.Available());
+                var fileName = LuanNiao.Core.IDGen.GetInstance().NextId();
+                SliceManager sliceItem = new(_blockDirectory.FullName, fileName);
+                sliceItem.LoadOrCreate();
+                _sliceLoop.Add(i, sliceItem);
             }
         }
 
 
-        
+
     }
 }

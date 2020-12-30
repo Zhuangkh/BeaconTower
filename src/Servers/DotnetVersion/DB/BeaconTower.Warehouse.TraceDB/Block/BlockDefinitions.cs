@@ -12,7 +12,7 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         /// <summary>
         /// Block can save the item's  maximum
         /// </summary>
-        public const int Block_TraceItem_Maximum = 1024 << 6;
+        public const int Block_TraceItem_Maximum = 1024<<6;
         public const int Block_Maximum_Number_Of_Slice_Count = 8;
         public const int Block_One_Block_Item_TraceItem_Maximum = Block_TraceItem_Maximum / Block_Maximum_Number_Of_Slice_Count;
 
@@ -30,10 +30,6 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         /// </summary>
         public const int Metadata_File_Size = Metadata_Head_Size + Metadata_BlockInfo_Size;
 
-        /// <summary>
-        /// BlockItem file's extension name
-        /// </summary>
-        public const string BlockItem_File_Extension = ".btdbi";
 
 
     }

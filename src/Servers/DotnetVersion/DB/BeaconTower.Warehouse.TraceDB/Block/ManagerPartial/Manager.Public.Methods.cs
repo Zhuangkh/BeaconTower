@@ -1,4 +1,5 @@
 ﻿using System;
+using static BeaconTower.Warehouse.TraceDB.Block.BlockDefinitions;
 
 namespace BeaconTower.Warehouse.TraceDB.Block
 {
@@ -13,20 +14,15 @@ namespace BeaconTower.Warehouse.TraceDB.Block
 
         }
 
-        public partial bool SaveItem(long traceID, byte[] data)
+        //Todo: Change this method, can improve performance.
+        public partial bool SaveItem(long traceID, long timestamp, byte[] data)
         {
-            if (_currentSlice == null|| !_currentSlice.Available())
-            {
-                lock (this)
-                {
-                    if (_currentSlice == null || !_currentSlice.Available())
-                    {
-                        _currentSlice?.Close();
-                        MoveNextAvailableSlice();
-                    }
-                }
-            }
-            _currentSlice.SaveItem(traceID, data);
+
+            _sliceLoop[(System.Threading.Interlocked.Increment(ref _currentSliceIndex) % Block_Maximum_Number_Of_Slice_Count)]
+               .SaveItem(traceID, timestamp, data); 
+
+
+
             return true;
         }
     }
