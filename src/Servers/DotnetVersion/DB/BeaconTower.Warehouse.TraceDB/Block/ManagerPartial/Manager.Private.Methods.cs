@@ -131,7 +131,10 @@ namespace BeaconTower.Warehouse.TraceDB.Block
             }
         }
 
-
+        private void SaveMetadata()
+        { 
+        
+        }
 
     }
 }

@@ -24,8 +24,11 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
         /// </summary>
         /// <returns></returns>
         public partial bool SaveItem(long traceID, long timeStamp, byte[] data);
- 
 
+        /// <summary>
+        /// slice name, slice name is file name
+        /// </summary>
+        public long FileName => _fileName;
  
     }
 }

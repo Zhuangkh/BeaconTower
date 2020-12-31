@@ -35,9 +35,10 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
                 lock (this)
                 {
                     _sliceHandle.Position = 0;
-                    LoadMetadataInfo(); 
+                    LoadMetadataInfo();
                 }
             }
+            StartChannelHandler();
         }
 
         /// <summary>
@@ -72,8 +73,6 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
             SaveMetadataInfo();
         }
 
-
-
         /// <summary>
         /// save metadata info to file
         /// </summary>
@@ -104,6 +103,7 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
             _traceItemIndexHandle.Write(LuanNiao.Core.StructUtilTools.StructUtilTools.ToData(in info));
             _traceItemIndexHandle.Flush();
         }
+
         /// <summary>
         /// load all trace item index info
         /// </summary>
@@ -124,6 +124,9 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
             }
         }
 
+
+
+        
 
     }
 }

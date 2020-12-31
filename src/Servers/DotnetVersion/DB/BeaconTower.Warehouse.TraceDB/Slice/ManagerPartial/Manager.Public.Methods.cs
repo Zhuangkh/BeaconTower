@@ -22,6 +22,7 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
 
         public partial void Close()
         {
+            throw new NotSupportedException();
             _sliceHandle.Flush();
             _sliceHandle.Close();
             _sliceHandle.Dispose();
@@ -33,33 +34,47 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
 
         public partial bool SaveItem(long traceID, long timeStamp, byte[] data)
         {
-            /*
-                |   Method |     Mean |   Error |  StdDev |
-                |--------- |---------:|--------:|--------:|
-                | SaveItem | 244.1 ns | 0.86 ns | 0.71 ns |
-             */
             try
             {
-                //save index first
-                SaveTraceItemInfo(_metadata.CurrentPosition,traceID, timeStamp, data);
-
-                _sliceHandle.Position = _metadata.CurrentPosition;  
-                _sliceHandle.Write(data);
-                _sliceHandle.Flush();
-                SaveItemMetadataHandler(data);
-                /*
-                 Have not query             
-                |   Method |     Mean |    Error |   StdDev |
-                |--------- |---------:|---------:|---------:|
-                | SaveItem | 21.02 us | 0.415 us | 0.995 us |
-
-                 */
+                _saveItemChannel.Writer.WriteAsync(new SaveRequestItem()
+                {
+                    Data = data,
+                    Timestamp = timeStamp,
+                    TraceID = traceID
+                });
                 return true;
             }
-            catch
+            catch 
             {
                 return false;
             }
+            ///*
+            //    |   Method |     Mean |   Error |  StdDev |
+            //    |--------- |---------:|--------:|--------:|
+            //    | SaveItem | 244.1 ns | 0.86 ns | 0.71 ns |
+            // */
+            //try
+            //{
+            //    //save index first
+            //    SaveTraceItemInfo(_metadata.CurrentPosition, traceID, timeStamp, data);
+
+            //    _sliceHandle.Position = _metadata.CurrentPosition;
+            //    _sliceHandle.Write(data);
+            //    _sliceHandle.Flush();
+            //    SaveItemMetadataHandler(data);
+            //    /*
+            //     Have not query             
+            //    |   Method |     Mean |    Error |   StdDev |
+            //    |--------- |---------:|---------:|---------:|
+            //    | SaveItem | 21.02 us | 0.415 us | 0.995 us |
+
+            //     */
+            //    return true;
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
         }
     }
 }

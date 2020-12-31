@@ -15,7 +15,7 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         public Manager(DirectoryInfo directoryInfo)
         {
             _blockDirectory = directoryInfo;
-            _blockName = directoryInfo.Name;
+            _blockName = long.Parse(directoryInfo.Name);
         }
 
 
@@ -50,10 +50,10 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         /// <summary>
         /// get this block's name, block's name is directory folder name
         /// </summary>
-        public string BlockName => _blockName;
+        public long BlockName => _blockName;
 
-  
- 
+
+
 
     }
 }

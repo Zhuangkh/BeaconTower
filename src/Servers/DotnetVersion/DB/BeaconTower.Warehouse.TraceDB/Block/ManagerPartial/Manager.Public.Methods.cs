@@ -22,10 +22,14 @@ namespace BeaconTower.Warehouse.TraceDB.Block
                 |--------- |---------:|--------:|--------:|
                 | SaveItem | 243.0 ns | 0.45 ns | 0.42 ns |
              */
-            _sliceLoop[(System.Threading.Interlocked.Increment(ref _currentSliceIndex) % Block_Maximum_Number_Of_Slice_Count)]
-               .SaveItem(traceID, timestamp, data); 
+            var targetSlice = _sliceLoop[(System.Threading.Interlocked.Increment(ref _currentSliceIndex) % Block_Maximum_Number_Of_Slice_Count)];            
+            targetSlice.SaveItem(traceID, timestamp, data);
 
-
+            _metadata.TraceSummaryInfo.Add(new Models.BlockTraceItem()
+            {
+                FileName = targetSlice.FileName,
+                TraceID = traceID
+            });
 
             return true;
         }

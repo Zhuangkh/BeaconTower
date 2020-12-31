@@ -11,7 +11,7 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         private BlockMetadata _metadata = null;
         private readonly Dictionary<uint, SliceManager> _sliceLoop = new();
         private uint _currentSliceIndex;
-        private readonly string _blockName;
+        private readonly long _blockName;
 
     }
 }

@@ -23,7 +23,7 @@ namespace BeaconTower.Warehouse.TraceDB.Root
         /// </summary>
         private void CreateBlock()
         {
-            var item = new BlockManager(new DirectoryInfo(_rootFolder).CreateSubdirectory($"{Guid.NewGuid():N}"));
+            var item = new BlockManager(new DirectoryInfo(_rootFolder).CreateSubdirectory($"{LuanNiao.Core.IDGen.GetInstance().NextId()}"));
             item.LoadOrCreate();
             _allBlocks.Add(item);
         }
