@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static BeaconTower.Warehouse.TraceDB.Slice.MetadataDefinitions;
 using static BeaconTower.Warehouse.TraceDB.Slice.SliceDefinitions;
+using static BeaconTower.Warehouse.TraceDB.Slice.SliceItemDefinitions;
 
 namespace BeaconTower.Warehouse.TraceDB.Slice
 {
@@ -18,7 +19,7 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
             InitMetadata();
         }
 
-       
+
         public partial void Close()
         {
             _sliceHandle.Flush();
@@ -37,18 +38,22 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
                 |--------- |---------:|--------:|--------:|
                 | SaveItem | 244.1 ns | 0.86 ns | 0.71 ns |
              */
-            //Console.WriteLine(this._fileName);
-            return true;
             try
             {
-                _sliceHandle.Position = _metadata.CurrentPosition;
-                _sliceHandle.Write(BitConverter.GetBytes(traceID));
-                _sliceHandle.Write(BitConverter.GetBytes(timeStamp));
-                _sliceHandle.Write(BitConverter.GetBytes(data.Length));
+                //save index first
+                SaveTraceItemInfo(_metadata.CurrentPosition,traceID, timeStamp, data);
+
+                _sliceHandle.Position = _metadata.CurrentPosition;  
                 _sliceHandle.Write(data);
                 _sliceHandle.Flush();
-                SaveItemMetadataHandler(traceID, data);
-                SaveTraceItemInfo(traceID, timeStamp, data);
+                SaveItemMetadataHandler(data);
+                /*
+                 Have not query             
+                |   Method |     Mean |    Error |   StdDev |
+                |--------- |---------:|---------:|---------:|
+                | SaveItem | 21.02 us | 0.415 us | 0.995 us |
+
+                 */
                 return true;
             }
             catch

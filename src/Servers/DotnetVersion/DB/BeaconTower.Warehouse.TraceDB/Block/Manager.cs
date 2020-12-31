@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using static BeaconTower.Warehouse.TraceDB.Block.BlockDefinitions;
 
@@ -12,8 +14,11 @@ namespace BeaconTower.Warehouse.TraceDB.Block
 
         public Manager(DirectoryInfo directoryInfo)
         {
-            this._blockDirectory = directoryInfo;
+            _blockDirectory = directoryInfo;
+            _blockName = directoryInfo.Name;
         }
+
+
 
         /// <summary>
         /// load or create this block
@@ -40,6 +45,15 @@ namespace BeaconTower.Warehouse.TraceDB.Block
                 _metadata.Head.CurrentItemsCount <= Block_TraceItem_Maximum;
 
         }
+
+
+        /// <summary>
+        /// get this block's name, block's name is directory folder name
+        /// </summary>
+        public string BlockName => _blockName;
+
+  
+ 
 
     }
 }

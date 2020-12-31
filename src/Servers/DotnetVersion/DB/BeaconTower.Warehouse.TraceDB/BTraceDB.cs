@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using RootManager = BeaconTower.Warehouse.TraceDB.Root.Manager;
 
 namespace BeaconTower.Warehouse.TraceDB
@@ -31,16 +32,12 @@ namespace BeaconTower.Warehouse.TraceDB
         /// <summary>
         /// save the item to this db instance
         /// </summary>
-        public void SaveItem(long traceID,long timestamp,byte[] data)
+        public void SaveItem(long traceID, long timestamp, byte[] data)
         {
             _rootManager.SaveItem(traceID, timestamp, data);
         }
 
- 
-
-
-
-       
+   
 
     }
 }

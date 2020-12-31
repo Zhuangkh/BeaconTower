@@ -17,7 +17,11 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         //Todo: Change this method, can improve performance.
         public partial bool SaveItem(long traceID, long timestamp, byte[] data)
         {
-
+            /*
+                |   Method |     Mean |   Error |  StdDev |
+                |--------- |---------:|--------:|--------:|
+                | SaveItem | 243.0 ns | 0.45 ns | 0.42 ns |
+             */
             _sliceLoop[(System.Threading.Interlocked.Increment(ref _currentSliceIndex) % Block_Maximum_Number_Of_Slice_Count)]
                .SaveItem(traceID, timestamp, data); 
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 
 namespace BeaconTower.Warehouse.TraceDB.Slice.Models
 {
@@ -12,8 +7,6 @@ namespace BeaconTower.Warehouse.TraceDB.Slice.Models
     {
         public ushort CRC16;
         public uint TraceItemCount;
-        public long FromTraceID;
-        public long ToTraceID;
         public long CurrentPosition;
     }
 }

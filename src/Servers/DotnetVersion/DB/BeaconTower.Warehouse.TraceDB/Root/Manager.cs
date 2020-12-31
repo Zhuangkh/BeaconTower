@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BeaconTower.Warehouse.TraceDB.Block;
 using static BeaconTower.Warehouse.TraceDB.Root.CommonDefinition;
+using BlockManager = BeaconTower.Warehouse.TraceDB.Block.Manager;
 
 namespace BeaconTower.Warehouse.TraceDB.Root
 {
@@ -15,16 +16,17 @@ namespace BeaconTower.Warehouse.TraceDB.Root
 
         public Manager()
         {
-            _rootFolder =  Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, Default_Root_Folder_Name);
+            _rootFolder = "c://test/";// Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, Default_Root_Folder_Name);
         }
-        public Manager(string path,string folderName)
+        public Manager(string path, string folderName)
         {
             throw new NotImplementedException($"Next version..");
         }
 
         public partial void Init();
 
-        public partial bool SaveItem(long traceID,long timestamp,byte[] data);
-        
+        public partial bool SaveItem(long traceID, long timestamp, byte[] data);
+         
+
     }
 }

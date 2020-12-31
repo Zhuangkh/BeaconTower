@@ -10,8 +10,9 @@ namespace BeaconTower.Warehouse.TraceDB.Slice.Models
     [StructLayout(LayoutKind.Sequential,Pack =1)]
     internal struct TraceItemMetadata
     {
+        public long TraceID;
         public long Position;
         public long TimeStamp;
-        public uint Length;       
+        public int Length;       
     }
 }

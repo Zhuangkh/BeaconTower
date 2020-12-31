@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace BeaconTower.Warehouse.TraceDB.Slice
 {
@@ -22,6 +23,9 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
         /// save the trace item to db
         /// </summary>
         /// <returns></returns>
-        public partial bool SaveItem(long traceID,long timeStamp, byte[] data);
+        public partial bool SaveItem(long traceID, long timeStamp, byte[] data);
+ 
+
+ 
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using BeaconTower.Warehouse.TraceDB.Slice.Models;
 using static BeaconTower.Warehouse.TraceDB.Slice.MetadataDefinitions;
@@ -14,6 +15,9 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
     /*We can improve the performance here, but currently, we need not do this~*/
     internal partial class Manager
     {
+        /// <summary>
+        /// Init the slice's metadata
+        /// </summary>
         private void InitMetadata()
         {
             if (_sliceHandle.Length == 0)
@@ -31,59 +35,48 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
                 lock (this)
                 {
                     _sliceHandle.Position = 0;
-                    LoadMetadataInfo();
-                    LoadMetadataTraceIDListInfo();
+                    LoadMetadataInfo(); 
                 }
             }
         }
 
+        /// <summary>
+        /// create new metadata file, call this method when file not exists
+        /// </summary>
         private void CreateNewMetaData()
         {
             _metadata = new();
-            _metadata.FromTraceID = long.MaxValue;
-            _metadata.ToTraceID = long.MinValue;
-            _metadata.TraceItemCount = 0;
-            _metadata.CurrentPosition = Metadata_Head_Size + Metadata_TraceID_List_Size;
+            _metadata.CurrentPosition = Metadata_Head_Size;
             SaveMetadataInfo();
         }
-        private void LoadMetadataTraceIDListInfo()
-        {
-            byte[] listBuffer = new byte[sizeof(long) * _metadata.TraceItemCount];
-            _sliceHandle.Read(listBuffer);
-            for (int index = 0; index < _metadata.TraceItemCount; index += sizeof(long))
-            {
-                _traceIDList.Add(BitConverter.ToInt64(listBuffer[index..]));
-            }
-        }
+
+        /// <summary>
+        /// load metadata file, call this method when file exists
+        /// </summary>
         private void LoadMetadataInfo()
         {
             byte[] headBuffer = new byte[Marshal.SizeOf<Metadata>()];
             _sliceHandle.Read(headBuffer);
             _metadata = LuanNiao.Core.StructUtilTools.StructUtilTools.ToStruct<Metadata>(headBuffer);
-            _sliceHandle.Position = Metadata_TraceID_List_Position;
+            _sliceHandle.Position = Metadata_Head_Size;
+
         }
 
-        private void SaveItemMetadataHandler(long traceID, byte[] data)
+        /// <summary>
+        /// call this method when we saved item to this slice.
+        /// </summary> 
+        private void SaveItemMetadataHandler(byte[] data)
         {
-            _metadata.FromTraceID = traceID < _metadata.FromTraceID ? traceID : _metadata.FromTraceID;
-            _metadata.ToTraceID = traceID > _metadata.ToTraceID ? traceID : _metadata.ToTraceID;
-            _metadata.CurrentPosition += SliceItem_Head_Size + data.Length;
-            SaveTraceID(traceID);
+            _metadata.CurrentPosition += data.Length;
+            _metadata.TraceItemCount++;
             SaveMetadataInfo();
         }
 
-        private void SaveTraceID(long traceID)
-        {
-            _sliceHandle.Position = Metadata_TraceID_List_Position + _traceIDList.Count * sizeof(long);
-            _sliceHandle.Write(BitConverter.GetBytes(traceID));
-            _sliceHandle.Flush();
-            if (!_traceIDList.Contains(traceID))
-            {
-                ++_metadata.TraceItemCount;
-                _traceIDList.Add(traceID);
-            }
-        }
 
+
+        /// <summary>
+        /// save metadata info to file
+        /// </summary>
         private void SaveMetadataInfo()
         {
             var _metadataBuffer = LuanNiao.Core.StructUtilTools.StructUtilTools.ToData(in _metadata);
@@ -96,25 +89,41 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
             _sliceHandle.Flush();
         }
 
-        private void SaveTraceItemInfo(long traceID, long timestamp, byte[] data)
-        { 
-            _traceItemIndexHandle.Write(BitConverter.GetBytes(traceID));
-            _traceItemIndexHandle.Write(BitConverter.GetBytes(timestamp));
-            _traceItemIndexHandle.Write(BitConverter.GetBytes(data.Length));
+        /// <summary>
+        /// save trace item info to index file
+        /// </summary>
+        /// <param name="data"></param>
+        private void SaveTraceItemInfo(long position, long traceID, long timestamp, byte[] data)
+        {
+            _traceItemIndexHandle.Position = _traceItemIndexHandle.Length;
+            TraceItemMetadata info = new TraceItemMetadata();
+            info.Position = position;
+            info.TraceID = traceID;
+            info.TimeStamp = timestamp;
+            info.Length = data.Length;
+            _traceItemIndexHandle.Write(LuanNiao.Core.StructUtilTools.StructUtilTools.ToData(in info));
             _traceItemIndexHandle.Flush();
         }
-
-        private void LoadTraceItemInfo()
+        /// <summary>
+        /// load all trace item index info
+        /// </summary>
+        private void TestLoadData()
         {
             _traceItemIndexHandle.Position = 0;
-            var allItems = new List<long>();
-            var buffer = new byte[8];
+            var buffer = new byte[Marshal.SizeOf<TraceItemMetadata>()];
             for (int index = 0; index < _traceItemIndexHandle.Length; index += 20)
             {
                 _traceItemIndexHandle.Position = index;
                 _traceItemIndexHandle.Read(buffer);
-                allItems.Add(BitConverter.ToInt64(buffer));
+                var info = LuanNiao.Core.StructUtilTools.StructUtilTools.ToStruct<TraceItemMetadata>(buffer);
+                var dataBuffer = new byte[info.Length];
+                _sliceHandle.Position = info.Position;
+                var dataInfo = _sliceHandle.Read(dataBuffer);
+
+                var info1 = JsonSerializer.Deserialize<Dictionary<string, string>>(Encoding.UTF8.GetString(dataBuffer));
             }
         }
+
+
     }
 }

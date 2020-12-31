@@ -11,9 +11,9 @@ namespace Z.Example.TraceDB
     {
         public static void Main(string[] _)
         {
-            BTraceDB.Instance.StartServer();
 
 #if DEBUG
+            BTraceDB.Instance.StartServer();
             byte[] _data = null;
             var td = new Dictionary<string, string>();
             for (int i = 0; i < 1; i++)
@@ -29,6 +29,9 @@ namespace Z.Example.TraceDB
                     BTraceDB.Instance.SaveItem(id, DateTime.Now.Ticks, _data);
                 }
             }
+
+
+           
 #else
             BenchmarkRunner.Run<SaveItemTest>();
 #endif 
