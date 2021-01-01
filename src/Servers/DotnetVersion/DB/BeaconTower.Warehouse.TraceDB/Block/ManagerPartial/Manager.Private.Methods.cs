@@ -17,19 +17,17 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         /// init metadata, call this method when creating block
         /// </summary>
         /// <returns></returns>
-        private BlockMetadata InitMetadata()
+        private void InitMetadata()
         {
-            BlockMetadata res;
-            var fi = new FileInfo(Path.Combine(_blockDirectory.FullName, Metadata_File_Name));
-            if (!fi.Exists)
+            _metadataFileHandle = new FileInfo(Path.Combine(_blockDirectory.FullName, Metadata_File_Name)).Open(FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            if (_metadataFileHandle.Length == 0)
             {
-                res = CreateMetadata(fi);
+                CreateMetadata();
             }
             else
             {
-                res = LoadMetadataFile(fi);
+                LoadMetadataFile();
             }
-            return res;
         }
 
         /// <summary>
@@ -37,55 +35,30 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         /// </summary>
         /// <param name="fi"></param>
         /// <returns></returns>
-        private BlockMetadata CreateMetadata(FileInfo fi)
+        private void CreateMetadata()
         {
-            try
-            {
-                BlockMetadataHead head = new();
-                head.CurrentItemsCount = 0;
-                head.FromTraceID = 0;
-                head.ToTraceID = 0;
-                head.Version = Block_CurrentLib_Version;
 
-                using var headBufferRenter = MemoryPool<byte>.Shared.Rent(Metadata_File_Size);
-                var buffer = headBufferRenter.Memory.Slice(0, Metadata_File_Size).Span;
-                buffer.Fill(0x00);
-                var headBuffer = LuanNiao.Core.StructUtilTools.StructUtilTools.ToData(in head);
-                LuanNiao.Core.NetTools.CRC16IBM.SetCRC16(headBuffer, 0, headBuffer.Length, 0);
-                headBuffer.CopyTo(buffer);
-                using var fs = fi.Create();
-                fs.Write(buffer);
-                fs.Close();
+            _metadata.CurrentItemsCount = 0;
+            _metadata.FromTraceID = 0;
+            _metadata.ToTraceID = 0;
+            _metadata.Version = Block_CurrentLib_Version;
 
-                return new(head);
-            }
-            catch //Todo: (Exception) handle detail info next version.
-            {
-                return null;
-            }
+            var headBuffer = LuanNiao.Core.StructUtilTools.StructUtilTools.ToData(in _metadata);
+            LuanNiao.Core.NetTools.CRC16IBM.SetCRC16(headBuffer, 0, headBuffer.Length, 0);
+
+            _metadataFileHandle.Position = 0;
+            _metadataFileHandle.Write(headBuffer);
         }
 
         /// <summary>
         /// load block metadata file, call this method when metadata exists
         /// </summary> 
         /// <returns></returns>
-        private BlockMetadata LoadMetadataFile(FileInfo fi)
+        private void LoadMetadataFile()
         {
-            try
-            {
-                using var fs = fi.OpenRead();
-                using var headBufferRenter = MemoryPool<byte>.Shared.Rent(Metadata_Head_Size);
-                var headBuffer = headBufferRenter.Memory.Slice(0, Metadata_Head_Size).Span;
-                fs.Read(headBuffer);
-                var head = LuanNiao.Core.StructUtilTools.StructUtilTools.ToStruct<BlockMetadataHead>(headBuffer.Slice(0, Marshal.SizeOf<BlockMetadataHead>()));
-                BlockMetadata res = new(head);
-                //Todo: Needs to load payload content
-                return res;
-            }
-            catch
-            {
-                return null;
-            }
+            var buffer = new byte[Marshal.SizeOf<BlockMetadata>()];
+            _metadataFileHandle.Read(buffer);
+            _metadata = LuanNiao.Core.StructUtilTools.StructUtilTools.ToStruct<BlockMetadata>(buffer);
         }
 
         /// <summary>
@@ -132,8 +105,8 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         }
 
         private void SaveMetadata()
-        { 
-        
+        {
+
         }
 
     }

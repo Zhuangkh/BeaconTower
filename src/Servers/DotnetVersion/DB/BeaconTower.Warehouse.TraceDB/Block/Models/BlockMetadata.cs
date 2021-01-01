@@ -1,16 +1,20 @@
-﻿using System.Collections.Generic;
-using SliceManager = BeaconTower.Warehouse.TraceDB.Slice.Manager;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace BeaconTower.Warehouse.TraceDB.Block.Models
 {
-    internal class BlockMetadata
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct BlockMetadata
     {
-        public BlockMetadata(BlockMetadataHead head)
-        {
-            this.Head = head;
-            this.TraceSummaryInfo = new List<BlockTraceItem>();
-        }
-        public BlockMetadataHead Head { get; init; }
-        public List<BlockTraceItem> TraceSummaryInfo { get; init; }
+
+        public UInt16 CRC16;
+        /// <summary>
+        /// 0XFFFF_FFFF
+        /// 0X000_F000<--大版本号,非向下兼容Version
+        /// </summary>
+        public uint Version;
+        public long FromTraceID;
+        public long ToTraceID;
+        public int CurrentItemsCount;
     }
 }

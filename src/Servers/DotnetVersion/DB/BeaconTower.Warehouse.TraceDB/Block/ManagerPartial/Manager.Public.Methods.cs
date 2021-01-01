@@ -7,7 +7,7 @@ namespace BeaconTower.Warehouse.TraceDB.Block
     {
         public partial void LoadOrCreate()
         {
-            _metadata = InitMetadata();
+            InitMetadata();
             InitSliceItem();
 
             //Todo: load other info, for example: Index info.
@@ -22,16 +22,26 @@ namespace BeaconTower.Warehouse.TraceDB.Block
                 |--------- |---------:|--------:|--------:|
                 | SaveItem | 243.0 ns | 0.45 ns | 0.42 ns |
              */
-            var targetSlice = _sliceLoop[(System.Threading.Interlocked.Increment(ref _currentSliceIndex) % Block_Maximum_Number_Of_Slice_Count)];            
-            targetSlice.SaveItem(traceID, timestamp, data);
 
-            _metadata.TraceSummaryInfo.Add(new Models.BlockTraceItem()
+
+            if (traceID > _metadata.ToTraceID && _metadata.CurrentItemsCount > Block_TraceItem_Maximum)
             {
-                FileName = targetSlice.FileName,
-                TraceID = traceID
-            });
+                return false;
+            }
+            if (_metadata.FromTraceID == 0 && _metadata.ToTraceID == 0)
+            {
+                _metadata.FromTraceID = _metadata.ToTraceID = traceID;
+            }
+            else if (traceID > _metadata.ToTraceID && _metadata.CurrentItemsCount < Block_TraceItem_Maximum)
+            {
+                _metadata.ToTraceID = traceID;
+            }
 
-            return true;
+            _metadata.CurrentItemsCount++;
+
+
+            var targetSlice = _sliceLoop[(System.Threading.Interlocked.Increment(ref _currentSliceIndex) % Block_Maximum_Number_Of_Slice_Count)];
+            return targetSlice.SaveItem(traceID, timestamp, data);
         }
     }
 }

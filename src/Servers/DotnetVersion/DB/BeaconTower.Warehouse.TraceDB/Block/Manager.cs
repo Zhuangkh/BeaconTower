@@ -32,19 +32,7 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         /// <returns></returns>
         public partial bool SaveItem(long traceID, long timestamp, byte[] data);
 
-        /// <summary>
-        /// can this block save this item
-        /// </summary>
-        /// <returns></returns>
-        public bool CanSave(long traceID)
-        {
-
-            return
-                (traceID - _metadata.Head.FromTraceID >= 0 && traceID - _metadata.Head.ToTraceID <= 0)
-                ||
-                _metadata.Head.CurrentItemsCount <= Block_TraceItem_Maximum;
-
-        }
+        
 
 
         /// <summary>
