@@ -43,11 +43,7 @@ namespace BeaconTower.Warehouse.TraceDB.Block
             _metadata.ToTraceID = 0;
             _metadata.Version = Block_CurrentLib_Version;
 
-            var headBuffer = LuanNiao.Core.StructUtilTools.StructUtilTools.ToData(in _metadata);
-            LuanNiao.Core.NetTools.CRC16IBM.SetCRC16(headBuffer, 0, headBuffer.Length, 0);
-
-            _metadataFileHandle.Position = 0;
-            _metadataFileHandle.Write(headBuffer);
+            SaveMetadata();
         }
 
         /// <summary>
@@ -96,17 +92,20 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         private void CreateSlice()
         {
             for (uint i = 0; i < Block_Maximum_Number_Of_Slice_Count; i++)
-            {
-                var fileName = LuanNiao.Core.IDGen.GetInstance().NextId();
-                SliceManager sliceItem = new(_blockDirectory.FullName, fileName);
+            { 
+                SliceManager sliceItem = new(_blockDirectory.FullName, i);
                 sliceItem.LoadOrCreate();
                 _sliceLoop.Add(i, sliceItem);
             }
         }
 
         private void SaveMetadata()
-        {
-
+        {  
+            var headBuffer = LuanNiao.Core.StructUtilTools.StructUtilTools.ToData(in _metadata);            
+            LuanNiao.Core.NetTools.CRC16IBM.SetCRC16(headBuffer, 0, headBuffer.Length, 0); 
+            _metadataFileHandle.Position = 0; 
+            _metadataFileHandle.Write(headBuffer);
+            _metadataFileHandle.Flush();
         }
 
     }

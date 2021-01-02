@@ -20,7 +20,7 @@ namespace Z.Example.TraceDB
             {
                 td.Add(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
             }
-            for (int j = 0; j < 512; j++)
+            for (int j = 0; j < 1024<<8; j++)
             {
                 var id = LuanNiao.Core.IDGen.GetInstance().NextId();
                 _data = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(td));

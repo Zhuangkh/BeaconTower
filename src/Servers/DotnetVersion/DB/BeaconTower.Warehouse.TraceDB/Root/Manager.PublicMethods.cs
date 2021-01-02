@@ -40,7 +40,7 @@ namespace BeaconTower.Warehouse.TraceDB.Root
             //然后这里就只需要找block,block就不需要寻址Trace了
             //这里忽略分配不均衡的问题,因为当前这个系统不需要考虑这个问题.
             //至于哈希环,如果用了它你还得存储它,因为下一次的哈希环并不能保证与上次的分配方式一致
-            //哈希环是保证"本次"分配均衡而不是:每次分配均衡
+            //哈希环是保证"本次"分配均衡而不是:每次分配到相同的目标上
             var target = GetBlockManager(traceID);
             if (target == null)
             {

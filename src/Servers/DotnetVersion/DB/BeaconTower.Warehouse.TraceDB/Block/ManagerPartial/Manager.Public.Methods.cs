@@ -22,8 +22,6 @@ namespace BeaconTower.Warehouse.TraceDB.Block
                 |--------- |---------:|--------:|--------:|
                 | SaveItem | 243.0 ns | 0.45 ns | 0.42 ns |
              */
-
-
             if (traceID > _metadata.ToTraceID && _metadata.CurrentItemsCount > Block_TraceItem_Maximum)
             {
                 return false;
@@ -36,11 +34,12 @@ namespace BeaconTower.Warehouse.TraceDB.Block
             {
                 _metadata.ToTraceID = traceID;
             }
-
             _metadata.CurrentItemsCount++;
+            SaveMetadata();
 
+            //var targetSlice = _sliceLoop[(System.Threading.Interlocked.Increment(ref _currentSliceIndex) % Block_Maximum_Number_Of_Slice_Count)];
 
-            var targetSlice = _sliceLoop[(System.Threading.Interlocked.Increment(ref _currentSliceIndex) % Block_Maximum_Number_Of_Slice_Count)];
+            var targetSlice = _sliceLoop[(uint)(traceID % Block_Maximum_Number_Of_Slice_Count)];
             return targetSlice.SaveItem(traceID, timestamp, data);
         }
     }

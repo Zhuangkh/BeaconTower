@@ -32,7 +32,21 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         /// <returns></returns>
         public partial bool SaveItem(long traceID, long timestamp, byte[] data);
 
-        
+        /// <summary>
+        /// is this block was empty
+        /// </summary>
+        /// <returns></returns>
+        public bool IsEmpty() => _metadata.CurrentItemsCount < Block_TraceItem_Maximum;
+
+        /// <summary>
+        /// is this 'traceID' in this  data block's range
+        /// </summary>
+        /// <param name="traceID"></param>
+        /// <returns></returns>
+        public bool InRange(long traceID)
+        {
+            return traceID >= _metadata.FromTraceID && traceID <= _metadata.ToTraceID;
+        }
 
 
         /// <summary>
