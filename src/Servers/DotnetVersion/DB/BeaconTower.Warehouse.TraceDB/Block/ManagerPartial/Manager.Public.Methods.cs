@@ -37,10 +37,23 @@ namespace BeaconTower.Warehouse.TraceDB.Block
             _metadata.CurrentItemsCount++;
             SaveMetadata();
 
-            //var targetSlice = _sliceLoop[(System.Threading.Interlocked.Increment(ref _currentSliceIndex) % Block_Maximum_Number_Of_Slice_Count)];
+            var targetSlice = _sliceLoop[(System.Threading.Interlocked.Increment(ref _currentSliceIndex) % Block_Maximum_Number_Of_Slice_Count)];
+            /*
+             * 到这里变慢与上面的那个数字的差距在于,block有一次IO落盘,把那个优化掉即可.
+            |   Method |     Mean |     Error |    StdDev |
+            |--------- |---------:|----------:|----------:|
+            | SaveItem | 4.241 us | 0.1759 us | 0.5187 us |
+             */
 
-            var targetSlice = _sliceLoop[(uint)(traceID % Block_Maximum_Number_Of_Slice_Count)];
-            return targetSlice.SaveItem(traceID, timestamp, data);
+
+            //var targetSlice = _sliceLoop[(uint)(traceID % Block_Maximum_Number_Of_Slice_Count)];
+            /*
+            |   Method |     Mean |     Error |    StdDev |
+            |--------- |---------:|----------:|----------:|
+            | SaveItem | 3.927 us | 0.1691 us | 0.4985 us |
+             */
+            return true;
+            //return targetSlice.SaveItem(traceID, timestamp, data);
         }
     }
 }
