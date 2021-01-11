@@ -16,7 +16,7 @@ namespace BeaconTower.Warehouse.TraceDB.Root
 
         internal Manager()
         {
-            _rootFolder = @"C:\Users\benla\Documents\GitHub\BeaconTower\src\Servers\DotnetVersion\Example\Z.Example.TraceDB\bin\Debug\net5.0\BTraceDB";// Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, Default_Root_Folder_Name);
+            _rootFolder =  Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, Default_Root_Folder_Name);
         }
         internal Manager(string path, string folderName)
         {
