@@ -27,10 +27,19 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
         /// </summary>
         private readonly Channel<SaveRequestItem> _saveItemChannel = Channel.CreateUnbounded<SaveRequestItem>();
 
+        private readonly List<TraceItemMetadata> _traceItemsInfo = new List<TraceItemMetadata>();
 
-        public FileStream _sliceHandle;
-        public FileStream _traceItemIndexHandle;
 
+        private FileStream _sliceHandle;
+        private FileStream _traceItemIndexHandle;
+
+        /// <summary>
+        /// this slice's trace item count
+        /// <para>this method will provisionally calculate all data!</para>
+        /// </summary>
+        internal int ItemCount => _traceItemsInfo.Count;
+
+        internal IList<long> TraceIDs => _traceItemsInfo.Select(item => item.TraceID).ToList();
 
     }
 }

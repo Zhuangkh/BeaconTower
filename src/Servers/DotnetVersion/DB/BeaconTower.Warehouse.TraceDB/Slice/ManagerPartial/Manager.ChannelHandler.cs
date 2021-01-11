@@ -25,10 +25,12 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
                 {
                     var item = await _saveItemChannel.Reader.ReadAsync();
                     SaveTraceItemInfo(_metadata.CurrentPosition, item.TraceID, item.Timestamp, item.Data);
-
-                    _sliceHandle.Position = _metadata.CurrentPosition;
-                    _sliceHandle.Write(item.Data);
-                    _sliceHandle.Flush();
+                    lock (_sliceHandle)
+                    {
+                        _sliceHandle.Position = _metadata.CurrentPosition;
+                        _sliceHandle.Write(item.Data);
+                        _sliceHandle.Flush();
+                    }
                     SaveItemMetadataHandler(item.Data);
                 }
             }));

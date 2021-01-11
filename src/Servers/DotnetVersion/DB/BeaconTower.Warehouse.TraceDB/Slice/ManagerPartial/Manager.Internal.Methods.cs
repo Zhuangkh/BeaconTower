@@ -12,7 +12,7 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
 {
     internal partial class Manager
     {
-        public partial void LoadOrCreate()
+        internal partial void LoadOrCreate()
         {
             _sliceHandle = new FileInfo(Path.Combine(_fileFullPath, $"{_fileName}{Slice_File_Extension}")).Open(FileMode.OpenOrCreate, FileAccess.ReadWrite);
             _traceItemIndexHandle = new FileInfo(Path.Combine(_fileFullPath, $"{_fileName}{SliceItem_Index_FileName}")).Open(FileMode.OpenOrCreate, FileAccess.ReadWrite);
@@ -20,7 +20,7 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
         }
 
 
-        public partial void Close()
+        internal partial void Close()
         {
             throw new NotSupportedException();
             _sliceHandle.Flush();
@@ -32,7 +32,7 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
             _sliceHandle = null;
         }
 
-        public partial bool SaveItem(long traceID, long timeStamp, byte[] data)
+        internal partial bool SaveItem(long traceID, long timeStamp, byte[] data)
         {
             try
             {

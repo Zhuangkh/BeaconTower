@@ -5,7 +5,7 @@ namespace BeaconTower.Warehouse.TraceDB.Block
 {
     internal partial class Manager
     {
-        public partial void LoadOrCreate()
+        internal partial void LoadOrCreate()
         {
             InitMetadata();
             InitSliceItem();
@@ -15,7 +15,7 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         }
 
         //Todo: Change this method, can improve performance.
-        public partial bool SaveItem(long traceID, long timestamp, byte[] data)
+        internal partial bool SaveItem(long traceID, long timestamp, byte[] data)
         {
             /*
                 |   Method |     Mean |   Error |  StdDev |
@@ -52,8 +52,8 @@ namespace BeaconTower.Warehouse.TraceDB.Block
             |--------- |---------:|----------:|----------:|
             | SaveItem | 3.927 us | 0.1691 us | 0.4985 us |
              */
-            return true;
-            //return targetSlice.SaveItem(traceID, timestamp, data);
+            //return true;
+            return targetSlice.SaveItem(traceID, timestamp, data);
         }
     }
 }

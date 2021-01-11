@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace BeaconTower.Warehouse.TraceDB.Block.Models
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct BlockMetadata
+    internal struct BlockMetadata
     {
 
         public UInt16 CRC16;

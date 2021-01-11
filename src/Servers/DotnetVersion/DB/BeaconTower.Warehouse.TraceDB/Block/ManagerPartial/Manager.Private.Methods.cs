@@ -101,6 +101,7 @@ namespace BeaconTower.Warehouse.TraceDB.Block
 
         private void SaveMetadata()
         {  
+            //应该是通过持续落盘,而不是每次落盘~
             var headBuffer = LuanNiao.Core.StructUtilTools.StructUtilTools.ToData(in _metadata);            
             LuanNiao.Core.NetTools.CRC16IBM.SetCRC16(headBuffer, 0, headBuffer.Length, 0); 
             _metadataFileHandle.Position = 0; 
