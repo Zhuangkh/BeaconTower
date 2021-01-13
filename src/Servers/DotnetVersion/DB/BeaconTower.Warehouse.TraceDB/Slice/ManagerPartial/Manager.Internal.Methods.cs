@@ -23,26 +23,25 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
         internal partial void Close()
         {
             throw new NotSupportedException();
-            _sliceHandle.Flush();
-            _sliceHandle.Close();
-            _sliceHandle.Dispose();
-            _traceItemIndexHandle.Flush();
-            _traceItemIndexHandle.Close();
-            _traceItemIndexHandle.Dispose();
-            _sliceHandle = null;
+            //_sliceHandle.Flush();
+            //_sliceHandle.Close();
+            //_sliceHandle.Dispose();
+            //_traceItemIndexHandle.Flush();
+            //_traceItemIndexHandle.Close();
+            //_traceItemIndexHandle.Dispose();
+            //_sliceHandle = null;
         }
 
         internal partial bool SaveItem(long traceID, long timeStamp, byte[] data)
         {
             try
             {
-                _saveItemChannel.Writer.WriteAsync(new SaveRequestItem()
+               return _saveItemChannel.Writer.TryWrite(new SaveRequestItem()
                 {
                     Data = data,
                     Timestamp = timeStamp,
                     TraceID = traceID
-                });
-                return true;
+                }); 
             }
             catch 
             {

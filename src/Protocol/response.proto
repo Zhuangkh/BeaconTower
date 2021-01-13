@@ -1,3 +1,13 @@
 syntax = "proto3";
 option csharp_namespace = "BeaconTower.Protocol";
 package BeaconTower;
+
+
+message NullResponse{
+
+}
+
+message GetStateResponse{
+	int64 TimeStamp=1;
+	bool ServerWillShutdown=2;
+}

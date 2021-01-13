@@ -33,8 +33,10 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
                     }
                     SaveItemMetadataHandler(item.Data);
                 }
-            }));
-            thread.IsBackground = true;
+            }))
+            {
+                IsBackground = true
+            };
             thread.Start();
         }
 

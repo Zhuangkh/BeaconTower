@@ -9,7 +9,7 @@ using BenchmarkDotNet.Running;
 namespace Z.Example.TraceDB
 {
     public class Program
-    {
+    { 
         public static void Main(string[] _)
         {
 
@@ -31,17 +31,19 @@ namespace Z.Example.TraceDB
 #endif
 
 #else
-            //BenchmarkRunner.Run<SaveItemTest>();
-            BenchmarkRunner.Run<GetItemTest>();
+            BenchmarkRunner.Run<SaveItemTest>();
+            //BenchmarkRunner.Run<GetItemTest>();
 #endif
             Console.WriteLine("Press any key exit.");
             Console.ReadLine();
 
         }
 
+#pragma warning disable IDE0051 // 删除未使用的私有成员
         private static void InsertData()
+#pragma warning restore IDE0051 // 删除未使用的私有成员
         {
-            byte[] _data = null;
+            byte[] _data;
             var td = new Dictionary<string, string>();
             for (int i = 0; i < 1; i++)
             {
@@ -58,7 +60,9 @@ namespace Z.Example.TraceDB
             }
         }
 
+#pragma warning disable IDE0051 // 删除未使用的私有成员
         private static void GetPerformanceInfo()
+#pragma warning restore IDE0051 // 删除未使用的私有成员
         {
             Stopwatch sw = new();
             sw.Restart();
@@ -89,7 +93,7 @@ namespace Z.Example.TraceDB
             sw.Restart();
             foreach (var item in allIDS)
             {
-                BTraceDB.Instance.TryGetItem(item, out var data);
+                BTraceDB.Instance.TryGetItem(item, out _);
             }
             sw.Stop();
             Console.WriteLine($"foreach all trace item:{allIDS.Count} use:{sw.ElapsedMilliseconds}ms");

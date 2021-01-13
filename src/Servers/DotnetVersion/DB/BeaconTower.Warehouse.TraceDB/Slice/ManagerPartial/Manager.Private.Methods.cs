@@ -95,11 +95,13 @@ namespace BeaconTower.Warehouse.TraceDB.Slice
         /// <param name="data"></param>
         private void SaveTraceItemInfo(long position, long traceID, long timestamp, byte[] data)
         {
-            TraceItemMetadata info = new TraceItemMetadata();
-            info.Position = position;
-            info.TraceID = traceID;
-            info.TimeStamp = timestamp;
-            info.Length = data.Length;
+            TraceItemMetadata info = new TraceItemMetadata
+            {
+                Position = position,
+                TraceID = traceID,
+                TimeStamp = timestamp,
+                Length = data.Length
+            };
             lock (_traceItemIndexHandle)
             {
                 _traceItemIndexHandle.Position = _traceItemIndexHandle.Length;

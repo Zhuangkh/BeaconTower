@@ -3,7 +3,10 @@ option csharp_namespace = "BeaconTower.Protocol";
 package BeaconTower;
 
 
+import "request.proto";
+import "response.proto";
 
-message NullResponse{
-
+service CommonRequest { 
+  rpc GetState (GetStateRequest) returns (GetStateResponse);
 }
+  

@@ -11,16 +11,32 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{2A97
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.Warehouse", "BeaconTower.Warehouse\BeaconTower.Warehouse.csproj", "{E84CC5C4-6124-405C-B8F7-7BF359072F88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeaconTower.Warehouse.TraceDB", "DB\BeaconTower.Warehouse.TraceDB\BeaconTower.Warehouse.TraceDB.csproj", "{71F6CB50-951E-4BDA-97DF-30A5A08E306A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.Warehouse.TraceDB", "DB\BeaconTower.Warehouse.TraceDB\BeaconTower.Warehouse.TraceDB.csproj", "{71F6CB50-951E-4BDA-97DF-30A5A08E306A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z.Test.TraceDB", "Test\Z.Test.TraceDB\Z.Test.TraceDB.csproj", "{07B73BFB-D3DC-4F8F-906D-A495572CF93B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Z.Test.TraceDB", "Test\Z.Test.TraceDB\Z.Test.TraceDB.csproj", "{07B73BFB-D3DC-4F8F-906D-A495572CF93B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z.Example.TraceDB", "Example\Z.Example.TraceDB\Z.Example.TraceDB.csproj", "{171A9DF4-D04E-46EC-966C-7CE04F24087A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Z.Example.TraceDB", "Example\Z.Example.TraceDB\Z.Example.TraceDB.csproj", "{171A9DF4-D04E-46EC-966C-7CE04F24087A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{490AFAE2-CF7A-4B7B-999B-4B90925C32C1}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Grpc.Protocols", "Grpc.Protocols", "{ACF0E115-AD8F-4CC3-8469-371D217E58A6}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Protocol\common.proto = ..\..\Protocol\common.proto
+		..\..\Protocol\enums.proto = ..\..\Protocol\enums.proto
+		..\..\Protocol\methodTrace.proto = ..\..\Protocol\methodTrace.proto
+		..\..\Protocol\nodeTrace.proto = ..\..\Protocol\nodeTrace.proto
+		..\..\Protocol\request.proto = ..\..\Protocol\request.proto
+		..\..\Protocol\response.proto = ..\..\Protocol\response.proto
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeaconTower.Client", "BeaconTower.Client\BeaconTower.Client.csproj", "{BB861E0B-41DB-4F56-84E2-3B510E01A49D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeaconTower.Client.AspNetCore", "BeaconTower.Client.AspNetCore\BeaconTower.Client.AspNetCore.csproj", "{C2A79C6C-752F-4FC3-B9D1-3C42AFACE12D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeaconTower.Warehouse.AspNetCore.Client.Example", "BeaconTower.Warehouse.AspNetCore.Client.Example\BeaconTower.Warehouse.AspNetCore.Client.Example.csproj", "{D576D705-7273-4C8F-80E5-9494034EBB36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +60,18 @@ Global
 		{171A9DF4-D04E-46EC-966C-7CE04F24087A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{171A9DF4-D04E-46EC-966C-7CE04F24087A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{171A9DF4-D04E-46EC-966C-7CE04F24087A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB861E0B-41DB-4F56-84E2-3B510E01A49D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB861E0B-41DB-4F56-84E2-3B510E01A49D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB861E0B-41DB-4F56-84E2-3B510E01A49D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB861E0B-41DB-4F56-84E2-3B510E01A49D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2A79C6C-752F-4FC3-B9D1-3C42AFACE12D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2A79C6C-752F-4FC3-B9D1-3C42AFACE12D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2A79C6C-752F-4FC3-B9D1-3C42AFACE12D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2A79C6C-752F-4FC3-B9D1-3C42AFACE12D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D576D705-7273-4C8F-80E5-9494034EBB36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D576D705-7273-4C8F-80E5-9494034EBB36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D576D705-7273-4C8F-80E5-9494034EBB36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D576D705-7273-4C8F-80E5-9494034EBB36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

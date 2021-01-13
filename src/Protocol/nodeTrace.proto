@@ -5,11 +5,10 @@ package BeaconTower;
 
 
 import "request.proto";
-import "common.proto";
 import "response.proto";
  
 service NodeTrace { 
-  rpc BeforeNodeActive (BeforeNodeActiveRequest) returns (NullResponse);
-  rpc AfterNodeActived (AfterNodeActivedRequest) returns (NullResponse);
+  rpc BeforeNodeActive (NodeActiveRequest) returns (NullResponse);
+  rpc AfterNodeActived (NodeActiveRequest) returns (NullResponse);
 }
   

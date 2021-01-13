@@ -31,7 +31,7 @@ namespace Z.Example.TraceDB
         [Benchmark]
         public void GetItem()
         {
-            BTraceDB.Instance.TryGetItem(_data[_random.Next(0, _count)], out var data);
+            BTraceDB.Instance.TryGetItem(_data[_random.Next(0, _count)], out _);
         }
     }
 }

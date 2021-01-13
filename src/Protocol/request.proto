@@ -6,39 +6,27 @@ package BeaconTower;
 import "enums.proto";
 
 
-message BeforeNodeActiveRequest {
-  string TraceID=1;
+message NodeActiveRequest {
+  int64 TraceID=1;
   string NodeID = 2;
   string PreviousNodeID =3;
   NodeTypeEnum NodeType=4;
-  string SourceName=5;
-  uint64 TimeStamp=6; 
-  uint64 Timeout=7;
+  string Path=5;
+  string QueryString=6;
+  int64 TimeStamp=7;  
   map<string,string> CustomData=8;
 }
    
-message AfterNodeActivedRequest {
-  string TraceID=1;
-  string NodeID = 2;
-  string ParentNodeID=3; 
-  NodeTypeEnum NodeType=4;
-  uint64 TimeStamp=5;
-}
-   
-message BeforMethodInvokeReuqest{
-  string TraceID=1;
+message MethodActiveReuqest{
+  int64 TraceID=1;
   string NodeID=2;
-  string PreMethodID=3;
-  string MethodName=4;
-  uint64 TimeStamp=5;
-  uint64 Timeout=6;
+  int64 MethodID=3;
+  int64 PreMethodID=4;
+  string MethodName=5;
+  int64 TimeStamp=6; 
   map<string,string> CustomData=7;
 }
-message AfterMethodInvokedReuqest{
-  string TraceID=1;
-  string NodeID=2;
-  string PreMethodID=3;
-  string MethodName=4;
-  uint64 TimeStamp=5;
-  map<string,string> CustomData=6;
+
+message GetStateRequest{
+  int64 TimeStamp=1;
 }

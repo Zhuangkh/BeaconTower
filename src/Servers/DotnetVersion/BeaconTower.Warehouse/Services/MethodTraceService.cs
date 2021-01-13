@@ -1,19 +1,27 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using BeaconTower.Protocol;
 using Grpc.Core;
 
 namespace BeaconTower.Warehouse.Services
 {
-    public class NodeTraceService : NodeTrace.NodeTraceBase
+    public class MethodTraceService : MethodTrace.MethodTraceBase
     {
-        public override Task<NullResponse> AfterNodeActived(AfterNodeActivedRequest request, ServerCallContext context)
+        public override Task<NullResponse> AfterMethodInvoked(MethodActiveReuqest request, ServerCallContext context)
         {
-            return base.AfterNodeActived(request, context);
+            return Task.Run(() =>
+            {
+                Console.WriteLine($"AfterMethodInvoked MethodName:{request.MethodName}");
+                return new NullResponse();
+            });
         }
-
-        public override Task<NullResponse> BeforeNodeActive(BeforeNodeActiveRequest request, ServerCallContext context)
+        public override Task<NullResponse> BeforMethodInvoke(MethodActiveReuqest request, ServerCallContext context)
         {
-            return base.BeforeNodeActive(request, context);
+            return Task.Run(() =>
+            {
+                Console.WriteLine($"BeforMethodInvoke MethodName:{request.MethodName}");
+                return new NullResponse();
+            });
         }
     }
 }

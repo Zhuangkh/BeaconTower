@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading.Channels;
 using BeaconTower.Warehouse.TraceDB.Block.Models;
 using SliceManager = BeaconTower.Warehouse.TraceDB.Slice.Manager;
 
@@ -13,7 +14,6 @@ namespace BeaconTower.Warehouse.TraceDB.Block
         private uint _currentSliceIndex;
         private readonly long _blockName;
         private FileStream _metadataFileHandle=null;
-
 
     }
 }
