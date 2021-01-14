@@ -16,6 +16,7 @@ namespace Z.Example.TraceDB
         [GlobalSetup]
         public void Setup()
         {
+            BTraceDB.Instance.RegistDB();
             BTraceDB.Instance.StartServer();
             var td = new Dictionary<string, string>();
             for (int i = 0; i < 100; i++)
@@ -28,7 +29,7 @@ namespace Z.Example.TraceDB
         [Benchmark]
         public void SaveItem()
         {
-            BTraceDB.Instance.SaveItem(LuanNiao.Core.IDGen.GetInstance().NextId(), DateTime.Now.Ticks, _data);
+            BTraceDB.Instance.Default.SaveItem(LuanNiao.Core.IDGen.GetInstance().NextId(), DateTime.Now.Ticks, _data);
         }
     }
 }

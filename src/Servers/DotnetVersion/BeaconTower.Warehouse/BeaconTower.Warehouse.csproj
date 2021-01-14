@@ -14,6 +14,7 @@
 		<Protobuf Include="../../../Protocol/request.proto" GrpcServices="Server" />
 		<Protobuf Include="../../../Protocol/response.proto" GrpcServices="Server" /> 
 		<Protobuf Include="../../../Protocol/nodeTrace.proto" GrpcServices="Server" />
-		<Protobuf Include="../../../Protocol/methodTrace.proto" GrpcServices="Server" />
+    <Protobuf Include="../../../Protocol/methodTrace.proto" GrpcServices="Server" />
+    <Protobuf Include="../../../Protocol/log.proto" GrpcServices="Server" />
 	</ItemGroup>
 </Project>

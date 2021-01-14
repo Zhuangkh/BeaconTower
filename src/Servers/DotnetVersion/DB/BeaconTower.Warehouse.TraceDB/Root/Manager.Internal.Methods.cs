@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using BlockManager = BeaconTower.Warehouse.TraceDB.Block.Manager;
 
 namespace BeaconTower.Warehouse.TraceDB.Root
 {
-    internal partial class Manager
+    public partial class Manager
     {
 
         internal partial void Init()
@@ -32,7 +33,7 @@ namespace BeaconTower.Warehouse.TraceDB.Root
             _initialized = true;
         }
 
-        internal partial bool SaveItem(long traceID, long timestamp, byte[] data)
+        public partial bool SaveItem(long traceID, long timestamp, byte[] data)
         {
 
             var target = GetTargetBlock(traceID);
@@ -52,6 +53,18 @@ namespace BeaconTower.Warehouse.TraceDB.Root
 
             //return true;
             return target.SaveItem(traceID, timestamp, data);
+        }
+
+        public partial bool TryGetItem(long traceID, out List<TraceItem> data)
+        {
+            data = null;
+            var targetBlock = GetTargetBlock(traceID);
+            if (targetBlock == null)
+            {
+                return false;
+            }
+            data = targetBlock.GetTraceItems(traceID);
+            return true;
         }
     }
 }

@@ -4,7 +4,7 @@ using BlockManager = BeaconTower.Warehouse.TraceDB.Block.Manager;
 
 namespace BeaconTower.Warehouse.TraceDB.Root
 {
-    internal partial class Manager
+    public partial class Manager
     {
         private BlockManager GetCanSaveBlock()
         {

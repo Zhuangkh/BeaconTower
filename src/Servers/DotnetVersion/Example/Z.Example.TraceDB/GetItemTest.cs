@@ -19,11 +19,12 @@ namespace Z.Example.TraceDB
         [GlobalSetup]
         public void Setup()
         {
+            BTraceDB.Instance.RegistDB();
             BTraceDB.Instance.StartServer();
             byte[] bytes = new byte[4];
             using System.Security.Cryptography.RNGCryptoServiceProvider rng = new System.Security.Cryptography.RNGCryptoServiceProvider();
             rng.GetBytes(bytes);
-            _data = BTraceDB.Instance.AllTraceID;
+            _data = BTraceDB.Instance.Default.AllTraceID;
             _random = new Random(BitConverter.ToInt32(bytes, 0));
             _count = _data.Count;
         }
@@ -31,7 +32,7 @@ namespace Z.Example.TraceDB
         [Benchmark]
         public void GetItem()
         {
-            BTraceDB.Instance.TryGetItem(_data[_random.Next(0, _count)], out _);
+            BTraceDB.Instance.Default.TryGetItem(_data[_random.Next(0, _count)], out _);
         }
     }
 }

@@ -1,89 +1,65 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using RootManager = BeaconTower.Warehouse.TraceDB.Root.Manager;
-using BlockManager = BeaconTower.Warehouse.TraceDB.Block.Manager;
 using System.Linq;
+using System.Threading.Tasks;
+using RootManager = BeaconTower.Warehouse.TraceDB.Root.Manager;
 
 namespace BeaconTower.Warehouse.TraceDB
 {
+    /// <summary>
+    /// 时间索引临时创建即可,在内存中用于查找,可尝试使用跳表
+    /// </summary>
     public class BTraceDB
     {
 
-        private static readonly ConcurrentDictionary<int, BTraceDB> _instance = new();
-        private readonly RootManager _rootManager;
+        public static readonly BTraceDB Instance = new();
+        private readonly Dictionary<string, RootManager> _dbRootPool = new Dictionary<string, RootManager>();
+        private bool _started = false;
 
-        public static BTraceDB Instance => _instance.GetOrAdd(1, (k) =>
+
+        public void RegistDB(string alias, string path = null, string folderName = null)
         {
-            return new BTraceDB();
-        });
-
-
-
-        private BTraceDB()
-        {
-            _rootManager = new RootManager();
+            _dbRootPool.Add(alias, new RootManager(path, folderName));
         }
+        public void RegistDB()
+        {
+            _dbRootPool.Add("Default", new RootManager());
+        }
+
         /// <summary>
         /// start he db server
         /// </summary>
         public void StartServer()
         {
-            _rootManager.Init();
-        }
-        /// <summary>
-        /// save the item to this db instance
-        /// </summary>
-        public void SaveItem(long traceID, long timestamp, byte[] data)
-        {
-            _rootManager.SaveItem(traceID, timestamp, data);
-        }
-
-        /// <summary>
-        /// this db instance's block count info
-        /// </summary>
-        public int BlockCount => _rootManager.Blocks.Count;
-
-        /// <summary>
-        /// this db instance's slice count info
-        /// <para>this method will provisionally calculate all data!</para>
-        /// </summary>
-        public int SliceCount => _rootManager.Blocks.Sum(item => item.SliceCount);
-
-        /// <summary>
-        /// this db instance's trace item count
-        /// <para>this method will provisionally calculate all data!</para>
-        /// </summary>
-        public int TraceItemCount => _rootManager.Blocks.Sum(item => item.SliceCount);
-
-
-        /// <summary>
-        /// this db instance's trace id list
-        /// <para>this method will provisionally calculate all data!</para>
-        /// <para>this method is low performance!</para>        
-        /// </summary>        
-        public IList<long> AllTraceID
-        {
-            get
+            if (_started)
             {
-                IList<long> result = new List<long>();
-                
-                foreach (var item in _rootManager.Blocks)
+                return;
+            }
+            lock (this)
+            {
+                if (_started)
                 {
-                    var allItems = item.TraceIDs;
-                    foreach (var idItem in allItems)
-                    {
-                        result.Add(idItem);
-                    }
+                    return;
                 }
-                return result;
+                var dbInitList = new Task[_dbRootPool.Count];
+                for (int i = 0; i < _dbRootPool.Count; i++)
+                {
+
+                }
+                var index = 0;
+                foreach (var item in _dbRootPool)
+                {
+                    dbInitList[index] = Task.Run(() =>
+                    {
+                        item.Value.Init();
+                    });
+                }
+                Task.WhenAll(dbInitList).Wait();
+                _started = true;
             }
         }
 
-        public void TryGetItem(long traceID, out List<TraceItem> data)
-        {
-            _rootManager.TryGetItem(traceID, out data);
-        }
-        
+        public RootManager this[string alias] => _dbRootPool.ContainsKey(alias) ? _dbRootPool[alias] : null;
+        public RootManager Default => _dbRootPool.Count == 0 ? null : _dbRootPool.Values.ToList()[0];
     }
 }
