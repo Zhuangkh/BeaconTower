@@ -1,0 +1,18 @@
+syntax = "proto3";
+option csharp_namespace = "BeaconTower.Protocol";
+package BeaconTower;
+
+
+
+import "request.proto";
+import "response.proto";
+ 
+service Log { 
+  rpc Trace (LogRequest) returns (NullResponse);
+  rpc Debug (LogRequest) returns (NullResponse);
+  rpc Info (LogRequest) returns (NullResponse);
+  rpc Warning (LogRequest) returns (NullResponse);
+  rpc Error (LogRequest) returns (NullResponse);
+  rpc Panic (LogRequest) returns (NullResponse);
+}
+  

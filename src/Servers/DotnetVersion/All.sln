@@ -26,6 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Grpc.Protocols", "Grpc.Prot
 	ProjectSection(SolutionItems) = preProject
 		..\..\Protocol\common.proto = ..\..\Protocol\common.proto
 		..\..\Protocol\enums.proto = ..\..\Protocol\enums.proto
+		..\..\Protocol\log.proto = ..\..\Protocol\log.proto
 		..\..\Protocol\methodTrace.proto = ..\..\Protocol\methodTrace.proto
 		..\..\Protocol\nodeTrace.proto = ..\..\Protocol\nodeTrace.proto
 		..\..\Protocol\request.proto = ..\..\Protocol\request.proto
@@ -40,11 +41,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.Client.Abstract
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.Client.AspNetCore", "Client\BeaconTower.Client.AspNetCore\BeaconTower.Client.AspNetCore.csproj", "{B7767182-16D7-4CEA-B9D4-2C3658161EEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeaconTower.Client.Warehouse.Grpc", "Client\BeaconTower.Client.Warehouse.Grpc\BeaconTower.Client.Warehouse.Grpc.csproj", "{1CEE0775-FF65-4DEE-9D16-15A055950B2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.Client.Warehouse.Grpc", "Client\BeaconTower.Client.Warehouse.Grpc\BeaconTower.Client.Warehouse.Grpc.csproj", "{1CEE0775-FF65-4DEE-9D16-15A055950B2A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Realization", "Realization", "{7489F0C5-FB67-40EC-8068-465D98A94932}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeaconTower.Client.Console", "Client\BeaconTower.Client.Console\BeaconTower.Client.Console.csproj", "{89FE9827-DC8D-4088-87A9-C7BCA6E5C363}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.Client.Console", "Client\BeaconTower.Client.Console\BeaconTower.Client.Console.csproj", "{89FE9827-DC8D-4088-87A9-C7BCA6E5C363}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

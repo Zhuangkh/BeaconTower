@@ -73,6 +73,21 @@ namespace BeaconTower.Client.Warehouse.Grpc
             }
             return request;
         }
+        private LogRequest ConstructRequestData(LogInfo item)
+        {
+            var request = new LogRequest()
+            {
+                TraceID = item.TraceID,
+                Message = item.Message,
+                MethodInfo = item.MethodInfo,
+                TimeStamp = item.TimeStamp
+            };
+            foreach (var data in item.CustomData)
+            {
+                request.CustomData.Add(data.Key, data.Value);
+            }
+            return request;
+        }
 
 
         public override async Task BeforMethodInvokeAsync(MethodTracer info)
@@ -133,6 +148,33 @@ namespace BeaconTower.Client.Warehouse.Grpc
             }
             var client = new NodeTrace.NodeTraceClient(targetServer.Channel);
             await client.AfterNodeActivedAsync(ConstructRequestData(info), deadline: DateTime.UtcNow.AddSeconds(1));
+        }
+
+        public override async Task Log(LogInfo info)
+        {
+            if (info == null)
+            {
+                return;
+            }
+            var targetServer = GetAvailableServer();
+            if (targetServer == null)
+            {
+                return;
+            }
+            var client = new Log.LogClient(targetServer.Channel);
+            var task = info.Level switch
+            {
+                LogLevel.Trace => client.TraceAsync(ConstructRequestData(info)),
+
+                LogLevel.Debug => client.DebugAsync(ConstructRequestData(info)),
+                LogLevel.Info => client.InfoAsync(ConstructRequestData(info)),
+                LogLevel.Warning => client.WarningAsync(ConstructRequestData(info)),
+                LogLevel.Error => client.ErrorAsync(ConstructRequestData(info)),
+                LogLevel.Panic => client.PanicAsync(ConstructRequestData(info)),
+                _ => throw new InvalidOperationException($"Unknow level:{info.Level}")
+            };
+
+            await task;
         }
     }
 }

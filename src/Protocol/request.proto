@@ -30,3 +30,11 @@ message MethodActiveReuqest{
 message GetStateRequest{
   int64 TimeStamp=1;
 }
+
+message LogRequest{
+	int64 TraceID=1;
+	int64 TimeStamp=2;
+	string Message=3;
+	string MethodInfo=4;
+	map<string,string> CustomData=5;
+}

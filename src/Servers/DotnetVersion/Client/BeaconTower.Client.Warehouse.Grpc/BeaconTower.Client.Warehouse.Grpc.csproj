@@ -24,5 +24,6 @@
         <Protobuf Include="../../../../Protocol/response.proto" GrpcServices="Client" />
         <Protobuf Include="../../../../Protocol/nodeTrace.proto" GrpcServices="Client" />
         <Protobuf Include="../../../../Protocol/methodTrace.proto" GrpcServices="Client" />
+        <Protobuf Include="../../../../Protocol/log.proto" GrpcServices="Client" />
     </ItemGroup>
 </Project>

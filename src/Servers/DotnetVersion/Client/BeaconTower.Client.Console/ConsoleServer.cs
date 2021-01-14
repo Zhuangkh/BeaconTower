@@ -32,7 +32,7 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"PreMethodID:{info.PreMethodID} ");
             builder.AppendLine($"NodeID:{info.NodeID} ");
             builder.AppendLine($"TimeStamp:{info.TimeStamp} ");
-            builder.AppendLine($"Time:{(DateTime.FromFileTimeUtc(info.TimeStamp).ToString("yyyy-MM-dd HH:mm:ss:fff"))} ");
+            builder.AppendLine($"Time:{(new DateTime(info.TimeStamp).ToString("yyyy-MM-dd HH:mm:ss:fff"))} ");
             builder.AppendLine($"CustomData:{System.Text.Json.JsonSerializer.Serialize(info.CustomData)} ");
             builder.AppendLine();
             return builder;
@@ -55,7 +55,26 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"NodeID:{info.NodeID} ");
             builder.AppendLine($"PreviousNodeID:{info.PreviousNodeID} ");
             builder.AppendLine($"TimeStamp:{info.TimeStamp} ");
-            builder.AppendLine($"Time:{(DateTime.FromFileTimeUtc(info.TimeStamp).ToString("yyyy-MM-dd HH:mm:ss:fff"))} ");
+            builder.AppendLine($"Time:{(new DateTime(info.TimeStamp).ToString("yyyy-MM-dd HH:mm:ss:fff"))} ");
+            builder.AppendLine($"CustomData:{System.Text.Json.JsonSerializer.Serialize(info.CustomData)} ");
+            builder.AppendLine();
+            return builder;
+        }
+        private StringBuilder GetInfo(LogInfo info, StringBuilder builder = null)
+        {
+            if (builder == null)
+            {
+                builder = new StringBuilder();
+            }
+            else
+            {
+                builder.Append("\r\n");
+            }
+            builder.AppendLine($"TraceID:{info.TraceID} ");
+            builder.AppendLine($"Level:{Enum.GetName(typeof(LogLevel), info.Level)} ");
+            builder.AppendLine($"Message:{info.Message} ");
+            builder.AppendLine($"MethodInfo:{info.MethodInfo} "); 
+            builder.AppendLine($"Time:{(new DateTime(info.TimeStamp).ToString("yyyy-MM-dd HH:mm:ss:fff"))} ");
             builder.AppendLine($"CustomData:{System.Text.Json.JsonSerializer.Serialize(info.CustomData)} ");
             builder.AppendLine();
             return builder;
@@ -95,6 +114,11 @@ namespace BeaconTower.Client.Console
                 return;
             }
             await Task.Run(() => { System.Console.WriteLine(GetInfo(info, new StringBuilder($"{nameof(BeforMethodInvokeAsync)}:"))); });
+        }
+
+        public override Task Log(LogInfo info)
+        {
+            throw new NotImplementedException();
         }
     }
 }
