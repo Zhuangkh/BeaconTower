@@ -20,17 +20,29 @@ namespace BeaconTower.Client
         private RpcServerManager()
         { }
 
-        public void InitSetting(NodeTypeEnum type, string nodeID)
+        public void Init(BeaconTowerOptions options)
         {
-            NodeType = type;
-            NodeID = nodeID;
+            if (options == null)
+            {
+                throw new InvalidOperationException($"Parameter: {nameof(options)} was null.");
+            }
+            else if (options.HostList.Count > 1)
+            {
+                throw new NotSupportedException("Not supported load balance in this version.");
+            }
+            NodeType = options.NodeType;
+            NodeID = options.NodeID;
+            foreach (var item in options.HostList)
+            {
+                RegistHost(item);
+            }
         }
 
 
         public void RegistHost(string address)
         {
             _channels.Add(new BeaconTowerGrpcChannel(address));
-        } 
+        }
 
         /// <summary>
         /// 当没有可用服务器时返回空

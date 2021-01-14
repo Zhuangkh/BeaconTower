@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BeaconTower.Client\BeaconTower.Client.csproj" />
+    <ProjectReference Include="..\BeaconTower.Client.Abstract\BeaconTower.Client.Abstract.csproj" />
   </ItemGroup>
 
 </Project>

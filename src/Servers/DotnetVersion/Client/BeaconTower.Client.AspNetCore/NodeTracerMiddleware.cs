@@ -1,7 +1,5 @@
-﻿using BeaconTower.Protocol;
-using Microsoft.AspNetCore.Builder;
+﻿using BeaconTower.Client.Abstract;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
@@ -19,8 +17,8 @@ namespace BeaconTower.Client.AspNetCore
         {
             tracer.TimeStamp = DateTime.Now.Ticks;
             tracer.Path = context.Request.Path.ToString();
-            tracer.QueryString = context.Request.QueryString.ToString();            
-            tracer.BeforeNodeActiveAsync(); 
+            tracer.QueryString = context.Request.QueryString.ToString();
+            tracer.BeforeNodeActiveAsync();
             await _next(context);
             tracer.TimeStamp = DateTime.Now.Ticks;
             tracer.AfterNodeActivedAsync();

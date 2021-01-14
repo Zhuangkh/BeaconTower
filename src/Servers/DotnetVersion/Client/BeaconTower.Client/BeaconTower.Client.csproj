@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -16,11 +16,11 @@
 
 
     <ItemGroup>
-        <Protobuf Include="../../../Protocol/common.proto" GrpcServices="Client" />
-        <Protobuf Include="../../../Protocol/enums.proto" GrpcServices="Client" />
-        <Protobuf Include="../../../Protocol/request.proto" GrpcServices="Client" />
-        <Protobuf Include="../../../Protocol/response.proto" GrpcServices="Client" />
-        <Protobuf Include="../../../Protocol/nodeTrace.proto" GrpcServices="Client" />
-        <Protobuf Include="../../../Protocol/methodTrace.proto" GrpcServices="Client" />
+        <Protobuf Include="../../../../Protocol/common.proto" GrpcServices="Client" />
+        <Protobuf Include="../../../../Protocol/enums.proto" GrpcServices="Client" />
+        <Protobuf Include="../../../../Protocol/request.proto" GrpcServices="Client" />
+        <Protobuf Include="../../../../Protocol/response.proto" GrpcServices="Client" />
+        <Protobuf Include="../../../../Protocol/nodeTrace.proto" GrpcServices="Client" />
+        <Protobuf Include="../../../../Protocol/methodTrace.proto" GrpcServices="Client" />
     </ItemGroup>
 </Project>

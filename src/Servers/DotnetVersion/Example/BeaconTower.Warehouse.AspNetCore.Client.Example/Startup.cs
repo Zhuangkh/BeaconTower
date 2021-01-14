@@ -11,6 +11,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BeaconTower.Client.AspNetCore;
+using BeaconTower.Client;
+using BeaconTower.Client.Abstract;
+using BeaconTower.Client.Warehouse.Grpc;
+using BeaconTower.Client.Console;
 
 namespace BeaconTower.Warehouse.AspNetCore.Client.Example
 {
@@ -26,7 +30,14 @@ namespace BeaconTower.Warehouse.AspNetCore.Client.Example
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddBeaconTower(Protocol.NodeTypeEnum.WebServer, "aaa", "http://127.0.0.1:5000");
+            WarehouseGrpcServer grpcServer = new();
+            ConsoleServer console = new() { Type = ServerType.Demotion };
+            grpcServer.RegistHost("http://127.0.0.1:5000");
+            services.AddBeaconTower(c =>
+            {
+                c.NodeID = "Test Node";
+                c.NodeType = NodeType.WebServer;
+            }, grpcServer, console);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -44,12 +55,12 @@ namespace BeaconTower.Warehouse.AspNetCore.Client.Example
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BeaconTower.Warehouse.AspNetCore.Client.Example v1"));
             }
             app.UseBeaconTowerNodeTracer();
-            app.UseRouting(); 
-            app.UseAuthorization(); 
+            app.UseRouting();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            }); 
+            });
         }
     }
 }

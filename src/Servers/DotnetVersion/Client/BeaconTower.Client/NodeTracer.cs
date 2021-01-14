@@ -55,7 +55,7 @@ namespace BeaconTower.Client
                 TimeStamp = DateTime.Now.Ticks,
                 TraceID = this.TraceID,
                 MethodID = thisMethodID,
-                PreMethodID = _methodStack.Count==0?0:_methodStack.Peek(),
+                PreMethodID = _methodStack.Count == 0 ? 0 : _methodStack.Peek(),
                 MethodName = methodName
             };
             _methodStack.Push(thisMethodID);

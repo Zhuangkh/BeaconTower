@@ -32,17 +32,21 @@ namespace BeaconTower.Client
                     try
                     {
                         var client = new CommonRequest.CommonRequestClient(Channel);
-                        var res = client.GetState(new GetStateRequest() { TimeStamp = DateTime.Now.Ticks });
-                        Connected = true;
+                        var res = client.GetState(new GetStateRequest() { TimeStamp = DateTime.Now.Ticks });                        
                         times = 1;
+                        if (!Connected)
+                        {
+                            Console.WriteLine($"Grpc Server:{Channel.Target} recovery");
+                        }
+                        Connected = true;
                     }
                     catch (RpcException ex)
                     {
-                        Console.WriteLine($"Got error state from grpc Server:{Channel.Target} StatusCode:{Enum.GetName(typeof(StatusCode), ex.StatusCode)}");
+                        Console.WriteLine($"Grpc Client: Got an error state from Server:{Channel.Target} StatusCode: {Enum.GetName(typeof(StatusCode), ex.StatusCode)}. The client will retry in {(times > 20 ? 20 : times)} seconds. This is the {times}th report.");
                         Connected = false;
-                        times += times < 20 ? 1 : 0;
+                        times += 1;
                     }
-                    Thread.Sleep(jumperSleep * times);
+                    Thread.Sleep(jumperSleep * (times>20?20:times));
                 }
             }))
             {

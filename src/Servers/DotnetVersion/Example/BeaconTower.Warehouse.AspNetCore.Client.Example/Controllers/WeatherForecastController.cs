@@ -1,10 +1,8 @@
-﻿using BeaconTower.Client;
+﻿using BeaconTower.Client.Abstract;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace BeaconTower.Warehouse.AspNetCore.Client.Example.Controllers
 {
