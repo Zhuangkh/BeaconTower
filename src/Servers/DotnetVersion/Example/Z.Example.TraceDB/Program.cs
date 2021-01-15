@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
-using BeaconTower.Warehouse.TraceDB;
+using BeaconTower.TraceDB;
 using BenchmarkDotNet.Running;
 
 namespace Z.Example.TraceDB

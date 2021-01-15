@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using BeaconTower.Warehouse.TraceDB;
+using BeaconTower.TraceDB;
 using BenchmarkDotNet.Attributes;
 
 namespace Z.Example.TraceDB

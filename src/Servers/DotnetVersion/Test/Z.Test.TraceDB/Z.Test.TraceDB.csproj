@@ -12,8 +12,4 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\DB\BeaconTower.Warehouse.TraceDB\BeaconTower.Warehouse.TraceDB.csproj" />
-  </ItemGroup>
-
 </Project>
