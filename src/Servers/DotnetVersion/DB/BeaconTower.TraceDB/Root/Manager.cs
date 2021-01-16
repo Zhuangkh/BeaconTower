@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using BeaconTower.TraceDB.Block;
-using static BeaconTower.TraceDB.Root.CommonDefinition;
 using BlockManager = BeaconTower.TraceDB.Block.Manager;
 
 namespace BeaconTower.TraceDB.Root
@@ -14,12 +13,6 @@ namespace BeaconTower.TraceDB.Root
     public partial class Manager
     {
 
-        internal Manager() : this
-            (new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName
-            , Default_Root_Folder_Name)
-        {
-
-        }
         internal Manager(string path, string folderName)
         {
             FolderPath = path;
@@ -27,12 +20,6 @@ namespace BeaconTower.TraceDB.Root
             _rootFolder = Path.Combine(path, folderName);
         }
 
-        internal Manager(string folderName) : this
-            (new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName
-            , folderName)
-        {
-
-        }
 
         internal partial void Init();
 

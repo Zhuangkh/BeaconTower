@@ -1,6 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using RootManager = BeaconTower.TraceDB.Root.Manager;
 
@@ -9,22 +11,35 @@ namespace BeaconTower.TraceDB
     /// <summary>
     /// 时间索引临时创建即可,在内存中用于查找,可尝试使用跳表
     /// </summary>
-    public class BTraceDB
+    public class DataBase
     {
 
-        public static readonly BTraceDB Instance = new();
+        public static readonly DataBase Instance = new();
         private readonly Dictionary<string, RootManager> _dbRootPool = new Dictionary<string, RootManager>();
         private bool _started = false;
 
-
+        /// <summary>
+        /// Regist the new database to instance 
+        /// <para>You can reuse the root path use the 'path' parameter</para>
+        /// </summary>
+        /// <param name="alias">database's alias </param>
+        /// <param name="path">set the db's root path</param>
+        /// <param name="folderName">db's folder name</param>
         public void RegistDB(string alias, string path = null, string folderName = null)
         {
             _dbRootPool.Add(alias, new RootManager(path, folderName));
         }
-        public void RegistDB()
-        {
-            _dbRootPool.Add("Default", new RootManager());
-        }
+
+        /// <summary>
+        /// regist the databse use the default settings
+        /// <para>DB name: "Default"</para>
+        /// <para>Root path: this dll's path</para>
+        /// <para>folder name: "TraceDB"</para>
+        /// </summary>
+        public void RegistDB() => RegistDB(
+                "Default"
+                , (new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName)
+                , "TraceDB");
 
         /// <summary>
         /// start he db server
@@ -59,6 +74,11 @@ namespace BeaconTower.TraceDB
             }
         }
 
+        /// <summary>
+        /// use the database's alias to find out the db instance, you will got the null instance when we haven't this db
+        /// </summary>
+        /// <param name="alias"></param>
+        /// <returns></returns>
         public RootManager this[string alias] => _dbRootPool.ContainsKey(alias) ? _dbRootPool[alias] : null;
         public RootManager Default => _dbRootPool.Count == 0 ? null : _dbRootPool.Values.ToList()[0];
     }

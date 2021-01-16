@@ -45,9 +45,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Realization", "Realization"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.Client.Console", "Client\BeaconTower.Client.Console\BeaconTower.Client.Console.csproj", "{89FE9827-DC8D-4088-87A9-C7BCA6E5C363}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeaconTower.TraceDB", "DB\BeaconTower.TraceDB\BeaconTower.TraceDB.csproj", "{5E664EA5-F727-491B-91DE-83060008E9FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.TraceDB", "DB\BeaconTower.TraceDB\BeaconTower.TraceDB.csproj", "{5E664EA5-F727-491B-91DE-83060008E9FC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extends", "Extends", "{F113AAA1-6AC2-439E-AB15-CB010118AABE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.TraceDB.NodeTraceDB", "DB\Extends\BeaconTower.TraceDB.NodeTraceDB\BeaconTower.TraceDB.NodeTraceDB.csproj", "{3FAF52CA-FEB0-40EB-93F4-E5220B1ED4CE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Z.Example.NodeTraceDBTest", "Example\Z.Example.NodeTraceDBTest\Z.Example.NodeTraceDBTest.csproj", "{442001A2-5E81-4745-AF5C-B0A0F4A0A09A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +95,14 @@ Global
 		{5E664EA5-F727-491B-91DE-83060008E9FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E664EA5-F727-491B-91DE-83060008E9FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E664EA5-F727-491B-91DE-83060008E9FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FAF52CA-FEB0-40EB-93F4-E5220B1ED4CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FAF52CA-FEB0-40EB-93F4-E5220B1ED4CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FAF52CA-FEB0-40EB-93F4-E5220B1ED4CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FAF52CA-FEB0-40EB-93F4-E5220B1ED4CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{442001A2-5E81-4745-AF5C-B0A0F4A0A09A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{442001A2-5E81-4745-AF5C-B0A0F4A0A09A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{442001A2-5E81-4745-AF5C-B0A0F4A0A09A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{442001A2-5E81-4745-AF5C-B0A0F4A0A09A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +118,8 @@ Global
 		{89FE9827-DC8D-4088-87A9-C7BCA6E5C363} = {7489F0C5-FB67-40EC-8068-465D98A94932}
 		{5E664EA5-F727-491B-91DE-83060008E9FC} = {73F4DD43-4640-4270-B037-35F49066C3F5}
 		{F113AAA1-6AC2-439E-AB15-CB010118AABE} = {73F4DD43-4640-4270-B037-35F49066C3F5}
+		{3FAF52CA-FEB0-40EB-93F4-E5220B1ED4CE} = {F113AAA1-6AC2-439E-AB15-CB010118AABE}
+		{442001A2-5E81-4745-AF5C-B0A0F4A0A09A} = {2A97C844-0157-4A45-8C68-B59E12B75B25}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C1D5E3F-9346-4028-90C4-458D0E5B48E4}

@@ -16,8 +16,8 @@ namespace Z.Example.TraceDB
 #if DEBUG 
             Stopwatch sw = new();
             sw.Start();
-            BTraceDB.Instance.RegistDB();
-            BTraceDB.Instance.StartServer();
+            DataBase.Instance.RegistDB();
+            DataBase.Instance.StartServer();
             sw.Stop();
             Console.WriteLine($"Start server use:{sw.ElapsedMilliseconds}ms");
 
@@ -56,7 +56,7 @@ namespace Z.Example.TraceDB
                 _data = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(td));
                 for (int i = 0; i < 1; i++)
                 {
-                    BTraceDB.Instance.Default.SaveItem(id, DateTime.Now.Ticks, _data);
+                    DataBase.Instance.Default.SaveItem(id, DateTime.Now.Ticks, _data);
                 }
             }
         }
@@ -67,18 +67,18 @@ namespace Z.Example.TraceDB
         {
             Stopwatch sw = new();
             sw.Restart();
-            var blockCount = BTraceDB.Instance.Default.BlockCount;
+            var blockCount = DataBase.Instance.Default.BlockCount;
             sw.Stop();
             Console.WriteLine($"get BlockCount:{blockCount} use:{sw.ElapsedMilliseconds}ms");
 
 
             sw.Restart();
-            var sliceCount = BTraceDB.Instance.Default.SliceCount;
+            var sliceCount = DataBase.Instance.Default.SliceCount;
             sw.Stop();
             Console.WriteLine($"get SliceCount:{sliceCount} use:{sw.ElapsedMilliseconds}ms");
 
             sw.Restart();
-            var allIDS = BTraceDB.Instance.Default.AllTraceID;
+            var allIDS = DataBase.Instance.Default.AllTraceID;
             sw.Stop();
             Console.WriteLine($"get all id:{allIDS.Count} use:{sw.ElapsedMilliseconds}ms");
         }
@@ -87,14 +87,14 @@ namespace Z.Example.TraceDB
         {
             Stopwatch sw = new();
             sw.Restart();
-            var allIDS = BTraceDB.Instance.Default.AllTraceID;
+            var allIDS = DataBase.Instance.Default.AllTraceID;
             sw.Stop();
             Console.WriteLine($"get all id:{allIDS.Count} use:{sw.ElapsedMilliseconds}ms");
 
             sw.Restart();
             foreach (var item in allIDS)
             {
-                BTraceDB.Instance.Default.TryGetItem(item, out _);
+                DataBase.Instance.Default.TryGetItem(item, out _);
             }
             sw.Stop();
             Console.WriteLine($"foreach all trace item:{allIDS.Count} use:{sw.ElapsedMilliseconds}ms");
