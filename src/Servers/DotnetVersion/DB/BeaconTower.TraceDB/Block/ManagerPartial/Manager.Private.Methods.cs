@@ -1,13 +1,9 @@
-﻿using System;
-using System.Buffers;
-using System.Collections.Generic;
+﻿using BeaconTower.TraceDB.Block.Models;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using BeaconTower.TraceDB.Block.Models;
 using static BeaconTower.TraceDB.Block.BlockDefinitions;
-using SliceManager = BeaconTower.TraceDB.Slice.Manager;
 using static BeaconTower.TraceDB.Slice.SliceDefinitions;
+using SliceManager = BeaconTower.TraceDB.Slice.Manager;
 
 namespace BeaconTower.TraceDB.Block
 {
@@ -92,7 +88,7 @@ namespace BeaconTower.TraceDB.Block
         private void CreateSlice()
         {
             for (uint i = 0; i < Block_Maximum_Number_Of_Slice_Count; i++)
-            { 
+            {
                 SliceManager sliceItem = new(_blockDirectory.FullName, i);
                 sliceItem.LoadOrCreate();
                 _sliceLoop.Add(i, sliceItem);
@@ -100,11 +96,11 @@ namespace BeaconTower.TraceDB.Block
         }
 
         private void SaveMetadata()
-        {  
+        {
             //应该是通过持续落盘,而不是每次落盘~
-            var headBuffer = LuanNiao.Core.StructUtilTools.StructUtilTools.ToData(in _metadata);            
-            LuanNiao.Core.NetTools.CRC16IBM.SetCRC16(headBuffer, 0, headBuffer.Length, 0); 
-            _metadataFileHandle.Position = 0; 
+            var headBuffer = LuanNiao.Core.StructUtilTools.StructUtilTools.ToData(in _metadata);
+            LuanNiao.Core.NetTools.CRC16IBM.SetCRC16(headBuffer, 0, headBuffer.Length, 0);
+            _metadataFileHandle.Position = 0;
             _metadataFileHandle.Write(headBuffer);
             _metadataFileHandle.Flush();
         }

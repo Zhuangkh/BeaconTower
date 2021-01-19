@@ -1,11 +1,8 @@
-﻿using System;
+﻿using BeaconTower.TraceDB.Slice.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Channels;
-using System.Threading.Tasks;
-using BeaconTower.TraceDB.Slice.Models;
 
 namespace BeaconTower.TraceDB.Slice
 {

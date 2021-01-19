@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -75,11 +74,15 @@ namespace BeaconTower.TraceDB
         }
 
         /// <summary>
-        /// use the database's alias to find out the db instance, you will got the null instance when we haven't this db
+        /// use the database's alias to find out the DB instance, you will get the null instance when we haven't this DB
         /// </summary>
         /// <param name="alias"></param>
         /// <returns></returns>
         public RootManager this[string alias] => _dbRootPool.ContainsKey(alias) ? _dbRootPool[alias] : null;
+        /// <summary>
+        /// try to get the first db in the list.
+        /// <para>you will get the null instance when we haven't any instance here.</para>
+        /// </summary>
         public RootManager Default => _dbRootPool.Count == 0 ? null : _dbRootPool.Values.ToList()[0];
     }
 }

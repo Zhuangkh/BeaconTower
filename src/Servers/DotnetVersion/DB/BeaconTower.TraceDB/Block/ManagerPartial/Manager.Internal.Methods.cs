@@ -1,5 +1,4 @@
-﻿using System;
-using static BeaconTower.TraceDB.Block.BlockDefinitions;
+﻿using static BeaconTower.TraceDB.Block.BlockDefinitions;
 
 namespace BeaconTower.TraceDB.Block
 {

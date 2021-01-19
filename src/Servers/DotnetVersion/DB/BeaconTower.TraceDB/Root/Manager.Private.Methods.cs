@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using BlockManager = BeaconTower.TraceDB.Block.Manager;
 
 namespace BeaconTower.TraceDB.Root

@@ -1,5 +1,4 @@
 ﻿using System;
-using static BeaconTower.TraceDB.Block.BlockDefinitions;
 
 namespace BeaconTower.TraceDB.Block
 {
@@ -23,7 +22,7 @@ namespace BeaconTower.TraceDB.Block
         public const int Metadata_Head_CurrentItemsCount_Size = sizeof(int);
 
         public const int Metadata_Head_Reserve_Position = Metadata_Head_CurrentItemsCount_Position + Metadata_Head_CurrentItemsCount_Size;
-         
+
 
     }
 }

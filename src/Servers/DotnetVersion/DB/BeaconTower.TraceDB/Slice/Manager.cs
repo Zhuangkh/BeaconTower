@@ -1,7 +1,5 @@
-﻿using System;
+﻿using BeaconTower.TraceDB.Slice.Models;
 using System.Collections.Generic;
-using System.IO;
-using BeaconTower.TraceDB.Slice.Models;
 
 namespace BeaconTower.TraceDB.Slice
 {
@@ -54,7 +52,7 @@ namespace BeaconTower.TraceDB.Slice
             if (targetIndex.Count == 0)
             {
                 return res;
-            }            
+            }
             foreach (var item in targetIndex)
             {
                 TraceItem temp = new()

@@ -1,7 +1,4 @@
-﻿using System;
-using static BeaconTower.TraceDB.Block.BlockDefinitions;
-
-namespace BeaconTower.TraceDB.Slice
+﻿namespace BeaconTower.TraceDB.Slice
 {
     internal static class SliceDefinitions
     {

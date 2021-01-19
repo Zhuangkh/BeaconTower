@@ -1,7 +1,5 @@
 ﻿using BeaconTower.Client.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -73,7 +71,7 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"TraceID:{info.TraceID} ");
             builder.AppendLine($"Level:{Enum.GetName(typeof(LogLevel), info.Level)} ");
             builder.AppendLine($"Message:{info.Message} ");
-            builder.AppendLine($"MethodInfo:{info.MethodInfo} "); 
+            builder.AppendLine($"MethodInfo:{info.MethodInfo} ");
             builder.AppendLine($"Time:{(new DateTime(info.TimeStamp).ToString("yyyy-MM-dd HH:mm:ss:fff"))} ");
             builder.AppendLine($"CustomData:{System.Text.Json.JsonSerializer.Serialize(info.CustomData)} ");
             builder.AppendLine();

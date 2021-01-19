@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static BeaconTower.TraceDB.Slice.MetadataDefinitions;
 using static BeaconTower.TraceDB.Slice.SliceDefinitions;
-using static BeaconTower.TraceDB.Slice.SliceItemDefinitions;
 
 namespace BeaconTower.TraceDB.Slice
 {
@@ -36,14 +30,14 @@ namespace BeaconTower.TraceDB.Slice
         {
             try
             {
-               return _saveItemChannel.Writer.TryWrite(new SaveRequestItem()
+                return _saveItemChannel.Writer.TryWrite(new SaveRequestItem()
                 {
                     Data = data,
                     Timestamp = timeStamp,
                     TraceID = traceID
-                }); 
+                });
             }
-            catch 
+            catch
             {
                 return false;
             }

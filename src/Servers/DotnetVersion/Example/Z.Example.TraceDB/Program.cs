@@ -1,15 +1,14 @@
-﻿using System;
+﻿using BeaconTower.TraceDB;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
-using BeaconTower.TraceDB;
-using BenchmarkDotNet.Running;
 
 namespace Z.Example.TraceDB
 {
     public class Program
-    { 
+    {
         public static void Main(string[] _)
         {
 

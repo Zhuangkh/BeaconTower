@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 
-namespace BeaconTower.TraceDB.NodeTraceDB.IndexHandler
+namespace BeaconTower.TraceDB.NodeTraceDB.Index.NodeID
 {
     /// <summary>
     /// 存储每一个NodeID不同的trace信息
@@ -15,7 +10,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB.IndexHandler
     /// B节点 Y Y Y Y
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct NodeIDIndexItem
+    public struct ItemSummaryInfo
     {
         public int NodeIDLength { get; set; }
         public long TraceCount { get; set; }

@@ -1,7 +1,4 @@
-﻿using System;
-using static BeaconTower.TraceDB.Block.BlockDefinitions;
-
-namespace BeaconTower.TraceDB.Slice
+﻿namespace BeaconTower.TraceDB.Slice
 {
     internal static class MetadataDefinitions
     {
@@ -16,6 +13,6 @@ namespace BeaconTower.TraceDB.Slice
 
         public const ushort Metadata_Head_Size = 1024;
 
-         
+
     }
 }

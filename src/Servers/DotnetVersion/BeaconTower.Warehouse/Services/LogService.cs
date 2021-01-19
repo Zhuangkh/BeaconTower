@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using BeaconTower.Protocol;
+﻿using BeaconTower.Protocol;
 using Grpc.Core;
+using System.Threading.Tasks;
 
 namespace BeaconTower.Warehouse.Services
 {

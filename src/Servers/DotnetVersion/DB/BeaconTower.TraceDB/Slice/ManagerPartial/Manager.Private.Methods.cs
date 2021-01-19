@@ -1,14 +1,8 @@
-﻿using System;
+﻿using BeaconTower.TraceDB.Slice.Models;
+using System;
 using System.Buffers;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using BeaconTower.TraceDB.Slice.Models;
 using static BeaconTower.TraceDB.Slice.MetadataDefinitions;
-using static BeaconTower.TraceDB.Slice.SliceItemDefinitions;
 
 namespace BeaconTower.TraceDB.Slice
 {
