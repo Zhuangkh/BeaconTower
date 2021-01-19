@@ -17,10 +17,7 @@ namespace BeaconTower.Client.AspNetCore
                 NodeID = Guid.NewGuid().ToString("N"),
                 NodeType = NodeType.Unset
             };
-            if (setupAction != null)
-            {
-                setupAction(options);
-            }
+            setupAction?.Invoke(options);
             ClientManager.Instance.Init(options);
             if (servers != null && servers.Length != 0)
             {

@@ -24,9 +24,11 @@ namespace BeaconTower.TraceDB
         /// <param name="alias">database's alias </param>
         /// <param name="path">set the db's root path</param>
         /// <param name="folderName">db's folder name</param>
-        public void RegistDB(string alias, string path = null, string folderName = null)
+        public RootManager RegistDB(string alias, string path = null, string folderName = null)
         {
-            _dbRootPool.Add(alias, new RootManager(path, folderName));
+            var db = new RootManager(path, folderName);
+            _dbRootPool.Add(alias, db);
+            return db;
         }
 
         /// <summary>

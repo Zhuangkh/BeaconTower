@@ -7,8 +7,8 @@ namespace BeaconTower.Client.Abstract
     public class ClientManager
     {
         public static ClientManager Instance { get; } = new();
-        public NodeType NodeType { get; internal set; }
-        public string NodeID { get; internal set; }
+        public NodeType NodeType { get; internal set; } = NodeType.Unset;
+        public string NodeID { get; internal set; } = "DefaultNode";
         private readonly List<AbsMessageServer> _servers = new List<AbsMessageServer>();
         private ClientManager()
         { }

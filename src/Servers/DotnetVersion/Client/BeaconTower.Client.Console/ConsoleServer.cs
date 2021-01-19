@@ -30,7 +30,7 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"PreMethodID:{info.PreMethodID} ");
             builder.AppendLine($"NodeID:{info.NodeID} ");
             builder.AppendLine($"TimeStamp:{info.TimeStamp} ");
-            builder.AppendLine($"Time:{(new DateTime(info.TimeStamp).ToString("yyyy-MM-dd HH:mm:ss:fff"))} ");
+            builder.AppendLine($"Time:{new DateTime(info.TimeStamp):yyyy-MM-dd HH:mm:ss:fff} ");
             builder.AppendLine($"CustomData:{System.Text.Json.JsonSerializer.Serialize(info.CustomData)} ");
             builder.AppendLine();
             return builder;
@@ -53,7 +53,7 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"NodeID:{info.NodeID} ");
             builder.AppendLine($"PreviousNodeID:{info.PreviousNodeID} ");
             builder.AppendLine($"TimeStamp:{info.TimeStamp} ");
-            builder.AppendLine($"Time:{(new DateTime(info.TimeStamp).ToString("yyyy-MM-dd HH:mm:ss:fff"))} ");
+            builder.AppendLine($"Time:{new DateTime(info.TimeStamp):yyyy-MM-dd HH:mm:ss:fff} ");
             builder.AppendLine($"CustomData:{System.Text.Json.JsonSerializer.Serialize(info.CustomData)} ");
             builder.AppendLine();
             return builder;
@@ -72,7 +72,7 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"Level:{Enum.GetName(typeof(LogLevel), info.Level)} ");
             builder.AppendLine($"Message:{info.Message} ");
             builder.AppendLine($"MethodInfo:{info.MethodInfo} ");
-            builder.AppendLine($"Time:{(new DateTime(info.TimeStamp).ToString("yyyy-MM-dd HH:mm:ss:fff"))} ");
+            builder.AppendLine($"Time:{new DateTime(info.TimeStamp):yyyy-MM-dd HH:mm:ss:fff} ");
             builder.AppendLine($"CustomData:{System.Text.Json.JsonSerializer.Serialize(info.CustomData)} ");
             builder.AppendLine();
             return builder;

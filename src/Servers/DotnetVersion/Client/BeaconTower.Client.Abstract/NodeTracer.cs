@@ -1,11 +1,12 @@
 ﻿using LuanNiao.Core;
+using LuanNiao.JsonConverterExtends;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BeaconTower.Client.Abstract
 {
-    public class NodeTracer : IDisposable
+    public sealed class NodeTracer : IDisposable, IUseLNJsonExtends
     {
 
 
@@ -17,7 +18,7 @@ namespace BeaconTower.Client.Abstract
         private readonly Stack<long> _methodStack = new Stack<long>();
 
         public long TraceID { get; init; }
-        public string NodeID { get; init; } = string.Empty;
+        public string NodeID { get; init; }
         public NodeType Type { get; init; }
         public long TimeStamp { get; set; }
         public string PreviousNodeID { get; set; } = string.Empty;

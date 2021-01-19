@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LuanNiao.Core" Version="2.0.1" />
+    <PackageReference Include="LuanNiao.JsonConverterExtends" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Client\BeaconTower.Client.Abstract\BeaconTower.Client.Abstract.csproj" />
     <ProjectReference Include="..\..\BeaconTower.TraceDB\BeaconTower.TraceDB.csproj" />
   </ItemGroup>
 
