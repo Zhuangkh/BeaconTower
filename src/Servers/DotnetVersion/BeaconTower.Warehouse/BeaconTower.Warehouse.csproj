@@ -1,20 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<Protobuf Include="../../../Protocol/common.proto" GrpcServices="Server" />
-		<Protobuf Include="../../../Protocol/enums.proto" GrpcServices="Server" />
-		<Protobuf Include="../../../Protocol/request.proto" GrpcServices="Server" />
-		<Protobuf Include="../../../Protocol/response.proto" GrpcServices="Server" /> 
-		<Protobuf Include="../../../Protocol/nodeTrace.proto" GrpcServices="Server" />
-    <Protobuf Include="../../../Protocol/methodTrace.proto" GrpcServices="Server" />
-    <Protobuf Include="../../../Protocol/log.proto" GrpcServices="Server" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\DB\Extends\BeaconTower.TraceDB.NodeTraceDB\BeaconTower.TraceDB.NodeTraceDB.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="../../../Protocol/common.proto" GrpcServices="Server" />
+        <Protobuf Include="../../../Protocol/enums.proto" GrpcServices="Server" />
+        <Protobuf Include="../../../Protocol/request.proto" GrpcServices="Server" />
+        <Protobuf Include="../../../Protocol/response.proto" GrpcServices="Server" />
+        <Protobuf Include="../../../Protocol/nodeTrace.proto" GrpcServices="Server" />
+        <Protobuf Include="../../../Protocol/methodTrace.proto" GrpcServices="Server" />
+        <Protobuf Include="../../../Protocol/log.proto" GrpcServices="Server" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Properties\" />
+    </ItemGroup>
 </Project>

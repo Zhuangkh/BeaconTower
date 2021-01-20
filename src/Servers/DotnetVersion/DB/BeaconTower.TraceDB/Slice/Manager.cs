@@ -5,6 +5,11 @@ namespace BeaconTower.TraceDB.Slice
 {
     internal partial class Manager
     {
+        /// <summary>
+        /// manager's construct method, use to build the slice manager
+        /// </summary>
+        /// <param name="fileFullPath">this slice's full path</param>
+        /// <param name="fileName">slice's file name, use to open the target file stream</param>
         public Manager(string fileFullPath, long fileName)
         {
             _fileFullPath = fileFullPath;

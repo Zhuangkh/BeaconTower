@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
 
 namespace BeaconTower.Warehouse
@@ -7,16 +8,44 @@ namespace BeaconTower.Warehouse
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        // Additional configuration is required to successfully run gRPC on macOS.
-        // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+            var grpcPort = 5000;
+            var webapiPort = 6000;
+            if (args != null)
+            {
+                foreach (var item in args)
                 {
-                    webBuilder.UseStartup<Startup>();
-                });
+                    if (item.StartsWith("-grpc=")
+                        && int.TryParse(item.Replace("-grpc=", ""), out var customGrpcPort)
+                        && customGrpcPort < 65535
+                        && customGrpcPort > 100
+                        )
+                    {
+                        grpcPort = customGrpcPort;
+                    }
+                    else if (item.StartsWith("-webapi=")
+                        && int.TryParse(item.Replace("-webapi=", ""), out var customWebApiPort)
+                        && customWebApiPort < 65535
+                        && customWebApiPort > 100
+                        )
+                    {
+                        webapiPort = customWebApiPort;
+                    }
+                }
+            }
+            var webhost = new WebHostBuilder();
+            webhost.UseKestrel()
+                    .ConfigureKestrel(options =>
+                    {
+                        options.ListenLocalhost(grpcPort, o => o.Protocols =
+                            HttpProtocols.Http2);
+
+                        options.ListenLocalhost(webapiPort, o => o.Protocols =
+                            HttpProtocols.Http1);
+                    })
+                    .UseStartup<Startup>()
+                    .Build()
+                    .Run()
+                    ;
+        }
     }
 }

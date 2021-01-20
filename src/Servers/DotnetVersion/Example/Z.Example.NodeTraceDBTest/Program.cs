@@ -33,7 +33,7 @@ namespace Z.Example.NodeTraceDBTest
                 {
                     nodeDB.TryGetNodeTraceItem(id, out var nodeTracers);
                     nodeTracers.ForEach(tItem =>
-                    {
+                    {                        
                         Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(tItem)); 
                     });
                 });
