@@ -4,6 +4,8 @@ using System.IO;
 using IndexManager = BeaconTower.TraceDB.NodeTraceDB.Index.Manager;
 using DBRoot = BeaconTower.TraceDB.Root.Manager;
 using LuanNiao.JsonConverterExtends;
+using System.Collections.Generic;
+using BeaconTower.TraceDB.NodeTraceDB.Index;
 
 namespace BeaconTower.TraceDB.NodeTraceDB
 {
@@ -36,6 +38,22 @@ namespace BeaconTower.TraceDB.NodeTraceDB
             _indexManager.StartServer();
         }
 
+        public List<NodeIDMapSummaryInfo> AllNodeInfo => _indexManager.AllNodeID;
+
+        public List<long> NodeTraceIDList(NodeIDMapSummaryInfo nodeInfo)
+        {
+            if (nodeInfo == null)
+            {
+                return default(List<long>);
+            }
+            return _indexManager.NodeTraceIDList(nodeInfo);
+        }
+
+        public List<PathMapSummaryInfo> AllPathInfo => _indexManager.AllPathInfo;
+
+
+
+
         public bool SaveItem(NodeTracer item)
         {
             if (item == null)
@@ -47,6 +65,25 @@ namespace BeaconTower.TraceDB.NodeTraceDB
                 return _dbRoot.SaveItem(item.TraceID, item.TimeStamp, item.GetBytes());
             }
             return false;
+        }
+
+        public bool TryGetNodeTraceItem(long traceID, out List<NodeTracer> nodeTracers)
+        {
+            nodeTracers = new List<NodeTracer>();
+            if (_dbRoot.TryGetItem(traceID, out var items))
+            {
+                for (int i = 0; i < items.Count; i++)
+                {
+                    nodeTracers.Add(items[i].Data.GetObject<NodeTracer>());
+                } 
+                return true;
+            }
+            return false;
+        }
+
+        public bool TryGetRawTraceItem(long traceID,out List<TraceItem> traceItems)
+        {            
+            return _dbRoot.TryGetItem(traceID, out traceItems);            
         }
     }
 }

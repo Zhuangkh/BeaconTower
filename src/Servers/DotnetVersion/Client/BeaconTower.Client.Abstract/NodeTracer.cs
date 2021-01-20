@@ -10,7 +10,7 @@ namespace BeaconTower.Client.Abstract
     {
 
 
-        internal NodeTracer()
+        public NodeTracer()
         {
         }
 

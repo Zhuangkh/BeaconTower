@@ -5,7 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace BeaconTower.TraceDB.NodeTraceDB.Index.NodeID
+namespace BeaconTower.TraceDB.NodeTraceDB.Index.NodeIndex
 {
     internal class Handler
     {
@@ -18,6 +18,8 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index.NodeID
             _indexFileHandler = fileInfo.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite);
         }
 
+
+        public List<long> TraceIDList => _allTraceIDInfo;
         public Task LoadAsync()
         {
             return Task.Run(() =>

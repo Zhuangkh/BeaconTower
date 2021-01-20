@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NodeIDIndexHandler = BeaconTower.TraceDB.NodeTraceDB.Index.NodeID.Handler;
+using NodeIDIndexHandler = BeaconTower.TraceDB.NodeTraceDB.Index.NodeIndex.Handler;
 
 namespace BeaconTower.TraceDB.NodeTraceDB.Index
 {
@@ -21,6 +21,28 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
             await InitAllFileInfo();
             StartConsumer();
         }
+
+        public List<NodeIDMapSummaryInfo> AllNodeID => _nodeIDMapping;
+        public List<long> NodeTraceIDList(NodeIDMapSummaryInfo nodeInfo)
+        {
+            if (_nodeIDIndexMap.ContainsKey(nodeInfo.AliasName))
+            {
+                return _nodeIDIndexMap[nodeInfo.AliasName].TraceIDList;
+            }
+            return default(List<long>);
+        }
+
+
+        public List<PathMapSummaryInfo> AllPathInfo => _pathMapping;
+        public List<long> PathTraceIDList(PathMapSummaryInfo pathInfo)
+        {
+            if (_pathIndexMap.ContainsKey(pathInfo.AliasName))
+            {
+                return _pathIndexMap[pathInfo.AliasName].TraceIDList;
+            }
+            return default(List<long>);
+        }
+
 
         public bool TrySaveItem(NodeTracer item)
         {

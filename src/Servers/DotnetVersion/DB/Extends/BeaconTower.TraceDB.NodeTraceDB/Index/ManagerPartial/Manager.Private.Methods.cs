@@ -5,7 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NodeIDIndexHandler = BeaconTower.TraceDB.NodeTraceDB.Index.NodeID.Handler;
+using NodeIDIndexHandler = BeaconTower.TraceDB.NodeTraceDB.Index.NodeIndex.Handler;
+using PathIndexHandler = BeaconTower.TraceDB.NodeTraceDB.Index.PathIndex.Handler;
 
 namespace BeaconTower.TraceDB.NodeTraceDB.Index
 {
@@ -30,23 +31,23 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
             }
             var allIndexFiles = indexFolder.GetFiles();
             var taskList = new List<Task>();
+            taskList.Add(NodeIDMapInit(indexFolder));
+            taskList.Add(PathMapInit(indexFolder));
             foreach (var item in allIndexFiles)
             {
-                var ext = item.Extension;
-                if (ext.Equals(Constants.NodeIDIndexFileExtends))
+                var task = item.Extension switch
                 {
-                    taskList.Add(NodeIDIndexInit(item));
-                }
-                else if (ext.Equals(Constants.NodeIDMapFileExtends))
+                    Constants.NodeIDIndexFileExtends => NodeIDIndexInit(item),
+                    Constants.PathIndexFileExtends => PathIndexInit(item),
+                    _ => null
+                };
+
+                if (task != null)
                 {
-                    taskList.Add(NodeIDMapInit(item));
+                    taskList.Add(task);
                 }
             }
             await Task.WhenAll(taskList);
-            if (_nodeIDMappingHandler == null)
-            {
-                InitNodeIDMap();
-            }
         }
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
         /// <returns></returns>
         private Task NodeIDIndexInit(FileInfo item)
         {
-            if (!long.TryParse(item.Name.Replace(Constants.NodeIDIndexFileExtends,""), out var nid))
+            if (!long.TryParse(item.Name.Replace(Constants.NodeIDIndexFileExtends, ""), out var nid))
             {
                 return Task.Run(() => { });
             }
@@ -64,23 +65,22 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
             _nodeIDIndexMap.Add(nid, nodeIDIndex);
             return nodeIDIndex.LoadAsync();
         }
-        private async void InitNodeIDMap()
-        {
-            await Task.Run(() =>
-            {
-                _nodeIDMappingHandler = new FileInfo(Path.Combine(_srouceFolder, Constants.IndexFolder, $"NodeIDMap{Constants.NodeIDMapFileExtends}")).Open(FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            });
-        }
+
         /// <summary>
         /// load node id mapping file
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        private Task NodeIDMapInit(FileInfo item)
+        private Task NodeIDMapInit(DirectoryInfo dirInfo)
         {
             return Task.Run(() =>
             {
-                _nodeIDMappingHandler = item.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                var fileInfo = dirInfo.GetFiles().FirstOrDefault(item => item.Extension.Equals(Constants.NodeIDMapFileExtends));
+                if (fileInfo == null)
+                {
+                    fileInfo = new FileInfo(Path.Combine(dirInfo.FullName, $"NodeIDMap{Constants.NodeIDMapFileExtends}"));
+                }
+                _nodeIDMappingHandler = fileInfo.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite);
                 _nodeIDMappingHandler.Position = 0;
                 for (int i = 0; i < _nodeIDMappingHandler.Length;)
                 {
@@ -94,6 +94,57 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
                         AliasName = BitConverter.ToInt64(headBuffer),
                         OrignalIDLength = orignalIDLength,
                         OrignalID = Encoding.UTF8.GetString(orignalIDBuffer)
+                    });
+                    i += headBuffer.Length + orignalIDLength;
+                }
+            });
+        }
+
+
+        /// <summary>
+        /// Load path id index file
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        private Task PathIndexInit(FileInfo item)
+        {
+            if (!long.TryParse(item.Name.Replace(Constants.PathIndexFileExtends, ""), out var pid))
+            {
+                return Task.Run(() => { });
+            }
+            var pathIndex = new PathIndexHandler(item);
+            _pathIndexMap.Add(pid, pathIndex);
+            return pathIndex.LoadAsync();
+        }
+
+        /// <summary>
+        /// load path id mapping file
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        private Task PathMapInit(DirectoryInfo dirInfo)
+        {
+            return Task.Run(() =>
+            {
+                var fileInfo = dirInfo.GetFiles().FirstOrDefault(item => item.Extension.Equals(Constants.PathMapFileExtends));
+                if (fileInfo == null)
+                {
+                    fileInfo = new FileInfo(Path.Combine(dirInfo.FullName, $"PathMap{Constants.PathMapFileExtends}"));
+                }
+                _pathMappingHandler = fileInfo.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                _pathMappingHandler.Position = 0;
+                for (int i = 0; i < _pathMappingHandler.Length;)
+                {
+                    var headBuffer = new byte[sizeof(long) + sizeof(int)];
+                    _pathMappingHandler.Read(headBuffer);
+                    var orignalIDLength = BitConverter.ToInt32(headBuffer.AsSpan()[sizeof(long)..]);
+                    var orignalIDBuffer = new byte[orignalIDLength];
+                    _pathMappingHandler.Read(orignalIDBuffer);
+                    _pathMapping.Add(new PathMapSummaryInfo()
+                    {
+                        AliasName = BitConverter.ToInt64(headBuffer),
+                        OrignalPathLength = orignalIDLength,
+                        OrignalPath = Encoding.UTF8.GetString(orignalIDBuffer)
                     });
                     i += headBuffer.Length + orignalIDLength;
                 }

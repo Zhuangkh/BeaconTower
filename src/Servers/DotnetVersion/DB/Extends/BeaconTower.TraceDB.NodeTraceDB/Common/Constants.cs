@@ -14,5 +14,14 @@
         /// NodeID map file extends
         /// </summary>
         public const string NodeIDMapFileExtends = ".nidm";
+
+        /// <summary>
+        /// Path TraceID index file extends
+        /// </summary>
+        public const string PathIndexFileExtends = ".npidx";
+        /// <summary>
+        /// Path map file extends
+        /// </summary>
+        public const string PathMapFileExtends = ".npm";
     }
 }
