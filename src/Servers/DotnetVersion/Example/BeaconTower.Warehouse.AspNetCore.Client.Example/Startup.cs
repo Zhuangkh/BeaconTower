@@ -25,7 +25,7 @@ namespace BeaconTower.Warehouse.AspNetCore.Client.Example
         {
             WarehouseGrpcServer grpcServer = new();
             ConsoleServer console = new() { Type = ServerType.Demotion };
-            grpcServer.RegistHost("http://127.0.0.1:5000");
+            grpcServer.RegistHost("http://127.0.0.1:50000");
             services.AddBeaconTower(c =>
             {
                 c.NodeID = "Test Node";

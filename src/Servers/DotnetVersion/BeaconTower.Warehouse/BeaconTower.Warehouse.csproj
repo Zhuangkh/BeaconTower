@@ -6,6 +6,7 @@
 
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,5 +25,6 @@
 
     <ItemGroup>
       <Folder Include="Properties\" />
+      <Folder Include="wwwroot\" />
     </ItemGroup>
 </Project>

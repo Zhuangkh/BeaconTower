@@ -8,12 +8,13 @@
     },
     "scripts": {
         "test": "webpack serve --config webpack.dev.config.js",
-        "publish": "webpack -p --config webpack.production.config.js"
+        "build": "webpack --config webpack.production.config.js"
     },
     "author": "benlampson",
     "license": "ISC",
     "dependencies": {
         "antd": "^4.10.3",
+        "axios": "^0.21.1",
         "css": "^3.0.0",
         "less": "^4.1.0",
         "react": "^17.0.1",
@@ -21,12 +22,9 @@
         "react-router-dom": "^5.2.0"
     },
     "devDependencies": {
-        "@babel/preset-typescript": "^7.12.7",
-        "@svgr/webpack": "^5.5.0",
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",
         "@types/react-router-dom": "^5.1.7",
-        "babel-loader": "^8.2.2",
         "css-loader": "^5.0.1",
         "file-loader": "^6.2.0",
         "html-webpack-plugin": "^4.5.1",

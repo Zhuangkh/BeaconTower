@@ -2,13 +2,13 @@ const htmlP = require("html-webpack-plugin");
 const path = require("path");
 const webpack = require("webpack");
 module.exports = {
-    mode:"production",
+    mode: "development",
     entry: {
         main: "./src/app.tsx",
     },
     output: {
         filename: "app.js",
-        path: path.resolve(__dirname, "dist")
+        path: path.resolve("../Servers/DotnetVersion/BeaconTower.Warehouse/UI")
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"]

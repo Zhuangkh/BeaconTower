@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace BeaconTower.Warehouse
 {
@@ -8,8 +9,8 @@ namespace BeaconTower.Warehouse
     {
         public static void Main(string[] args)
         {
-            var grpcPort = 5000;
-            var webapiPort = 6000;
+            var grpcPort = 50000;
+            var webapiPort = 60000;
             if (args != null)
             {
                 foreach (var item in args)
@@ -34,18 +35,21 @@ namespace BeaconTower.Warehouse
             }
             var webhost = new WebHostBuilder();
             webhost.UseKestrel()
-                    .ConfigureKestrel(options =>
-                    {
-                        options.ListenLocalhost(grpcPort, o => o.Protocols =
-                            HttpProtocols.Http2);
+            //.ConfigureLogging(builder => builder.AddConsole())
+            .ConfigureKestrel(options =>
+            {
+                options.ListenLocalhost(grpcPort, o => o.Protocols =
+                    HttpProtocols.Http2);
 
-                        options.ListenLocalhost(webapiPort, o => o.Protocols =
-                            HttpProtocols.Http1);
-                    })
-                    .UseStartup<Startup>()
-                    .Build()
-                    .Run()
-                    ;
+                options.ListenLocalhost(webapiPort, o => o.Protocols =
+                    HttpProtocols.Http1);
+            })
+            .UseStartup<Startup>()
+            .Build()
+            .Run();
         }
+
+
+
     }
 }

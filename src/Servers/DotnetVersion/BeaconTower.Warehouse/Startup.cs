@@ -1,12 +1,19 @@
-﻿using BeaconTower.TraceDB.NodeTraceDB;
+﻿using BeaconTower.TraceDB;
+using BeaconTower.TraceDB.NodeTraceDB;
 using BeaconTower.Warehouse.Services;
+using LuanNiao.JsonConverterExtends;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Reflection;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace BeaconTower.Warehouse
 {
@@ -26,9 +33,21 @@ namespace BeaconTower.Warehouse
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(DataBase.Instance);
             services.AddSingleton(DBManager.Instance);
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions((opt) =>
+            {
+                opt.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+                opt.JsonSerializerOptions.Converters.Add(new DateTime2StringConverter("yyyy-MM-dd HH:mm:ss"));
+                opt.JsonSerializerOptions.Converters.Add(new Long2StringConverter());
+            });
             services.AddGrpc();
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "/UI";
+            });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,7 +57,6 @@ namespace BeaconTower.Warehouse
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -47,6 +65,27 @@ namespace BeaconTower.Warehouse
                 endpoints.MapGrpcService<MethodTraceService>();
                 endpoints.MapGrpcService<NodeTraceService>();
                 endpoints.MapControllers();
+            });
+
+#if !DEBUG
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "UI"))
+                    ),
+            });
+#endif
+            app.UseSpa(spa =>
+            {
+#if DEBUG
+                spa.UseProxyToSpaDevelopmentServer("http://127.0.0.1:8081");
+#else 
+                spa.Options.SourcePath = "UI";
+                spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "UI")),
+                };
+#endif
             });
         }
     }

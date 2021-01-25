@@ -86,5 +86,9 @@ namespace BeaconTower.TraceDB
         /// <para>you will get the null instance when we haven't any instance here.</para>
         /// </summary>
         public RootManager Default => _dbRootPool.Count == 0 ? null : _dbRootPool.Values.ToList()[0];
+        /// <summary>
+        /// all database instance alias
+        /// </summary>
+        public List<string> AliasList => _dbRootPool.Keys.ToList();
     }
 }

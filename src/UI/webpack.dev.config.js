@@ -51,18 +51,6 @@ module.exports = {
             {
                 test: /\.(ts|tsx)$/,
                 use: ["ts-loader"]
-            },
-            {
-                test: /\.svg$/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                    },
-                    {
-                        loader: '@svgr/webpack',
-                        options: { babel: false, icon: true, typescript: true, ext: "tsx", },
-                    }
-                ],
             }
         ]
     }

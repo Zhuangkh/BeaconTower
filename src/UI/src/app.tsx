@@ -10,7 +10,7 @@ export default class App extends Component<any, any>{
     render() {
         return <ConfigProvider locale={zhCN}>
             <Router>
-                <Route exact path="/" component={MainLayouts} />
+                <Route  path="/" component={MainLayouts} />
             </Router>
         </ConfigProvider>
     }
