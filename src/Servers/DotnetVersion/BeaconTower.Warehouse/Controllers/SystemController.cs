@@ -24,6 +24,11 @@ namespace BeaconTower.Warehouse
             return Success(_dbInstance.AliasList);
         }
 
+        [HttpGet("instance/items/alias({alias})/state")]
+        public Response<bool> GetInstanceState(string alias)
+        {
+            return Success(_dbInstance[alias].IsRunning);
+        }
 
         [HttpGet("instance/items/alias({alias})/slice/items/count")]
         public Response<int> GetInstanceAliasSliceItemCount(string alias)

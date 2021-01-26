@@ -1,4 +1,4 @@
-import { Instance, Response, ResponseCode } from "../common";
+import { Instance, Response } from "../common";
 
 
 export const GetAllDBAliasName = async (): Promise<Response<Array<string>>> => {
@@ -44,6 +44,14 @@ export const GetDBFolderPath = async (alias: string): Promise<Response<string>> 
 export const GetDBFolderName = async (alias: string): Promise<Response<string>> => {
     let res: any;
     await Instance.get(`system/instance/items/alias(${alias})/folder/name`).then((data: any) => {
+        res = data;
+    });
+    return res;
+}
+
+export const GetDBState = async (alias: string): Promise<Response<boolean>> => {
+    let res: any;
+    await Instance.get(`system/instance/items/alias(${alias})/state`).then((data: any) => {
         res = data;
     });
     return res;

@@ -14,6 +14,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB
         public static readonly DBManager Instance = new();
         private string _sourceFolder = "";
         private string _dbFolder = "";
+        private string _alias = "";
         private DBRoot _dbRoot;
 
         private IndexManager _indexManager;
@@ -22,11 +23,12 @@ namespace BeaconTower.TraceDB.NodeTraceDB
             , string folderPath
             , string dbFolder = Constants.SourceDBFolder)
         {
+            _alias = projectName;
             _sourceFolder = Path.Combine(folderPath
                 , $"{projectName}{Constants.Suffix}");
             _dbFolder = dbFolder;
             _indexManager = new IndexManager(_sourceFolder);
-            _dbRoot = DataBase.Instance.RegistDB(projectName
+            _dbRoot = DataBase.Instance.RegistDB(_alias
                 , _sourceFolder
                 , _dbFolder);
             return this;
@@ -37,6 +39,15 @@ namespace BeaconTower.TraceDB.NodeTraceDB
             DataBase.Instance.StartServer();
             _indexManager.StartServer();
         }
+
+
+        public string Alias => _alias;
+        public bool State => _dbRoot.IsRunning;
+        public string FolderPath => _dbRoot.FolderPath;
+        public string FolderName => _dbRoot.FolderName;
+        public int SliceCount => _dbRoot.SliceCount;
+        public int BlockCount => _dbRoot.BlockCount;
+        public int TraceItemCount => _dbRoot.TraceItemCount;
 
         public List<NodeIDMapSummaryInfo> AllNodeInfo => _indexManager.AllNodeID;
 

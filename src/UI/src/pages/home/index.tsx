@@ -16,7 +16,7 @@ const Home: FC<HomeProps> = (props) => {
     const [aliasList, setAliasList] = useState<Array<string>>([]);
 
     const fetchData = async () => {
-        let data: Response<Array<string>> = await GetAllDBAliasName(); 
+        let data: Response<Array<string>> = await GetAllDBAliasName();
         if (IsSuccess(data)) {
             setAliasList(data.data as Array<string>);
         }
@@ -30,16 +30,14 @@ const Home: FC<HomeProps> = (props) => {
         fetchData();
     }, [])
 
-    return <div>
-        <PageHeader
-            ghost={false}
-            title="系统概要"
-            subTitle="当前系统数据库级别的情况概要"
-        >
-            {aliasList.map((item, index) => {
-                return <DBInstanceItem aliasName={item} key={index} id={index} />
-            })}
-        </PageHeader>
-    </div>
+    return <PageHeader
+        ghost={false}
+        title="系统概要"
+        subTitle="当前系统数据库级别的情况概要"
+    >
+        {aliasList.map((item, index) => {
+            return <DBInstanceItem aliasName={item} key={index} id={index} />
+        })}
+    </PageHeader>
 }
 export default Home;

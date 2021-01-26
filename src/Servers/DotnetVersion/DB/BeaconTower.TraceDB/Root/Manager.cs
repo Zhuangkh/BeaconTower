@@ -22,6 +22,7 @@ namespace BeaconTower.TraceDB.Root
 
 
         public int BlockCount => _allBlocks.Count;
+        public bool IsRunning => _initialized;
         /// <summary>
         /// this db instance's slice count info
         /// <para>this method will provisionally calculate all data!</para>
