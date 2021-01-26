@@ -53,5 +53,7 @@ namespace BeaconTower.TraceDB.Root
             }
         }
 
+        public int UnhandledItemCount => _allBlocks.Sum(item => item.UnhandledItemCount);
+
     }
 }

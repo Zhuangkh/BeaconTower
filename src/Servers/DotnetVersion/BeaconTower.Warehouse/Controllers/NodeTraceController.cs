@@ -17,29 +17,35 @@ namespace BeaconTower.Warehouse
         {
             _dbInstance = nodeTrceDB;
         }
-        
+
 
         [HttpGet("nodes")]
-        public List<NodeIDMapSummaryInfo> AllNodeInfo()
+        public Response<List<NodeIDMapSummaryInfo>> AllNodeInfo()
         {
-            return _dbInstance.AllNodeInfo;
+            return Success(_dbInstance.AllNodeInfo);
+        }
+
+        [HttpGet("nodes/count")]
+        public Response<int> NodeCount()
+        {
+            return Success(_dbInstance.NodeCount);
         }
 
         [HttpGet("nodes/alias({nodeAlias})/items")]
-        public List<long> NodeTraceIDList([FromRoute] long nodeAlias)
+        public Response<List<long>> NodeTraceIDList([FromRoute] long nodeAlias)
         {
             var targetNode = _dbInstance.AllNodeInfo.FirstOrDefault(item => item.AliasName == nodeAlias);
             if (targetNode != null)
             {
-                return _dbInstance.NodeTraceIDList(targetNode);
+                return Success(_dbInstance.NodeTraceIDList(targetNode));
             }
-            return new List<long>();
+            return Success(new List<long>());
         }
         [HttpGet("nodes/items/traceID({traceID})")]
-        public List<NodeTracer> TryGetNodeTraceItem([FromRoute] long traceID)
+        public Response<List<NodeTracer>> TryGetNodeTraceItem([FromRoute] long traceID)
         {
             _dbInstance.TryGetNodeTraceItem(traceID, out var res);
-            return res;
+            return Success(res);
         }
 
 
@@ -47,6 +53,11 @@ namespace BeaconTower.Warehouse
         public Response<string> GetInstanceAlias()
         {
             return Success(_dbInstance.Alias);
+        }
+        [HttpGet("unhandled/items/count")]
+        public Response<int> GetUnhandledItemCount()
+        {
+            return Success(_dbInstance.UnhandledItemCount);
         }
 
         [HttpGet("state")]

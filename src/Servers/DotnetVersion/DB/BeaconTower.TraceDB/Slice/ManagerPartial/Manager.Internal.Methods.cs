@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BeaconTower.TraceDB.Slice.Models;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using static BeaconTower.TraceDB.Slice.SliceDefinitions;
 
@@ -68,6 +70,42 @@ namespace BeaconTower.TraceDB.Slice
             //{
             //    return false;
             //}
+        }
+
+        internal partial List<TraceItem> GetTraceItems(long traceID)
+        {
+            List<TraceItemMetadata> targetIndex = new();
+            lock (_traceItemsInfo)
+            {
+                for (int i = 0; i < _traceItemsInfo.Count; i++)
+                {
+                    if (_traceItemsInfo[i].TraceID == traceID)
+                    {
+                        targetIndex.Add(_traceItemsInfo[i]);
+                    }
+                }
+            }
+            var res = new List<TraceItem>();
+            if (targetIndex.Count == 0)
+            {
+                return res;
+            }
+            foreach (var item in targetIndex)
+            {
+                TraceItem temp = new()
+                {
+                    TraceID = item.TraceID,
+                    TimeStamp = item.TimeStamp,
+                    Data = new byte[item.Length]
+                };
+                lock (_sliceHandle)
+                {
+                    _sliceHandle.Position = item.Position;
+                    _sliceHandle.Read(temp.Data);
+                }
+                res.Add(temp);
+            }
+            return res;
         }
     }
 }

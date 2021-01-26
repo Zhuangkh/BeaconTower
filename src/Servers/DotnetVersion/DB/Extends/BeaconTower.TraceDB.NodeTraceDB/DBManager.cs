@@ -42,6 +42,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB
 
 
         public string Alias => _alias;
+        public int UnhandledItemCount => _dbRoot.UnhandledItemCount;
         public bool State => _dbRoot.IsRunning;
         public string FolderPath => _dbRoot.FolderPath;
         public string FolderName => _dbRoot.FolderName;
@@ -50,6 +51,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB
         public int TraceItemCount => _dbRoot.TraceItemCount;
 
         public List<NodeIDMapSummaryInfo> AllNodeInfo => _indexManager.AllNodeID;
+        public int NodeCount => _indexManager.AllNodeID.Count;
 
         public List<long> NodeTraceIDList(NodeIDMapSummaryInfo nodeInfo)
         {

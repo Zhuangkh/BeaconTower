@@ -34,47 +34,17 @@ namespace BeaconTower.TraceDB.Slice
         /// slice name, slice name is file name
         /// </summary>
         internal long FileName => _fileName;
+        /// <summary>
+        /// the item's count in queue
+        /// </summary>
+        internal int UnhandledItemCount => _saveItemChannel.Reader.Count;
 
         /// <summary>
         /// Get the trace item list from this slice
         /// </summary>
         /// <param name="traceID"></param>
         /// <returns></returns>
-        internal List<TraceItem> GetTraceItems(long traceID)
-        {
-            List<TraceItemMetadata> targetIndex = new();
-            lock (_traceItemsInfo)
-            {
-                for (int i = 0; i < _traceItemsInfo.Count; i++)
-                {
-                    if (_traceItemsInfo[i].TraceID == traceID)
-                    {
-                        targetIndex.Add(_traceItemsInfo[i]);
-                    }
-                }
-            }
-            var res = new List<TraceItem>();
-            if (targetIndex.Count == 0)
-            {
-                return res;
-            }
-            foreach (var item in targetIndex)
-            {
-                TraceItem temp = new()
-                {
-                    TraceID = item.TraceID,
-                    TimeStamp = item.TimeStamp,
-                    Data = new byte[item.Length]
-                };
-                lock (_sliceHandle)
-                {
-                    _sliceHandle.Position = item.Position;
-                    _sliceHandle.Read(temp.Data);
-                }
-                res.Add(temp);
-            }
-            return res;
-        }
+        internal partial List<TraceItem> GetTraceItems(long traceID);
 
     }
 }

@@ -96,5 +96,7 @@ namespace BeaconTower.TraceDB.Block
             }
             return res;
         }
+
+        internal int UnhandledItemCount => _sliceLoop.Values.Sum(item => item.UnhandledItemCount);  
     }
 }
