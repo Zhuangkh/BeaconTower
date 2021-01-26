@@ -32,6 +32,14 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
             return default(List<long>);
         }
 
+        public int NodeTraceItemCount(NodeIDMapSummaryInfo nodeInfo)
+        {
+            if (_nodeIDIndexMap.ContainsKey(nodeInfo.AliasName))
+            {
+                return _nodeIDIndexMap[nodeInfo.AliasName].TraceIDList.Count;
+            }
+            return 0;
+        }
 
         public List<PathMapSummaryInfo> AllPathInfo => _pathMapping;
         public List<long> PathTraceIDList(PathMapSummaryInfo pathInfo)

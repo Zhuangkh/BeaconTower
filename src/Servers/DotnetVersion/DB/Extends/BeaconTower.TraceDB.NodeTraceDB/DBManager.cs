@@ -61,6 +61,14 @@ namespace BeaconTower.TraceDB.NodeTraceDB
             }
             return _indexManager.NodeTraceIDList(nodeInfo);
         }
+        public int NodeTraceItemCount(NodeIDMapSummaryInfo nodeInfo)
+        {
+            if (nodeInfo==null)
+            {
+                return 0;
+            }
+            return _indexManager.NodeTraceItemCount(nodeInfo);
+        }
 
         public List<PathMapSummaryInfo> AllPathInfo => _indexManager.AllPathInfo;
 

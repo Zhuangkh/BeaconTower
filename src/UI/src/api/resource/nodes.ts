@@ -1,6 +1,7 @@
 import { Instance, Response } from "../common";
+import { NodeIDMapSummaryInfo } from "../model/nodes"
 
-const controllerPrefix="nodetrace";
+const controllerPrefix = "nodetrace";
 
 export const GetAliasName = async (): Promise<Response<string>> => {
     let res: any;
@@ -77,6 +78,28 @@ export const GetNodeCount = async (): Promise<Response<number>> => {
 export const GetUnhandledItemCount = async (): Promise<Response<number>> => {
     let res: any;
     await Instance.get(`${controllerPrefix}/unhandled/items/count`).then((data: any) => {
+        res = data;
+    });
+    return res;
+}
+
+export const GetAllNodeList = async (): Promise<Response<Array<NodeIDMapSummaryInfo>>> => {
+    let res: any;
+    await Instance.get(`${controllerPrefix}/nodes`).then((data: any) => {
+        res = data;
+        for (let index = 0; index < res.data.length; index++) {
+            const item = res.data[index];
+            item.key = item.orignalID;
+            item.traceCount = "获取中..";
+        }
+    });
+    return res;
+}
+
+
+export const GetNodeTraceCount = async (alias: string): Promise<Response<number>> => {
+    let res: any;
+    await Instance.get(`${controllerPrefix}/nodes/alias(${alias})/items/count`).then((data: any) => {
         res = data;
     });
     return res;
