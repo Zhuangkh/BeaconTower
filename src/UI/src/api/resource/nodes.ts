@@ -104,3 +104,10 @@ export const GetNodeTraceCount = async (alias: string): Promise<Response<number>
     });
     return res;
 }
+export const GetNodeTraceItemSummaryInfo = async (traceID: string): Promise<Response<number>> => {
+    let res: any;
+    await Instance.get(`${controllerPrefix}/nodes/items/traceID(${traceID})/summary`).then((data: any) => {
+        res = data;
+    });
+    return res;
+}

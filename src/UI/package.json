@@ -13,6 +13,7 @@
     "author": "benlampson",
     "license": "ISC",
     "dependencies": {
+        "@antv/g6": "^4.1.4",
         "antd": "^4.10.3",
         "axios": "^0.21.1",
         "css": "^3.0.0",

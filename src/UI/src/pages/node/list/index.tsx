@@ -1,7 +1,8 @@
-import { Table } from "antd";
+import { Button, Space, Table } from "antd";
 import React, { FC, useEffect, useState } from "react"
 import { NodeIDMapSummaryInfo } from "../../../api/model/nodes";
 import { GetAllNodeList, GetNodeTraceCount } from "../../../api/resource/nodes"
+import { FundTwoTone } from "@ant-design/icons"
 import "./index.less"
 
 interface NodeListProps {
@@ -10,10 +11,24 @@ interface NodeListProps {
 
 const columns = [{
     title: '节点名称',
+    width: `400px`,
     dataIndex: 'orignalID',
 }, {
-    title: '已有追踪数',
+    title: '已追踪',
+    width: `100px`,
     dataIndex: 'traceCount',
+}, {
+    title: '操作',
+    render: (item: NodeIDMapSummaryInfo) => {
+        return <Space>
+            <Button icon={<FundTwoTone />} type="primary" shape="round"
+                onClick={() => {
+                    window.open(`/#/display/${item.aliasName}`)
+                    console.log(item);
+                }}
+            >查看Node详情</Button>
+        </Space>
+    }
 },];
 
 const NodeList: FC<NodeListProps> = (props) => {

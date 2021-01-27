@@ -63,7 +63,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB
         }
         public int NodeTraceItemCount(NodeIDMapSummaryInfo nodeInfo)
         {
-            if (nodeInfo==null)
+            if (nodeInfo == null)
             {
                 return 0;
             }
@@ -96,15 +96,27 @@ namespace BeaconTower.TraceDB.NodeTraceDB
                 for (int i = 0; i < items.Count; i++)
                 {
                     nodeTracers.Add(items[i].Data.GetObject<NodeTracer>());
-                } 
+                }
                 return true;
             }
             return false;
         }
+        public bool TryGetNodeTraceItemSummary(long traceID, out List<TraceItemSummary> data)
+        {
+            data = null;
+            if (_dbRoot.TryGetItemMetadata(traceID, out var items))
+            {
+                data = items;
+                return true;
+            }
+            data = new List<TraceItemSummary>();
+            return false;
+        }
 
-        public bool TryGetRawTraceItem(long traceID,out List<TraceItem> traceItems)
-        {            
-            return _dbRoot.TryGetItem(traceID, out traceItems);            
+
+        public bool TryGetRawTraceItem(long traceID, out List<TraceItem> traceItems)
+        {
+            return _dbRoot.TryGetItem(traceID, out traceItems);
         }
     }
 }

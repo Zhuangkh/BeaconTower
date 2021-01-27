@@ -46,5 +46,7 @@ namespace BeaconTower.TraceDB.Slice
         /// <returns></returns>
         internal partial List<TraceItem> GetTraceItems(long traceID);
 
+        internal partial List<TraceItemMetadata> GetTraceItemsMetadata(long traceID);
+
     }
 }

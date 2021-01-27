@@ -1,4 +1,5 @@
 ﻿using BeaconTower.Client.Abstract;
+using BeaconTower.TraceDB;
 using BeaconTower.TraceDB.NodeTraceDB.Index;
 using BeaconTower.Warehouse.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,7 @@ namespace BeaconTower.Warehouse
             }
             return Success(new List<long>());
         }
+
         [HttpGet("nodes/alias({nodeAlias})/items/count")]
         public Response<int> NodeTraceItemCount([FromRoute] long nodeAlias)
         {
@@ -58,6 +60,15 @@ namespace BeaconTower.Warehouse
             _dbInstance.TryGetNodeTraceItem(traceID, out var res);
             return Success(res);
         }
+
+        [HttpGet("nodes/items/traceID({traceID})/summary")]
+        public Response<List<TraceItemSummary>> TryGetNodeTraceItemSummaryInfo([FromRoute] long traceID)
+        {
+            _dbInstance.TryGetNodeTraceItemSummary(traceID, out var res);
+            return Success(res);
+        }
+
+
 
 
         [HttpGet("alias")]

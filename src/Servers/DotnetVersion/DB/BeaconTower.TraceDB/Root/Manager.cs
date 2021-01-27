@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BeaconTower.TraceDB.Slice.Models;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -19,6 +20,7 @@ namespace BeaconTower.TraceDB.Root
 
         public partial bool SaveItem(long traceID, long timestamp, byte[] data);
         public partial bool TryGetItem(long traceID, out List<TraceItem> data);
+        public partial bool TryGetItemMetadata(long traceID, out List<TraceItemSummary> data);
 
 
         public int BlockCount => _allBlocks.Count;

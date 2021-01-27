@@ -27,7 +27,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
         {
             if (_nodeIDIndexMap.ContainsKey(nodeInfo.AliasName))
             {
-                return _nodeIDIndexMap[nodeInfo.AliasName].TraceIDList;
+                return _nodeIDIndexMap[nodeInfo.AliasName].TraceIDList.Distinct().ToList();
             }
             return default(List<long>);
         }
@@ -36,7 +36,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
         {
             if (_nodeIDIndexMap.ContainsKey(nodeInfo.AliasName))
             {
-                return _nodeIDIndexMap[nodeInfo.AliasName].TraceIDList.Count;
+                return _nodeIDIndexMap[nodeInfo.AliasName].TraceIDList.Distinct().Count();
             }
             return 0;
         }

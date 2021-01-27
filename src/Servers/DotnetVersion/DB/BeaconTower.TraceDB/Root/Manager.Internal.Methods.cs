@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BeaconTower.TraceDB.Slice.Models;
+using System.Collections.Generic;
 using System.IO;
 using BlockManager = BeaconTower.TraceDB.Block.Manager;
 
@@ -63,6 +64,28 @@ namespace BeaconTower.TraceDB.Root
                 return false;
             }
             data = targetBlock.GetTraceItems(traceID);
+            return true;
+        }
+
+        public partial bool TryGetItemMetadata(long traceID, out List<TraceItemSummary> data)
+        {
+            data = null;
+            var targetBlock = GetTargetBlock(traceID);
+            if (targetBlock == null)
+            {
+                return false;
+            }
+            data = new List<TraceItemSummary>();
+            var res = targetBlock.GetTraceItemsMetadata(traceID);
+            for (int i = 0; i < res.Count; i++)
+            {
+                var item = res[i];
+                data.Add(new TraceItemSummary()
+                {
+                    TimeStamp = item.TimeStamp,
+                    TraceID = item.TraceID,
+                });
+            }
             return true;
         }
     }

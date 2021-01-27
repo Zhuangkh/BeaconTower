@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BeaconTower.TraceDB.Slice.Models;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using static BeaconTower.TraceDB.Block.BlockDefinitions;
@@ -97,6 +98,18 @@ namespace BeaconTower.TraceDB.Block
             return res;
         }
 
-        internal int UnhandledItemCount => _sliceLoop.Values.Sum(item => item.UnhandledItemCount);  
+        internal List<TraceItemMetadata> GetTraceItemsMetadata(long traceID)
+        {
+            List<TraceItemMetadata> res = new();
+            var allSlice = _sliceLoop.Values;
+            foreach (var item in allSlice)
+            {
+                res.AddRange(item.GetTraceItemsMetadata(traceID));
+            }
+            return res;
+        }
+
+
+        internal int UnhandledItemCount => _sliceLoop.Values.Sum(item => item.UnhandledItemCount);
     }
 }

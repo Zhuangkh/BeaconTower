@@ -72,6 +72,23 @@ namespace BeaconTower.TraceDB.Slice
             //}
         }
 
+
+        internal partial List<TraceItemMetadata> GetTraceItemsMetadata(long traceID)
+        {
+            List<TraceItemMetadata> targetIndex = new();
+            lock (_traceItemsInfo)
+            {
+                for (int i = 0; i < _traceItemsInfo.Count; i++)
+                {
+                    if (_traceItemsInfo[i].TraceID == traceID)
+                    {
+                        targetIndex.Add(_traceItemsInfo[i]);
+                    }
+                }
+            }
+            return targetIndex;
+        }
+
         internal partial List<TraceItem> GetTraceItems(long traceID)
         {
             List<TraceItemMetadata> targetIndex = new();
