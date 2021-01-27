@@ -35,7 +35,9 @@ namespace BeaconTower.Warehouse
             }
             var webhost = new WebHostBuilder();
             webhost.UseKestrel()
-            //.ConfigureLogging(builder => builder.AddConsole())
+#if DEBUG
+            .ConfigureLogging(builder => builder.AddConsole())
+#endif
             .ConfigureKestrel(options =>
             {
                 options.ListenLocalhost(grpcPort, o => o.Protocols =

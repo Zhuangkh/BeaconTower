@@ -65,8 +65,7 @@ namespace BeaconTower.Warehouse
                 endpoints.MapGrpcService<MethodTraceService>();
                 endpoints.MapGrpcService<NodeTraceService>();
                 endpoints.MapControllers();
-            });
-
+            }); 
 #if !DEBUG
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -76,7 +75,7 @@ namespace BeaconTower.Warehouse
             });
 #endif
             app.UseSpa(spa =>
-            {
+            { 
 #if DEBUG
                 spa.UseProxyToSpaDevelopmentServer("http://127.0.0.1:8081");
 #else 
