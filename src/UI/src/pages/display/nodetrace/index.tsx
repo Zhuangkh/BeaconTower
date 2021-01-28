@@ -1,4 +1,4 @@
-import G6, { Graph } from '@antv/g6'
+import G6, { Graph, TreeGraph, TreeGraphData } from '@antv/g6'
 import { Button, Tooltip } from 'antd'
 import React, { FC, useState, useEffect, Component } from "react"
 import { useParams } from "react-router-dom"
@@ -13,55 +13,40 @@ const initOpt = {
     height: 400,
     maxZoom: 3,
     minZoom: 1,
+    layout: {
+        type: "compactBox",
+        direction: 'TB',
+        getId: function getId(d: any) {
+            return d.id;
+        },
+        getHeight: function getHeight() {
+            return 16;
+        },
+        getWidth: function getWidth() {
+            return 16;
+        },
+        getVGap: function getVGap() {
+            return 80;
+        },
+        getHGap: function getHGap() {
+            return 20;
+        },
+    },
     modes: {
-        default: ['drag-canvas', 'zoom-canvas']
+        default: [
+            {
+                type: 'collapse-expand',
+                shouldBegin: (e: any) => {
+
+                    if (e.item && e.item.getModel().id === 'userNode') return false;
+                    return true;
+                },
+            },
+            'drag-canvas',
+            'zoom-canvas',
+        ],
     },
 }
-const data = {
-    nodes: [
-        {
-            id: 'node0', size: [32, 32], x: 64, y: 64, type: "",
-            img: manSvg.default,
-            label: "用户",
-            style: {
-                fill: '#steelblue',
-                stroke: '#eaff8f',
-                lineWidth: 5,
-            }
-        },
-        { id: 'node1', size: [32, 32], x: 200, y: 64, type: "image", img: webapiSvg.default },
-        { id: 'node2', size: [32, 32], x: 200, y: 200, type: "image", img: methodSvg.default },
-    ],
-    edges: [
-        {
-            source: 'node0',
-            target: 'node1',
-            type: 'line',
-            label: "调用",
-            // style: {
-            //     endArrow: {
-            //         fill: '#E0E0E0',
-            //         path: G6.Arrow.vee(10, 20, 25),
-            //         d: 25
-            //     }
-            // }
-        },
-        {
-            source: 'node1',
-            target: 'node2',
-            type: 'line',
-            label: "调用",
-            // style: {
-            //     endArrow: {
-            //         fill: '#E0E0E0',
-            //         path: G6.Arrow.vee(10, 20, 25),
-            //         d: 25
-            //     }
-            // }
-        }
-    ],
-};
-let index = 1;
 
 interface NodeTraceDisplayProps {
 
@@ -73,11 +58,19 @@ interface NodeTraceDisplayState {
 }
 export default class NodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplayState>{
     g6Ref: any = React.createRef();
-    graph: Graph | null = null;
+    graph: TreeGraph | null = null;
+    index: number = 2;
+    data: TreeGraphData = {
+        id: 'userNode', size: [32, 32], type: "image",
+        img: manSvg.default,
+        label: "用户",
+        collapsed: true,
+        children: []
+    };
     state = {
         showTooltip: false,
         tooltipY: 0,
-        tooltipX: 0
+        tooltipX: 0,
     }
     nodeMouseLevel = () => {
         if (this.graph == null) { return; }
@@ -100,10 +93,11 @@ export default class NodeTraceDisplay extends Component<NodeTraceDisplayProps, N
 
     }
     componentDidMount() {
-        this.graph = new G6.Graph({
+        this.graph = new G6.TreeGraph({
             container: this.g6Ref.current as HTMLElement,
             ...initOpt
         });
+        this.graph.data(this.data);
         this.graph.render();
         this.graph.changeSize(
             (this.g6Ref as any).current.scrollWidth,
@@ -112,19 +106,19 @@ export default class NodeTraceDisplay extends Component<NodeTraceDisplayProps, N
         this.graph.fitCenter();
         this.graph.on('node:mouseenter', this.nodeMouseEnter);
         this.graph.on('node:mouseleave', this.nodeMouseLevel);
-        // this.graph.on('node:click', nodeClick);
-        // console.log(this.g6Ref);
     }
     render() {
         return <>
             <div style={{ position: "fixed", zIndex: 1000 }}>
                 <Button onClick={() => {
                     if (this.graph == null) return;
-                    this.graph.addItem("node", {
-                        id: index++, size: [32, 32], x: 64 * index, y: 64, type: "image",
+                    this.graph.addChild({
+                        id: (this.index.toString()), size: [32, 32], type: "image",
                         img: manSvg.default,
                         label: "用户",
-                    }, false);
+                    }, "userNode");
+
+                    this.index++;
                 }}>添加</Button>
             </div>
             <div id="graph" ref={this.g6Ref} style={{ height: "100vh", width: "100%" }}>
