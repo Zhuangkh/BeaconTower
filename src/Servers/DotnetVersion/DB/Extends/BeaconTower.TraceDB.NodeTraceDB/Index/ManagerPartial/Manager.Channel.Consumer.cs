@@ -76,7 +76,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
             PathMapSummaryInfo summaryInfo = null;
             lock (_pathMapping)
             {
-                var data = _pathMapping.FirstOrDefault(item => item.OrignalPath.Equals(info.Path));
+                var data = _pathMapping.FirstOrDefault(item => item.OrignalPath.Equals(info.Path)&&item.NodeAliasName==nodeAliasName);
                 if (data != null)
                 {
                     _pathIndexMap[data.AliasName].SaveNewItem(info.TraceID);

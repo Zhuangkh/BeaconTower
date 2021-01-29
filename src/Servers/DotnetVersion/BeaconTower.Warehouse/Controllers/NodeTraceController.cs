@@ -56,13 +56,8 @@ namespace BeaconTower.Warehouse
         [HttpGet("nodes/alias({nodeAlias})/items/path/items")]
         public Response<List<PathMapSummaryInfo>> GetNodeTraceAllPaths([FromRoute] long nodeAlias)
         {
-            var targetNode = _dbInstance.AllNodeInfo.FirstOrDefault(item => item.AliasName == nodeAlias);
- 
-            if (targetNode != null)
-            {
-                return Success(_dbInstance.AllPathInfo);
-            }
-            return Success(new List<PathMapSummaryInfo>());
+            var res = _dbInstance.AllPathInfo.Where(item => item.NodeAliasName == nodeAlias).ToList();
+            return Success(res);
         }
 
         [HttpGet("nodes/alias({nodeAlias})/items/count")]

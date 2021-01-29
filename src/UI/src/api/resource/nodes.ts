@@ -121,5 +121,12 @@ export const GetNodeTraceItemSummaryInfo = async (traceID: string): Promise<Resp
     });
     return res;
 }
+export const GetNodeAllPathInfo = async (traceID: string): Promise<Response<number>> => {
+    let res: any;
+    await Instance.get(`${controllerPrefix}/nodes/items/traceID(${traceID})/summary`).then((data: any) => {
+        res = data;
+    });
+    return res;
+}
 
 
