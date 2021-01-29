@@ -53,6 +53,18 @@ namespace BeaconTower.Warehouse
             return Success<NodeIDMapSummaryInfo>(null);
         }
 
+        [HttpGet("nodes/alias({nodeAlias})/items/path/items")]
+        public Response<List<PathMapSummaryInfo>> GetNodeTraceAllPaths([FromRoute] long nodeAlias)
+        {
+            var targetNode = _dbInstance.AllNodeInfo.FirstOrDefault(item => item.AliasName == nodeAlias);
+ 
+            if (targetNode != null)
+            {
+                return Success(_dbInstance.AllPathInfo);
+            }
+            return Success(new List<PathMapSummaryInfo>());
+        }
+
         [HttpGet("nodes/alias({nodeAlias})/items/count")]
         public Response<int> NodeTraceItemCount([FromRoute] long nodeAlias)
         {

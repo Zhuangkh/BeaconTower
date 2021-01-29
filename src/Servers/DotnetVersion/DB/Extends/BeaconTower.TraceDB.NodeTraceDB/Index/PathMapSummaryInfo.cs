@@ -11,5 +11,6 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
         public long AliasName { get; set; }
         public int OrignalPathLength { get; set; }
         public string OrignalPath { get; set; }
+        public long NodeAliasName { get; set; }
     }
 }

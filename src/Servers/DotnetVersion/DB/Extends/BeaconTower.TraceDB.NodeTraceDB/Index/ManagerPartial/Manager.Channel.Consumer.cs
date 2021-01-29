@@ -20,8 +20,8 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
                 while (true)
                 {
                     var item = await _nodeTraceChannel.Reader.ReadAsync();
-                    await SaveNodeIDInfo(item);
-                    await SavePathInfo(item);
+                    var nodeAliasName = await SaveNodeIDInfo(item);
+                    await SavePathInfo(item, nodeAliasName);
                 }
             }))
             {
@@ -33,7 +33,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
         /// <summary>
         /// save the node id info
         /// </summary>
-        private async Task SaveNodeIDInfo(NodeTracer info)
+        private async Task<long> SaveNodeIDInfo(NodeTracer info)
         {
             NodeIDMapSummaryInfo summaryInfo = null;
             lock (_nodeIDMapping)
@@ -42,7 +42,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
                 if (data != null)
                 {
                     _nodeIDIndexMap[data.AliasName].SaveNewItem(info.TraceID);
-                    return;
+                    return data.AliasName;
                 }
                 summaryInfo = new()
                 {
@@ -64,13 +64,14 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
             var indexHandler = new NodeIDIndexHandler(indexFile);
             await indexHandler.LoadAsync();
             _nodeIDIndexMap.Add(summaryInfo.AliasName, indexHandler.SaveNewItem(info.TraceID));
+            return summaryInfo.AliasName;
         }
 
 
         /// <summary>
         /// save the path info
         /// </summary>
-        private async Task SavePathInfo(NodeTracer info)
+        private async Task SavePathInfo(NodeTracer info, long nodeAliasName)
         {
             PathMapSummaryInfo summaryInfo = null;
             lock (_pathMapping)
@@ -85,7 +86,8 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
                 {
                     AliasName = LuanNiao.Core.IDGen.GetInstance().NextId(),
                     OrignalPath = info.Path,
-                    OrignalPathLength = Encoding.UTF8.GetBytes(info.Path).Length
+                    OrignalPathLength = Encoding.UTF8.GetBytes(info.Path).Length,
+                    NodeAliasName = nodeAliasName
                 };
                 _pathMapping.Add(summaryInfo);
             }
@@ -94,7 +96,9 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
                 _pathMappingHandler.Position = _pathMappingHandler.Length;
                 _pathMappingHandler.Write(BitConverter.GetBytes(summaryInfo.AliasName));
                 _pathMappingHandler.Write(BitConverter.GetBytes(summaryInfo.OrignalPathLength));
+                _pathMappingHandler.Write(BitConverter.GetBytes(summaryInfo.NodeAliasName));
                 _pathMappingHandler.Write(Encoding.UTF8.GetBytes(summaryInfo.OrignalPath));
+                
                 _pathMappingHandler.Flush();
             }
             var indexFile = new FileInfo(Path.Combine(_srouceFolder, Constants.IndexFolder, $"{summaryInfo.AliasName}{Constants.PathIndexFileExtends}"));

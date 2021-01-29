@@ -120,7 +120,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
         /// <summary>
         /// load path id mapping file
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="dirInfo">the folder info where we will to find the index file</param>
         /// <returns></returns>
         private Task PathMapInit(DirectoryInfo dirInfo)
         {
@@ -135,14 +135,15 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
                 _pathMappingHandler.Position = 0;
                 for (int i = 0; i < _pathMappingHandler.Length;)
                 {
-                    var headBuffer = new byte[sizeof(long) + sizeof(int)];
+                    var headBuffer = new byte[sizeof(long) + sizeof(long) + sizeof(int)];
                     _pathMappingHandler.Read(headBuffer);
-                    var orignalIDLength = BitConverter.ToInt32(headBuffer.AsSpan()[sizeof(long)..]);
+                    var orignalIDLength = BitConverter.ToInt32(headBuffer.AsSpan()[(sizeof(long) + sizeof(long))..]);
                     var orignalIDBuffer = new byte[orignalIDLength];
                     _pathMappingHandler.Read(orignalIDBuffer);
                     _pathMapping.Add(new PathMapSummaryInfo()
                     {
                         AliasName = BitConverter.ToInt64(headBuffer),
+                        NodeAliasName = BitConverter.ToInt64(headBuffer.AsSpan()[sizeof(long)..]),
                         OrignalPathLength = orignalIDLength,
                         OrignalPath = Encoding.UTF8.GetString(orignalIDBuffer)
                     });

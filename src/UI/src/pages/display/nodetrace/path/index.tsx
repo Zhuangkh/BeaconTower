@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { Button, Modal, Table } from "antd";
 import React, { FC, useEffect } from "react"
 import "./index.less"
 
@@ -7,7 +7,20 @@ interface indexProps {
     onOk?: () => void;
     onCancel?: () => void;
 }
-
+const columns = [{
+    title: "路径名称",
+    width: "300px",
+    dataIndex: "path"
+}, {
+    title: "已追踪",
+    width: "150px",
+    dataIndex: "traceItemCount"
+}, {
+    title: "操作",
+    render: (item: any) => {
+        return <Button>操作</Button>
+    }
+}]
 const index: FC<indexProps> = (props) => {
     if (!props.show) {
         return null;
@@ -34,9 +47,7 @@ const index: FC<indexProps> = (props) => {
                 props.onCancel();
             }
         }}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <Table bordered columns={columns} />
     </Modal>
 }
 
