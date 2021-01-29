@@ -1,7 +1,10 @@
-import G6, { Graph, TreeGraph, TreeGraphData } from '@antv/g6'
-import { Button, Tooltip } from 'antd'
-import React, { FC, useState, useEffect, Component } from "react"
-import { useParams } from "react-router-dom"
+import G6, { TreeGraph, TreeGraphData } from '@antv/g6'
+import { Button, PageHeader, Spin, Tooltip } from 'antd'
+import React, { Component } from "react"
+import { RouteComponentProps, withRouter } from "react-router-dom"
+import { NodeIDMapSummaryInfo } from '../../../api/model/nodes'
+import { GetNodeSummaryInfo } from '../../../api/resource/nodes'
+import PathModal from "./path"
 import "./index.less"
 
 const webapiSvg = require("../../../assets/webapi.svg")
@@ -16,29 +19,13 @@ const initOpt = {
     layout: {
         type: "compactBox",
         direction: 'TB',
-        getId: function getId(d: any) {
-            return d.id;
-        },
-        getHeight: function getHeight() {
-            return 16;
-        },
-        getWidth: function getWidth() {
-            return 16;
-        },
-        getVGap: function getVGap() {
-            return 80;
-        },
-        getHGap: function getHGap() {
-            return 20;
-        },
     },
     modes: {
         default: [
             {
                 type: 'collapse-expand',
                 shouldBegin: (e: any) => {
-
-                    if (e.item && e.item.getModel().id === 'userNode') return false;
+                    if (e.item && e.item.getModel().id === 'userNode1') return false;
                     return true;
                 },
             },
@@ -48,15 +35,19 @@ const initOpt = {
     },
 }
 
-interface NodeTraceDisplayProps {
+interface NodeTraceDisplayProps extends RouteComponentProps {
 
 }
 interface NodeTraceDisplayState {
     showTooltip: boolean;
     tooltipY: number;
     tooltipX: number;
+    nodeInfo?: NodeIDMapSummaryInfo;
+    loading: boolean;
+    showPathModel: boolean;
 }
-export default class NodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplayState>{
+
+class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplayState>{
     g6Ref: any = React.createRef();
     graph: TreeGraph | null = null;
     index: number = 2;
@@ -67,10 +58,23 @@ export default class NodeTraceDisplay extends Component<NodeTraceDisplayProps, N
         collapsed: true,
         children: []
     };
-    state = {
-        showTooltip: false,
-        tooltipY: 0,
-        tooltipX: 0,
+    constructor(props: NodeTraceDisplayProps) {
+        super(props);
+        this.state = {
+            showTooltip: false,
+            tooltipY: 0,
+            tooltipX: 0,
+            loading: true,
+            nodeInfo: undefined,
+            showPathModel: false
+        }
+    }
+    fetchData = async () => {
+        let res = await GetNodeSummaryInfo((this.props.match.params as any).nodeAlias);
+        this.setState({
+            nodeInfo: res.data,
+            loading: false
+        });
     }
     nodeMouseLevel = () => {
         if (this.graph == null) { return; }
@@ -106,10 +110,30 @@ export default class NodeTraceDisplay extends Component<NodeTraceDisplayProps, N
         this.graph.fitCenter();
         this.graph.on('node:mouseenter', this.nodeMouseEnter);
         this.graph.on('node:mouseleave', this.nodeMouseLevel);
+        this.fetchData();
     }
     render() {
-        return <>
-            <div style={{ position: "fixed", zIndex: 1000 }}>
+        return <Spin spinning={this.state.loading} tip="加载中...">
+            <PathModal show={this.state.showPathModel}
+                onOk={() => { this.setState({ showPathModel: false }) }}
+                onCancel={() => { this.setState({ showPathModel: false }) }}
+            />
+            <div className={"display"} >
+                <PageHeader
+                    ghost={false}
+                    title={this.state.nodeInfo != undefined ? `${this.state.nodeInfo.orignalID}详情` : ""}
+                    subTitle="当前页面可以查阅该节点的具体详细信息"
+                    className="page-header"
+                    extra={[
+                        <Button key="3" onClick={() => {
+                            this.setState({
+                                showPathModel: true
+                            })
+                        }}>查看Trace列表</Button>,
+                        <Button key="2">Operation</Button>, ``
+                    ]}
+                />
+                {/* <div style={{ position: "fixed", zIndex: 1000 }}>
                 <Button onClick={() => {
                     if (this.graph == null) return;
                     this.graph.addChild({
@@ -120,82 +144,18 @@ export default class NodeTraceDisplay extends Component<NodeTraceDisplayProps, N
 
                     this.index++;
                 }}>添加</Button>
+            </div> */}
+                <div id="graph" className="graph" ref={this.g6Ref} >
+                    <Tooltip title={"asdasdasd"}
+                        visible={this.state.showTooltip}
+                        getPopupContainer={() => document.getElementById("graph") as HTMLElement}
+                    >
+                        <div style={{ position: "fixed", left: this.state.tooltipX, top: this.state.tooltipY, cursor: "default" }}>　</div>
+                    </Tooltip>
+                </div>
             </div>
-            <div id="graph" ref={this.g6Ref} style={{ height: "100vh", width: "100%" }}>
-                <Tooltip title={"asdasdasd"}
-                    visible={this.state.showTooltip}
-                    getPopupContainer={() => document.getElementById("graph") as HTMLElement}
-                >
-                    <div style={{ position: "fixed", left: this.state.tooltipX, top: this.state.tooltipY, cursor: "default" }}>　</div>
-                </Tooltip>
-            </div>
-        </>
+        </Spin>
     }
 }
 
-// const NodeTraceDisplay: FC<NodeTraceDisplayProps> = (props) => {
-
-//     const g6Ref = React.useRef<any>()
-//     var graph: Graph;
-//     let { nodeAlias } = useParams<any>();
-//     const [showTooltip, setShowTooltip] = useState<boolean>(false);
-//     const [tooltipX, setTooltipX] = useState<number>(0);
-//     const [tooltipY, setTooltipY] = useState<number>(0);
-
-//     const nodeMouseEnter = (evt: any) => {
-//         const { item } = evt
-//         const model = item.getModel();
-//         const point = graph.getCanvasByPoint(model.x, model.y);
-//         const y = point.y - model.size[1] * graph.getZoom() / 4;
-//         const x = point.x - model.size[0]  / 4;
-//         setTooltipX(x);
-//         setTooltipY(y);
-//         setShowTooltip(true);
-//     }
-//     const nodeMouseLevel = () => {
-//         setShowTooltip(false);
-//     }
-//     const nodeClick = (item: any) => {
-//         console.log(item);
-//     }
-
-//     useEffect(() => {
-//         graph = new G6.Graph({
-//             container: g6Ref.current as HTMLElement,
-//             ...initOpt
-//         });
-//         graph.render();
-//         graph.changeSize(
-//             (g6Ref as any).current.scrollWidth,
-//             (g6Ref as any).current.scrollHeight
-//         );
-//         graph.fitCenter();
-//         graph.on('node:mouseenter', nodeMouseEnter);
-//         graph.on('node:mouseleave', nodeMouseLevel);
-//         graph.on('node:click', nodeClick); 
-//     }, []);
-
-//     return <>
-//         <div style={{position:"fixed",zIndex:1000}}>
-//         <Button onClick={() => {
-//             graph.addItem("node", {
-//                 id: index++, size: [32, 32], x: 64*index, y: 64, type: "image",
-//                 img: manSvg.default,
-//                 label: "用户", 
-//             }, false);
-//         }}>添加</Button>
-//         </div>
-//         <div id="graph" ref={g6Ref} style={{ height: "100vh", width: "100%" }}>
-//             <Tooltip title={"asdasdasd"}
-//                 visible={showTooltip}
-//                 getPopupContainer={() => document.getElementById("graph") as HTMLElement}
-//             >
-//                 <div style={{ position: "fixed", left: tooltipX, top: tooltipY, cursor: "default"}}>　</div>
-//             </Tooltip>
-//         </div>
-
-//     </>
-// }
-
-// export default NodeTraceDisplay;
-
+export default withRouter(nodeTraceDisplay);

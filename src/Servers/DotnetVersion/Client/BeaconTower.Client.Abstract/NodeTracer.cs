@@ -18,7 +18,7 @@ namespace BeaconTower.Client.Abstract
         private readonly Stack<long> _methodStack = new Stack<long>();
 
         public long TraceID { get; init; }
-        public string NodeID { get; init; }
+        public string NodeID { get; set; }
         public NodeType Type { get; init; }
         public long TimeStamp { get; set; }
         public string PreviousNodeID { get; set; } = string.Empty;

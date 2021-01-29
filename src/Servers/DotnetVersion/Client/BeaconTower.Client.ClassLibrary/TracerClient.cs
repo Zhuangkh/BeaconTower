@@ -68,5 +68,11 @@ namespace BeaconTower.Client.ClassLibrary
             }
 
         }
+
+
+        public NodeTracer CreateNodeTracer()
+        {
+            return ServerManager.Instance.CreateNodeTracer();
+        }
     }
 }
