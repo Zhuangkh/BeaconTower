@@ -16,7 +16,7 @@ namespace Z.Example.NodeTraceDBTest
                  , (new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName)
                 ).StartServer();
 
-            var test = ClientManager.Instance.CreateNodeTracer();
+            var test = ServerManager.Instance.CreateNodeTracer();
             nodeDB.SaveItem(test);
 
             foreach (var item in nodeDB.AllNodeInfo)

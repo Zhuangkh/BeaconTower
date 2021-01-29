@@ -4,13 +4,16 @@ using System.Linq;
 
 namespace BeaconTower.Client.Abstract
 {
-    public class ClientManager
+    /// <summary>
+    /// use to manage all Server
+    /// </summary>
+    public class ServerManager
     {
-        public static ClientManager Instance { get; } = new();
+        public static ServerManager Instance { get; } = new();
         public NodeType NodeType { get; internal set; } = NodeType.Unset;
         public string NodeID { get; internal set; } = "DefaultNode";
         private readonly List<AbsMessageServer> _servers = new List<AbsMessageServer>();
-        private ClientManager()
+        private ServerManager()
         { }
 
         public void Init(BeaconTowerOptions options)
@@ -49,12 +52,12 @@ namespace BeaconTower.Client.Abstract
             var res = _servers.Where(item => item.Available && item.Type == ServerType.Normal).ToList();
             if (res.Count == 0)
             {
-                Console.WriteLine($"BeaconTower [{nameof(ClientManager)}]:There haven't any {Enum.GetName(typeof(ServerType), ServerType.Normal)} server available.");
+                Console.WriteLine($"BeaconTower [{nameof(ServerManager)}]:There haven't any {Enum.GetName(typeof(ServerType), ServerType.Normal)} server available.");
                 res = _servers.Where(item => item.Available && item.Type == ServerType.Demotion).ToList();
             }
             if (res.Count == 0)
             {
-                Console.WriteLine($"BeaconTower [{nameof(ClientManager)}]:There haven't any server available.");
+                Console.WriteLine($"BeaconTower [{nameof(ServerManager)}]:There haven't any server available.");
             }
             return res;
         }

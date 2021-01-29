@@ -18,18 +18,18 @@ namespace BeaconTower.Client.AspNetCore
                 NodeType = NodeType.Unset
             };
             setupAction?.Invoke(options);
-            ClientManager.Instance.Init(options);
+            ServerManager.Instance.Init(options);
             if (servers != null && servers.Length != 0)
             {
                 foreach (var item in servers)
                 {
-                    ClientManager.Instance.RegistServer(item);
+                    ServerManager.Instance.RegistServer(item);
                 }
             }
 
             service.AddScoped<NodeTracer>((provider) =>
             {
-                return ClientManager.Instance.CreateNodeTracer();
+                return ServerManager.Instance.CreateNodeTracer();
             });
 
             return service;

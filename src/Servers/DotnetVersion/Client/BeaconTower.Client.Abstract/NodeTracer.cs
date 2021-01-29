@@ -59,7 +59,7 @@ namespace BeaconTower.Client.Abstract
 
         public async void BeforeNodeActiveAsync()
         {
-            var serverList = ClientManager.Instance.GetAvailableServer();
+            var serverList = ServerManager.Instance.GetAvailableServer();
             var taskList = new Task[serverList.Count];
             for (int i = 0; i < serverList.Count; i++)
             {
@@ -89,7 +89,7 @@ namespace BeaconTower.Client.Abstract
                 return;
             }
             _alreadSendAfter = true;
-            var serverList = ClientManager.Instance.GetAvailableServer();
+            var serverList = ServerManager.Instance.GetAvailableServer();
             var taskList = new Task[serverList.Count];
             for (int i = 0; i < serverList.Count; i++)
             {
