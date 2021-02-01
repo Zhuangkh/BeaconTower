@@ -117,6 +117,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             <PathModal show={this.state.showPathModel}
                 onOk={() => { this.setState({ showPathModel: false }) }}
                 onCancel={() => { this.setState({ showPathModel: false }) }}
+                nodeAlias={(this.props.match.params as any).nodeAlias}
             />
             <div className={"display"} >
                 <PageHeader

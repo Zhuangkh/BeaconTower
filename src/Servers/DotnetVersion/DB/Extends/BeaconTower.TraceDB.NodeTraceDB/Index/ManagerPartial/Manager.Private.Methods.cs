@@ -137,17 +137,17 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
                 {
                     var headBuffer = new byte[sizeof(long) + sizeof(long) + sizeof(int)];
                     _pathMappingHandler.Read(headBuffer);
-                    var orignalIDLength = BitConverter.ToInt32(headBuffer.AsSpan()[(sizeof(long) + sizeof(long))..]);
-                    var orignalIDBuffer = new byte[orignalIDLength];
+                    var orignalPathLength = BitConverter.ToInt32(headBuffer.AsSpan()[sizeof(long)..]);
+                    var orignalIDBuffer = new byte[orignalPathLength];
                     _pathMappingHandler.Read(orignalIDBuffer);
                     _pathMapping.Add(new PathMapSummaryInfo()
                     {
                         AliasName = BitConverter.ToInt64(headBuffer),
-                        NodeAliasName = BitConverter.ToInt64(headBuffer.AsSpan()[sizeof(long)..]),
-                        OrignalPathLength = orignalIDLength,
+                        OrignalPathLength = orignalPathLength,
+                        NodeAliasName = BitConverter.ToInt64(headBuffer.AsSpan()[(sizeof(long)/*AliasName*/+ sizeof(int)/*OrignalPathLength*/)..]),
                         OrignalPath = Encoding.UTF8.GetString(orignalIDBuffer)
                     });
-                    i += headBuffer.Length + orignalIDLength;
+                    i += headBuffer.Length + orignalPathLength;
                 }
             });
         }

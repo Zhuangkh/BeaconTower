@@ -72,7 +72,10 @@ namespace BeaconTower.TraceDB.NodeTraceDB
 
         public List<PathMapSummaryInfo> AllPathInfo => _indexManager.AllPathInfo;
 
-
+        public int GetNodePathItemCount(long nodeAlias,long pathAlias)
+        {
+            return _indexManager.GetNodePathItemCount(nodeAlias, pathAlias);
+        }
 
 
         public bool SaveItem(NodeTracer item)

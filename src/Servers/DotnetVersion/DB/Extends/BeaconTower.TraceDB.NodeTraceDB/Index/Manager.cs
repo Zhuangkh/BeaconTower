@@ -56,5 +56,8 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
         {
             return _nodeTraceChannel.Writer.TryWrite(item);
         }
+
+        public int GetNodePathItemCount(long _,long pathAlias) => _pathIndexMap[pathAlias].TraceIDList.Count;
+            
     }
 }

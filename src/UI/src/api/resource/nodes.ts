@@ -1,5 +1,5 @@
-import { Instance, Response } from "../common";
-import { NodeIDMapSummaryInfo } from "../model/nodes"
+import { Instance, PageResponse, Response } from "../common";
+import { NodeIDMapSummaryInfo, PathMapSummaryInfo } from "../model/nodes"
 
 const controllerPrefix = "nodetrace";
 
@@ -121,12 +121,19 @@ export const GetNodeTraceItemSummaryInfo = async (traceID: string): Promise<Resp
     });
     return res;
 }
-export const GetNodeAllPathInfo = async (traceID: string): Promise<Response<number>> => {
+export const GetNodeAllPathInfo = async (nodeAlias: string,pageSize:number,pageIndex:number): Promise<PageResponse<Array<PathMapSummaryInfo>>> => {
     let res: any;
-    await Instance.get(`${controllerPrefix}/nodes/items/traceID(${traceID})/summary`).then((data: any) => {
+    await Instance.get(`${controllerPrefix}/nodes/alias(${nodeAlias})/items/path/items?pageSize=${pageSize}&pageIndex=${pageIndex}`).then((data: any) => {
         res = data;
     });
     return res;
 }
 
 
+export const GetNodePathItemCount=async(nodeAlias:string,pathAlias:string):Promise<Response<number>>=>{
+    let res: any;
+    await Instance.get(`${controllerPrefix}/nodes/alias(${nodeAlias})/items/path/alias(${pathAlias})/count`).then((data: any) => {
+        res = data;
+    });
+    return res;
+}
