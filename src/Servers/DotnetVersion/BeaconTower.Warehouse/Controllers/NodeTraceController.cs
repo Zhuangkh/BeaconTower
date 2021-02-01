@@ -75,6 +75,16 @@ namespace BeaconTower.Warehouse
             var res = _dbInstance.GetNodePathItemCount(nodeAlias, pathAlias);
             return Success(res);
         }
+        [HttpGet("nodes/alias({nodeAlias})/items/path/alias({pathAlias})/items/traceID")]
+        public Response<List<long>> GetTraceIDListByNodeAndPath(
+           [FromRoute] long _,
+           [FromRoute] long pathAlias
+           )
+        {
+            var res = _dbInstance.GetTraceIDByPath(pathAlias);
+            return Success(res);
+        }
+
 
         [HttpGet("nodes/alias({nodeAlias})/items/count")]
         public Response<int> NodeTraceItemCount([FromRoute] long nodeAlias)

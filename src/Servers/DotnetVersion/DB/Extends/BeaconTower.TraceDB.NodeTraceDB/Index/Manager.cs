@@ -42,11 +42,11 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
         }
 
         public List<PathMapSummaryInfo> AllPathInfo => _pathMapping;
-        public List<long> PathTraceIDList(PathMapSummaryInfo pathInfo)
+        public List<long> PathTraceIDList(long pathAlias)
         {
-            if (_pathIndexMap.ContainsKey(pathInfo.AliasName))
+            if (_pathIndexMap.ContainsKey(pathAlias))
             {
-                return _pathIndexMap[pathInfo.AliasName].TraceIDList;
+                return _pathIndexMap[pathAlias].TraceIDList;
             }
             return default(List<long>);
         }

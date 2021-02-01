@@ -6,6 +6,7 @@ using DBRoot = BeaconTower.TraceDB.Root.Manager;
 using LuanNiao.JsonConverterExtends;
 using System.Collections.Generic;
 using BeaconTower.TraceDB.NodeTraceDB.Index;
+using System.Linq;
 
 namespace BeaconTower.TraceDB.NodeTraceDB
 {
@@ -60,6 +61,10 @@ namespace BeaconTower.TraceDB.NodeTraceDB
                 return default(List<long>);
             }
             return _indexManager.NodeTraceIDList(nodeInfo);
+        }
+        public List<long> GetTraceIDByPath(long pathAlias)
+        {
+            return _indexManager.PathTraceIDList(pathAlias);
         }
         public int NodeTraceItemCount(NodeIDMapSummaryInfo nodeInfo)
         {
