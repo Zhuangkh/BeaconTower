@@ -7,22 +7,10 @@ import "./index.less"
 
 interface indexProps {
     nodeAlias: string;
+    onSelectPathItem: (pathAlias: string) => void
 }
 
-const pathTableColumns = [{
-    title: "路径",
-    width: "500px",
-    dataIndex: "orignalPath"
-}, {
-    title: "已追踪",
-    width: "150px",
-    dataIndex: "traceItemCount"
-}, {
-    title: "操作",
-    render: (item: any) => {
-        return <Button type="primary" shape="round">查看Trace列表</Button>
-    }
-}];
+
 
 const pageSize = 4;
 const index: FC<indexProps> = (props) => {
@@ -32,7 +20,22 @@ const index: FC<indexProps> = (props) => {
     const [pathPageIndex, setPathPageIndex] = useState<number>(1);
     const [pathTotalData, setPathTotalData] = useState<number>(0);
     const [currentSelectedPath, setCurrentSelectedPath] = useState<PathMapSummaryInfo | null>(null);
-
+    const pathTableColumns = [{
+        title: "路径",
+        width: "500px",
+        dataIndex: "orignalPath"
+    }, {
+        title: "已追踪",
+        width: "150px",
+        dataIndex: "traceItemCount"
+    }, {
+        title: "操作",
+        render: (item: any) => {
+            return <Button type="primary" shape="round" onClick={() => {
+                props.onSelectPathItem(item.aliasName);
+            }}>查看Trace列表</Button>
+        }
+    }];
     const getAllCount = async (tempData: Array<PathMapSummaryInfo>) => {
         let allJob = [];
         for (let index = 0; index < tempData.length; index++) {

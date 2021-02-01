@@ -1,5 +1,5 @@
 import { Button, Drawer } from "antd";
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import PathTable from "./pathTable"
 import TraceItemTable from "./traceItemTable"
 import "./index.less"
@@ -25,6 +25,7 @@ const index: FC<indexProps> = (props) => {
     if (!props.show) {
         return null;
     }
+    const [pathItem, setPathItem] = useState<string | null>(null);
 
     return <Drawer
         maskClosable={false}
@@ -39,8 +40,8 @@ const index: FC<indexProps> = (props) => {
             }
         }}>关闭</Button>}
     >
-        <PathTable nodeAlias={props.nodeAlias} />
-        <TraceItemTable nodeAlias={props.nodeAlias} pathAlias={null} />
+        <PathTable nodeAlias={props.nodeAlias} onSelectPathItem={(item) => { setPathItem(item) }} />
+        <TraceItemTable nodeAlias={props.nodeAlias} pathAlias={pathItem} />
 
     </Drawer>
 }
