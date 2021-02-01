@@ -17,20 +17,20 @@ export interface PathMapSummaryInfo {
 }
 
 export interface NodeTraceItemResponse {
-    TraceID: string;
-    NodeID: string
-    Type: NodeType;
-    BeginTimeStamp: string
-    BeginTime: string;
-    EndTimeStamp: string | null;
-    EndTime: string | null;
-    UseMS: number | null;
-    PreviousNodeID: string;
-    Path: string;
-    QueryString: string;
-    BeginCustomData: any;
-    EndCustomData: any;
-    NextNode: Array<NodeTraceItemResponse>;
+    traceID: string;
+    nodeID: string;
+    type: NodeType;
+    beginTimeStamp: string;
+    beginTime: string;
+    endTimeStamp: string | null;
+    endTime: string | null;
+    useMS: number | null;
+    previousNodeID: string;
+    path: string;
+    queryString: string;
+    beginCustomData: any;
+    endCustomData: any;
+    nextNode: Array<NodeTraceItemResponse>;
 }
 
 export enum NodeType {

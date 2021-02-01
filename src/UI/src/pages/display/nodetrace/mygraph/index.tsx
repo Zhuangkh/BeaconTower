@@ -1,25 +1,45 @@
-import G6, { Graph } from '@antv/g6'
-import { Button, Tooltip } from 'antd'
+import G6, { TreeGraph, TreeGraphData } from '@antv/g6'
 import React, { FC, useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { NodeTraceItemResponse } from '../../../../api/model/nodes'
 import "./index.less"
 
-interface MyGraphProps {
+const webapiSvg = require("../../../../assets/webapi.svg")
+const methodSvg = require("../../../../assets/method.svg")
+const manSvg = require("../../../../assets/man.svg")
 
+
+interface MyGraphProps {
+    data: NodeTraceItemResponse | null;
 }
 const initOpt = {
     width: 600,
     height: 400,
     maxZoom: 3,
     minZoom: 1,
+    layout: {
+        type: "compactBox",
+        direction: 'LR',
+    },
     modes: {
-        default: ['drag-canvas', 'zoom-canvas']
+        default: [
+            {
+                type: 'collapse-expand',
+                shouldBegin: (e: any) => {
+                    if (e.item && e.item.getModel().id === 'userNode1') return false;
+                    return true;
+                },
+            },
+            'drag-canvas',
+            'zoom-canvas',
+        ],
     },
 }
 const index: FC<MyGraphProps> = (props) => {
-
+    if (props.data == null) {
+        return null;
+    }
     const g6Ref = React.useRef<any>()
-    let graph: Graph;
+    let graph: TreeGraph;
 
     const nodeMouseEnter = (evt: any) => {
         const { item } = evt
@@ -37,12 +57,42 @@ const index: FC<MyGraphProps> = (props) => {
         console.log(item);
     }
 
+    const pushChildData = (target: TreeGraphData, data: NodeTraceItemResponse) => {
+        let thisLoop = {
+            id: `${data.nodeID}`,
+            size: [32, 32],
+            type: "image",
+            img: manSvg.default,
+            label: data.nodeID,
+            collapsed: false,
+            children: []
+        };
+        target.children?.push(thisLoop); 
+        for (let index = 0; index < data.nextNode.length; index++) {
+            const element = data.nextNode[index];
+            pushChildData(thisLoop, element);
+        }
+    }
+
     useEffect(() => {
-        graph = new G6.Graph({
+        let data: TreeGraphData = {
+            id: 'userNode', size: [32, 32], type: "image",
+            img: manSvg.default,
+            label: "用户",
+            collapsed: false,
+            children: []
+        };
+        if (props.data != null) {
+            pushChildData(data, props.data);
+        }
+
+        graph = new G6.TreeGraph({
             container: g6Ref.current as HTMLElement,
             ...initOpt
         });
+        graph.data(data);
         graph.render();
+
         graph.changeSize(
             (g6Ref as any).current.scrollWidth,
             (g6Ref as any).current.scrollHeight
