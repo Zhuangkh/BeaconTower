@@ -1,6 +1,7 @@
 ﻿using BeaconTower.Client.Abstract;
 using BeaconTower.TraceDB;
 using BeaconTower.TraceDB.NodeTraceDB.Index;
+using BeaconTower.Warehouse.APIModels;
 using BeaconTower.Warehouse.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -104,10 +105,17 @@ namespace BeaconTower.Warehouse
         }
 
         [HttpGet("nodes/items/traceID({traceID})")]
-        public Response<List<NodeTracer>> TryGetNodeTraceItem([FromRoute] long traceID)
+        public Response<NodeTraceItemResponse> TryGetNodeTraceItem([FromRoute] long traceID)
         {
             _dbInstance.TryGetNodeTraceItem(traceID, out var res);
-            return Success(res);
+            
+
+           var result = NodeTraceItemConstructor.ConstructData(res);
+
+            var orderedData = res.OrderBy(item => item.TimeStamp).ToList();
+
+
+            return Success(result);
         }
 
         [HttpGet("nodes/items/traceID({traceID})/summary")]

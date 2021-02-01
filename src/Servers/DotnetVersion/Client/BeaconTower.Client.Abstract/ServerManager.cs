@@ -36,7 +36,7 @@ namespace BeaconTower.Client.Abstract
             _servers.Add(server);
         }
 
-        public NodeTracer CreateNodeTracer(long? traceID = null, string previewNodeID = null)
+        public NodeTracer CreateNodeTracer(long? traceID = null, string previewNodeID = "")
         {
             return new NodeTracer()
             {

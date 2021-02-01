@@ -2,7 +2,7 @@ import G6, { TreeGraph, TreeGraphData } from '@antv/g6'
 import { Button, PageHeader, Spin, Tooltip } from 'antd'
 import React, { Component } from "react"
 import { RouteComponentProps, withRouter } from "react-router-dom"
-import { NodeIDMapSummaryInfo } from '../../../api/model/nodes'
+import { NodeIDMapSummaryInfo, NodeTraceItemResponse } from '../../../api/model/nodes'
 import { GetNodeSummaryInfo, GetNodeTrace } from '../../../api/resource/nodes'
 import PathModal from "./path"
 import "./index.less"
@@ -45,6 +45,7 @@ interface NodeTraceDisplayState {
     nodeInfo?: NodeIDMapSummaryInfo;
     loading: boolean;
     showPathModel: boolean;
+    currentTraceInfo: NodeTraceItemResponse | null;
 }
 
 class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplayState>{
@@ -66,7 +67,8 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             tooltipX: 0,
             loading: true,
             nodeInfo: undefined,
-            showPathModel: false
+            showPathModel: false,
+            currentTraceInfo: null
         }
     }
     fetchData = async () => {
@@ -75,6 +77,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             nodeInfo: res.data,
             loading: false
         });
+
     }
     nodeMouseLevel = () => {
         if (this.graph == null) { return; }
@@ -98,7 +101,10 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
     }
     traceIDSelected = async (traceID: string) => {
         let res = await GetNodeTrace(traceID);
-        console.log(res);
+        this.setState({
+            currentTraceInfo: res.data as NodeTraceItemResponse,
+            showPathModel: false
+        });
     }
     componentDidMount() {
         this.graph = new G6.TreeGraph({
@@ -117,6 +123,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
         this.fetchData();
     }
     render() {
+        console.log(1);
         return <Spin spinning={this.state.loading} tip="加载中...">
             <PathModal show={this.state.showPathModel}
                 onOk={() => { this.setState({ showPathModel: false }) }}
@@ -139,24 +146,12 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                         <Button key="2">Operation</Button>, ``
                     ]}
                 />
-                {/* <div style={{ position: "fixed", zIndex: 1000 }}>
-                <Button onClick={() => {
-                    if (this.graph == null) return;
-                    this.graph.addChild({
-                        id: (this.index.toString()), size: [32, 32], type: "image",
-                        img: manSvg.default,
-                        label: "用户",
-                    }, "userNode");
-
-                    this.index++;
-                }}>添加</Button>
-            </div> */}
                 <div id="graph" className="graph" ref={this.g6Ref} >
                     <Tooltip title={"asdasdasd"}
                         visible={this.state.showTooltip}
                         getPopupContainer={() => document.getElementById("graph") as HTMLElement}
                     >
-                        <div style={{ position: "fixed", left: this.state.tooltipX, top: this.state.tooltipY, cursor: "default" }}>　</div>
+                        <div style={{ position: "fixed", left: this.state.tooltipX, top: this.state.tooltipY, cursor: "default" }} />
                     </Tooltip>
                 </div>
             </div>
