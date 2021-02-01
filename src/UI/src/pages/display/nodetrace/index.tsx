@@ -12,13 +12,13 @@ interface NodeTraceDisplayProps extends RouteComponentProps {
 
 }
 interface NodeTraceDisplayState {
-    showTooltip: boolean;
-    tooltipY: number;
-    tooltipX: number;
     nodeInfo?: NodeIDMapSummaryInfo;
     loading: boolean;
     showPathModel: boolean;
     currentTraceInfo: NodeTraceItemResponse | null;
+    showItemTooltip: NodeTraceItemResponse | null;
+    nodeX: number;
+    nodeY: number;
 }
 
 class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplayState>{
@@ -26,13 +26,13 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
     constructor(props: NodeTraceDisplayProps) {
         super(props);
         this.state = {
-            showTooltip: false,
-            tooltipY: 0,
-            tooltipX: 0,
+            nodeX: 0,
+            nodeY: 0,
             loading: true,
             nodeInfo: undefined,
             showPathModel: false,
-            currentTraceInfo: null
+            currentTraceInfo: null,
+            showItemTooltip: null
         }
     }
     fetchData = async () => {
@@ -77,8 +77,30 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                         <Button key="2">Operation</Button>, ``
                     ]}
                 />
-                <MyGraph data={this.state.currentTraceInfo} />
+                <MyGraph data={this.state.currentTraceInfo}
+                    showTooltips={(x: number, y: number, data: NodeTraceItemResponse) => {
+                        this.setState({
+                            showItemTooltip: data,
+                            nodeX: x,
+                            nodeY: y
+                        });
+                        console.log(`x:${x} y:${y}`)
+                    }}
+
+                    hideTooltips={() => {
+                        this.setState({
+                            showItemTooltip: null,
+                        });
+                    }}
+                />
             </div>
+            {
+                this.state.showItemTooltip != null ?
+                    <Tooltip visible={true} getPopupContainer={() => document.getElementById("toolTipsDiv") as HTMLElement} title={this.state.showItemTooltip.nodeID}>
+                        <div id="toolTipsDiv" style={{ position: "fixed", left: this.state.nodeX, top: this.state.nodeY }} >　</div>
+                    </Tooltip>
+                    : null
+            }
         </Spin>
     }
 }

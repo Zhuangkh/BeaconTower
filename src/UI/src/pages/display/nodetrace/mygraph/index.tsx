@@ -1,15 +1,18 @@
 import G6, { TreeGraph, TreeGraphData } from '@antv/g6'
 import React, { FC, useState, useEffect } from "react"
-import { NodeTraceItemResponse } from '../../../../api/model/nodes'
+import { NodeTraceItemResponse, NodeType } from '../../../../api/model/nodes'
 import "./index.less"
 
 const webapiSvg = require("../../../../assets/webapi.svg")
+const consoleSvg = require("../../../../assets/console.svg")
 const methodSvg = require("../../../../assets/method.svg")
 const manSvg = require("../../../../assets/man.svg")
 
 
 interface MyGraphProps {
     data: NodeTraceItemResponse | null;
+    showTooltips: (x: number, y: number, data: NodeTraceItemResponse) => void;
+    hideTooltips: () => void;
 }
 const initOpt = {
     width: 600,
@@ -40,7 +43,6 @@ const index: FC<MyGraphProps> = (props) => {
     }
     const g6Ref = React.useRef<any>()
     let graph: TreeGraph;
-
     const nodeMouseEnter = (evt: any) => {
         const { item } = evt
         const model = item.getModel();
@@ -48,32 +50,61 @@ const index: FC<MyGraphProps> = (props) => {
         if (point != undefined) {
             const y = point.y - model.size[1] * graph.getZoom() / 4;
             const x = point.x - model.size[0] / 4;
+            if (props.data == null) {
+                return;
+            }
+            var target = findItemObj(props.data, model.id);
+            if (target == null) { return; }
+            props.showTooltips(x, y, target);
         }
+
     }
     const nodeMouseLevel = () => {
-        // setShowTooltip(false);
+        props.hideTooltips();
     }
     const nodeClick = (item: any) => {
         console.log(item);
     }
+    const findItemObj = (data: NodeTraceItemResponse, nodeID: string): NodeTraceItemResponse | null => {
+        if (data.nodeID == nodeID) {
+            return data;
+        }
+        for (let index = 0; index < data.nextNode.length; index++) {
+            const element = data.nextNode[index];
+            var res = findItemObj(element, nodeID);
+            if (res != null) {
+                return res;
+            }
+        }
+        return null;
+    }
 
     const pushChildData = (target: TreeGraphData, data: NodeTraceItemResponse) => {
+        let imgType: any = manSvg.default;
+        switch (data.type) {
+            case NodeType.WebServer:
+                imgType = webapiSvg.default;
+                break;
+            case NodeType.ConsoleApp:
+                imgType = consoleSvg.default;
+                break;
+        }
         let thisLoop = {
             id: `${data.nodeID}`,
             size: [32, 32],
             type: "image",
-            img: manSvg.default,
+            img: imgType,
             label: data.nodeID,
             collapsed: false,
             children: []
         };
-        target.children?.push(thisLoop); 
+        target.children?.push(thisLoop);
         for (let index = 0; index < data.nextNode.length; index++) {
             const element = data.nextNode[index];
             pushChildData(thisLoop, element);
         }
     }
-
+    console.log("render my graph")
     useEffect(() => {
         let data: TreeGraphData = {
             id: 'userNode', size: [32, 32], type: "image",
