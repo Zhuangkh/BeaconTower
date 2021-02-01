@@ -137,3 +137,11 @@ export const GetNodePathItemCount=async(nodeAlias:string,pathAlias:string):Promi
     });
     return res;
 }
+
+export const GetTraceIDListByNodeAndPathAlias=async(nodeAlias:string,pathAlias:string,pageSize:number,pageIndex:number):Promise<PageResponse<Array<string>>>=>{
+    let res: any;
+    await Instance.get(`${controllerPrefix}/nodes/alias(${nodeAlias})/items/path/alias(${pathAlias})/items/traceID?pageSize=${pageSize}&pageIndex=${pageIndex}`).then((data: any) => {
+        res = data;
+    });
+    return res;
+}

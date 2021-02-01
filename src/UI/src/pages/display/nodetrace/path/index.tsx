@@ -1,6 +1,7 @@
 import { Button, Drawer } from "antd";
 import React, { FC } from "react"
 import PathTable from "./pathTable"
+import TraceItemTable from "./traceItemTable"
 import "./index.less"
 
 interface indexProps {
@@ -24,7 +25,7 @@ const index: FC<indexProps> = (props) => {
     if (!props.show) {
         return null;
     }
-    
+
     return <Drawer
         maskClosable={false}
         className="node-path"
@@ -39,7 +40,7 @@ const index: FC<indexProps> = (props) => {
         }}>关闭</Button>}
     >
         <PathTable nodeAlias={props.nodeAlias} />
-
+        <TraceItemTable nodeAlias={props.nodeAlias} pathAlias={null} />
 
     </Drawer>
 }

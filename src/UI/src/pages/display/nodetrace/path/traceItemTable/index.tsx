@@ -1,12 +1,12 @@
 import { Button, Table } from "antd";
 import React, { FC, useState, useEffect } from "react"
 import { ResponseCode } from "../../../../../api/common";
-import { PathMapSummaryInfo } from "../../../../../api/model/nodes";
-import { GetNodeAllPathInfo, GetNodePathItemCount } from "../../../../../api/resource/nodes";
+import { GetTraceIDListByNodeAndPathAlias } from "../../../../../api/resource/nodes";
 import "./index.less"
 
 interface indexProps {
     nodeAlias: string;
+    pathAlias: string | null;
 }
 
 const pathTableColumns = [{
@@ -15,46 +15,33 @@ const pathTableColumns = [{
     dataIndex: "traceID"
 }, {
     title: "操作",
-    render: (item: any) => {
+    render: (item: string) => {
         return <Button type="primary" shape="round">查看trace详情</Button>
     }
 }];
 
 const pageSize = 4;
 const index: FC<indexProps> = (props) => {
+    if (props.pathAlias == null) { return <></> }
 
-
-    const [data, setData] = useState<Array<PathMapSummaryInfo>>([]);
+    const [data, setData] = useState<Array<any>>([]);
     const [pathPageIndex, setPathPageIndex] = useState<number>(1);
-    const [pathTotalData, setPathTotalData] = useState<number>(0);
-    const [currentSelectedPath, setCurrentSelectedPath] = useState<PathMapSummaryInfo | null>(null);
+    const [totalData, setTotalData] = useState<number>(0);
 
-    const getAllCount = async (tempData: Array<PathMapSummaryInfo>) => {
-        let allJob = [];
-        for (let index = 0; index < tempData.length; index++) {
-            const element = tempData[index];
-            var load = async () => {
-                let countRes = await GetNodePathItemCount(props.nodeAlias, element.aliasName);
-                if (countRes.data != undefined && countRes.data != null) {
-                    element.traceItemCount = countRes.data.toString();
-                }
-            }
-            allJob.push(load());
-        }
-        await Promise.all(allJob);
-        setData([...tempData]);
-    }
+
     const fetch = async (currentIndex: number) => {
-        let res = await GetNodeAllPathInfo(props.nodeAlias, pageSize, currentIndex);
+        if (props.pathAlias == null) return;
+        let res = await GetTraceIDListByNodeAndPathAlias(props.nodeAlias, props.pathAlias, pageSize, currentIndex);
         if (res.code == ResponseCode.Success && res.data != undefined && res.data != null) {
-            for (let index = 0; index < res.data.length; index++) {
-                const element = res.data[index];
-                element.key = element.aliasName;
-                element.traceItemCount = "获取中..";
-            }
+            let resData = res.data;
+            resData.forEach((element: string) => {
+                data.push({
+                    key: element,
+                    traceID: element
+                });
+            });
             setData(res.data);
-            setPathTotalData(res.total);
-            getAllCount(res.data);
+            setTotalData(res.total);
         }
     }
     useEffect(() => {
@@ -64,7 +51,7 @@ const index: FC<indexProps> = (props) => {
     return <Table size="small" bordered columns={pathTableColumns} dataSource={data}
         pagination={{
             current: pathPageIndex,
-            total: pathTotalData,
+            total: totalData,
             pageSize: pageSize,
             hideOnSinglePage: true,
             onChange: (page) => {
