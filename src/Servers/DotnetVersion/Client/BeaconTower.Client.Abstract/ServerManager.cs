@@ -36,13 +36,14 @@ namespace BeaconTower.Client.Abstract
             _servers.Add(server);
         }
 
-        public NodeTracer CreateNodeTracer()
+        public NodeTracer CreateNodeTracer(long? traceID = null, string previewNodeID = null)
         {
             return new NodeTracer()
             {
-                TraceID = LuanNiao.Core.IDGen.GetInstance().NextId(),
+                TraceID = traceID ?? LuanNiao.Core.IDGen.GetInstance().NextId(),
                 NodeID = NodeID,
                 Type = NodeType,
+                PreviousNodeID = previewNodeID,
                 TimeStamp = DateTime.Now.Ticks
             };
         }

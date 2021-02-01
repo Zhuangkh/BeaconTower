@@ -3,7 +3,7 @@ import { Button, PageHeader, Spin, Tooltip } from 'antd'
 import React, { Component } from "react"
 import { RouteComponentProps, withRouter } from "react-router-dom"
 import { NodeIDMapSummaryInfo } from '../../../api/model/nodes'
-import { GetNodeSummaryInfo } from '../../../api/resource/nodes'
+import { GetNodeSummaryInfo, GetNodeTrace } from '../../../api/resource/nodes'
 import PathModal from "./path"
 import "./index.less"
 
@@ -96,6 +96,10 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
         });
 
     }
+    traceIDSelected = async (traceID: string) => {
+        let res = await GetNodeTrace(traceID);
+        console.log(res);
+    }
     componentDidMount() {
         this.graph = new G6.TreeGraph({
             container: this.g6Ref.current as HTMLElement,
@@ -118,6 +122,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                 onOk={() => { this.setState({ showPathModel: false }) }}
                 onCancel={() => { this.setState({ showPathModel: false }) }}
                 nodeAlias={(this.props.match.params as any).nodeAlias}
+                onSelectTraceID={this.traceIDSelected}
             />
             <div className={"display"} >
                 <PageHeader

@@ -9,18 +9,9 @@ interface indexProps {
     onOk?: () => void;
     onCancel?: () => void;
     nodeAlias: string;
+    onSelectTraceID: (traceID: string) => void;
 }
 
-const nodeTraceItemColumns = [{
-    title: "TraceID",
-    width: "300px",
-    dataIndex: "orignalPath"
-}, {
-    title: "操作",
-    render: (item: any) => {
-        return <Button type="primary" shape="round">在图中查看</Button>
-    }
-}];
 const index: FC<indexProps> = (props) => {
     if (!props.show) {
         return null;
@@ -41,7 +32,9 @@ const index: FC<indexProps> = (props) => {
         }}>关闭</Button>}
     >
         <PathTable nodeAlias={props.nodeAlias} onSelectPathItem={(item) => { setPathItem(item) }} />
-        <TraceItemTable nodeAlias={props.nodeAlias} pathAlias={pathItem} />
+        <TraceItemTable nodeAlias={props.nodeAlias} pathAlias={pathItem} onSelectTraceItem={(traceID: string) => {
+            props.onSelectTraceID(traceID);
+        }} />
 
     </Drawer>
 }

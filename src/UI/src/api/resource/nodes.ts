@@ -113,7 +113,13 @@ export const GetNodeSummaryInfo = async (alias: string): Promise<Response<NodeID
     });
     return res;
 }
-
+export const GetNodeTrace = async (traceID: string): Promise<Response<number>> => {
+    let res: any;
+    await Instance.get(`${controllerPrefix}/nodes/items/traceID(${traceID})`).then((data: any) => {
+        res = data;
+    });
+    return res;
+}
 export const GetNodeTraceItemSummaryInfo = async (traceID: string): Promise<Response<number>> => {
     let res: any;
     await Instance.get(`${controllerPrefix}/nodes/items/traceID(${traceID})/summary`).then((data: any) => {
@@ -121,7 +127,7 @@ export const GetNodeTraceItemSummaryInfo = async (traceID: string): Promise<Resp
     });
     return res;
 }
-export const GetNodeAllPathInfo = async (nodeAlias: string,pageSize:number,pageIndex:number): Promise<PageResponse<Array<PathMapSummaryInfo>>> => {
+export const GetNodeAllPathInfo = async (nodeAlias: string, pageSize: number, pageIndex: number): Promise<PageResponse<Array<PathMapSummaryInfo>>> => {
     let res: any;
     await Instance.get(`${controllerPrefix}/nodes/alias(${nodeAlias})/items/path/items?pageSize=${pageSize}&pageIndex=${pageIndex}`).then((data: any) => {
         res = data;
@@ -130,7 +136,7 @@ export const GetNodeAllPathInfo = async (nodeAlias: string,pageSize:number,pageI
 }
 
 
-export const GetNodePathItemCount=async(nodeAlias:string,pathAlias:string):Promise<Response<number>>=>{
+export const GetNodePathItemCount = async (nodeAlias: string, pathAlias: string): Promise<Response<number>> => {
     let res: any;
     await Instance.get(`${controllerPrefix}/nodes/alias(${nodeAlias})/items/path/alias(${pathAlias})/count`).then((data: any) => {
         res = data;
@@ -138,7 +144,7 @@ export const GetNodePathItemCount=async(nodeAlias:string,pathAlias:string):Promi
     return res;
 }
 
-export const GetTraceIDListByNodeAndPathAlias=async(nodeAlias:string,pathAlias:string,pageSize:number,pageIndex:number):Promise<PageResponse<Array<string>>>=>{
+export const GetTraceIDListByNodeAndPathAlias = async (nodeAlias: string, pathAlias: string, pageSize: number, pageIndex: number): Promise<PageResponse<Array<string>>> => {
     let res: any;
     await Instance.get(`${controllerPrefix}/nodes/alias(${nodeAlias})/items/path/alias(${pathAlias})/items/traceID?pageSize=${pageSize}&pageIndex=${pageIndex}`).then((data: any) => {
         res = data;

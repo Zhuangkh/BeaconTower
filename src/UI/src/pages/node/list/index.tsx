@@ -23,8 +23,7 @@ const columns = [{
         return <Space>
             <Button icon={<FundTwoTone />} type="primary" shape="round"
                 onClick={() => {
-                    window.open(`/#/display/${item.aliasName}`)
-                    console.log(item);
+                    window.open(`/#/display/${item.aliasName}`) 
                 }}
             >查看Node详情</Button>
         </Space>

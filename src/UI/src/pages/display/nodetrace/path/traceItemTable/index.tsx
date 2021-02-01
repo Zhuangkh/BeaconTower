@@ -7,46 +7,52 @@ import "./index.less"
 interface indexProps {
     nodeAlias: string;
     pathAlias: string | null;
+    onSelectTraceItem: (traceID: string) => void;
 }
 
-const pathTableColumns = [{
-    title: "TraceID",
-    width: "500px",
-    dataIndex: "traceID"
-}, {
-    title: "操作",
-    render: (item: string) => {
-        return <Button type="primary" shape="round">查看trace详情</Button>
-    }
-}];
 
-const pageSize = 4;
+
+const pageSize = 10;
 const index: FC<indexProps> = (props) => {
     if (props.pathAlias == null) { return <></> }
 
     const [data, setData] = useState<Array<any>>([]);
     const [pathPageIndex, setPathPageIndex] = useState<number>(1);
     const [totalData, setTotalData] = useState<number>(0);
-
+    const pathTableColumns = [{
+        title: "TraceID",
+        width: "500px",
+        dataIndex: "traceID"
+    }, {
+        title: "操作",
+        render: (item: any) => {
+            return <Button type="primary" shape="round" onClick={() => { 
+                props.onSelectTraceItem(item.traceID);
+            }}>查看trace详情</Button>
+        }
+    }];
 
     const fetch = async (currentIndex: number) => {
         if (props.pathAlias == null) return;
         let res = await GetTraceIDListByNodeAndPathAlias(props.nodeAlias, props.pathAlias, pageSize, currentIndex);
         if (res.code == ResponseCode.Success && res.data != undefined && res.data != null) {
             let resData = res.data;
+            let currentPageData: any = [];
             resData.forEach((element: string) => {
-                data.push({
+                currentPageData.push({
                     key: element,
                     traceID: element
                 });
             });
-            setData(res.data);
+            setData([...currentPageData]);
             setTotalData(res.total);
         }
     }
     useEffect(() => {
-        // fetch(0);
-    }, []);
+        setData([]);
+        setTotalData(0);
+        fetch(1);
+    }, [props.pathAlias]);
 
     return <Table size="small" bordered columns={pathTableColumns} dataSource={data}
         pagination={{

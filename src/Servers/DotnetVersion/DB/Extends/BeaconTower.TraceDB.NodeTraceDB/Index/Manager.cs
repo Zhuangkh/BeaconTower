@@ -46,7 +46,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
         {
             if (_pathIndexMap.ContainsKey(pathAlias))
             {
-                return _pathIndexMap[pathAlias].TraceIDList;
+                return _pathIndexMap[pathAlias].TraceIDList.Distinct().ToList();
             }
             return default(List<long>);
         }
@@ -57,7 +57,7 @@ namespace BeaconTower.TraceDB.NodeTraceDB.Index
             return _nodeTraceChannel.Writer.TryWrite(item);
         }
 
-        public int GetNodePathItemCount(long _,long pathAlias) => _pathIndexMap[pathAlias].TraceIDList.Count;
+        public int GetNodePathItemCount(long _,long pathAlias) => _pathIndexMap[pathAlias].TraceIDList.Distinct().Count();
             
     }
 }

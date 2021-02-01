@@ -51,7 +51,7 @@ const index: FC<indexProps> = (props) => {
         await Promise.all(allJob);
         setData([...tempData]);
     }
-    const fetch = async (currentIndex: number) => {
+    const fetch = async (currentIndex: number) => { 
         let res = await GetNodeAllPathInfo(props.nodeAlias, pageSize, currentIndex);
         if (res.code == ResponseCode.Success && res.data != undefined && res.data != null) {
             for (let index = 0; index < res.data.length; index++) {
@@ -65,7 +65,7 @@ const index: FC<indexProps> = (props) => {
         }
     }
     useEffect(() => {
-        fetch(0);
+        fetch(1);
     }, []);
 
     return <Table size="small" bordered columns={pathTableColumns} dataSource={data}
@@ -74,7 +74,7 @@ const index: FC<indexProps> = (props) => {
             total: pathTotalData,
             pageSize: pageSize,
             hideOnSinglePage: true,
-            onChange: (page) => {
+            onChange: (page) => { 
                 fetch(page);
                 setPathPageIndex(page);
             }

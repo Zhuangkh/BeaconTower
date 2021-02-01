@@ -3,6 +3,7 @@ using BeaconTower.TraceDB;
 using BeaconTower.TraceDB.NodeTraceDB.Index;
 using BeaconTower.Warehouse.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NodeTraceDBManager = BeaconTower.TraceDB.NodeTraceDB.DBManager;
@@ -63,7 +64,7 @@ namespace BeaconTower.Warehouse
             var pSize = pageSize ?? 3;
             var pIndex = pageIndex ?? 0;
             var res = _dbInstance.AllPathInfo.Where(item => item.NodeAliasName == nodeAlias).ToList();
-            return Success(res.Skip(pSize * (pIndex-1)).Take(pSize).ToList(), res.Count);
+            return Success(res.Skip(pSize * (pIndex - 1)).Take(pSize).ToList(), res.Count);
         }
 
         [HttpGet("nodes/alias({nodeAlias})/items/path/alias({pathAlias})/count")]
@@ -78,11 +79,16 @@ namespace BeaconTower.Warehouse
         [HttpGet("nodes/alias({nodeAlias})/items/path/alias({pathAlias})/items/traceID")]
         public Response<List<long>> GetTraceIDListByNodeAndPath(
            [FromRoute] long _,
-           [FromRoute] long pathAlias
+           [FromRoute] long pathAlias,
+            [FromQuery] int? pageSize,
+            [FromQuery] int? pageIndex
            )
         {
+            var pSize = pageSize ?? 3;
+            var pIndex = pageIndex ?? 0;
             var res = _dbInstance.GetTraceIDByPath(pathAlias);
-            return Success(res);
+            Console.WriteLine(pSize * (pIndex - 1));
+            return Success(res.Skip(pSize * (pIndex - 1)).Take(pSize).ToList(), res.Count);
         }
 
 

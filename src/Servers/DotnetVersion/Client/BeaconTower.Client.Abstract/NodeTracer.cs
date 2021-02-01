@@ -17,7 +17,7 @@ namespace BeaconTower.Client.Abstract
         private bool _alreadSendAfter = false;
         private readonly Stack<long> _methodStack = new Stack<long>();
 
-        public long TraceID { get; init; }
+        public long TraceID { get; set; }
         public string NodeID { get; set; }
         public NodeType Type { get; init; }
         public long TimeStamp { get; set; }

@@ -70,9 +70,9 @@ namespace BeaconTower.Client.ClassLibrary
         }
 
 
-        public NodeTracer CreateNodeTracer()
+        public NodeTracer CreateNodeTracer(long? traceID,string previewNodeID)
         {
-            return ServerManager.Instance.CreateNodeTracer();
+            return ServerManager.Instance.CreateNodeTracer(traceID, previewNodeID);
         }
     }
 }
