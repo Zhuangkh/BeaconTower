@@ -34,7 +34,7 @@ namespace BeaconTower.TraceDB.Root
         /// this db instance's trace item count
         /// <para>this method will provisionally calculate all data!</para>
         /// </summary>
-        public int TraceItemCount => _allBlocks.Sum(item => item.SliceCount);
+        public int TraceItemCount => _allBlocks.Sum(item => item.TraceItemCount);
         public string FolderPath { get; private set; }
         public string FolderName { get; private set; }
         public IList<long> AllTraceID

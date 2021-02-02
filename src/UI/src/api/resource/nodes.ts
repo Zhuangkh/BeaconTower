@@ -83,9 +83,9 @@ export const GetUnhandledItemCount = async (): Promise<Response<number>> => {
     return res;
 }
 
-export const GetAllNodeList = async (): Promise<Response<Array<NodeIDMapSummaryInfo>>> => {
+export const GetAllNodeList = async (pageSize: number, pageIndex: number): Promise<Response<Array<NodeIDMapSummaryInfo>>> => {
     let res: any;
-    await Instance.get(`${controllerPrefix}/nodes`).then((data: any) => {
+    await Instance.get(`${controllerPrefix}/nodes?pageSize=${pageSize}&pageIndex=${pageIndex}`).then((data: any) => {
         res = data;
         for (let index = 0; index < res.data.length; index++) {
             const item = res.data[index];

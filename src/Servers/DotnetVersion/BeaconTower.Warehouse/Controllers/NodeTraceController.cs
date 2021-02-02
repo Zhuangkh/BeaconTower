@@ -23,9 +23,13 @@ namespace BeaconTower.Warehouse
 
 
         [HttpGet("nodes")]
-        public Response<List<NodeIDMapSummaryInfo>> AllNodeInfo()
+        public Response<List<NodeIDMapSummaryInfo>> AllNodeInfo(
+            [FromQuery] int? pageSize,
+            [FromQuery] int? pageIndex)
         {
-            return Success(_dbInstance.AllNodeInfo);
+            var pSize = pageSize ?? 3;
+            var pIndex = pageIndex ?? 0;
+            return Success(_dbInstance.AllNodeInfo.Skip(pSize * (pIndex - 1)).Take(pSize).ToList(), _dbInstance.AllNodeInfo.Count);
         }
 
         [HttpGet("nodes/count")]
