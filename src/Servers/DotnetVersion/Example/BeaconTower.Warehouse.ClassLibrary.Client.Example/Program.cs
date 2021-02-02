@@ -33,7 +33,7 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
 
         public static void SendTrace(long? traceID, string path, string previousNodeID, int level,int childNum)
         {
-            if (level > 6)
+            if (level > 3)
             {
                 return;
             }
@@ -43,7 +43,7 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
             tracer1.Path = path;
             tracer1.QueryString = string.Empty;
             tracer1.BeforeNodeActiveAsync();
-            var childCount = new Random().Next(1, 10); 
+            var childCount = new Random().Next(1,10); 
             for (int i = 0; i < childCount; i++)
             {
                 SendTrace(tracer1.TraceID, $"{tracer1.Path}-{level}:child{i}", tracer1.NodeID, level + 1,i);
