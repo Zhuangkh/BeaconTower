@@ -11,7 +11,7 @@ const manSvg = require("../../../../assets/man.svg")
 
 interface MyGraphProps {
     data: NodeTraceItemResponse | null;
-    showTooltips: (x: number, y: number, data: NodeTraceItemResponse) => void;
+    showTooltips: (x: number, y: number, data: NodeTraceItemResponse, currentWidth: number, currentHeight: number) => void;
     hideTooltips: () => void;
 }
 const initOpt = {
@@ -48,14 +48,14 @@ const index: FC<MyGraphProps> = (props) => {
         const model = item.getModel();
         const point = graph.getCanvasByPoint(model.x, model.y);
         if (point != undefined) {
-            const y = point.y - model.size[1] * graph.getZoom() / 4;
-            const x = point.x - model.size[0] / 4;
+            const y = point.y -  32 * graph.getZoom() / 2;
+            const x = point.x -  32 * graph.getZoom() / 2;
             if (props.data == null) {
                 return;
             }
             var target = findItemObj(props.data, model.id);
             if (target == null) { return; }
-            props.showTooltips(x, y, target);
+            props.showTooltips(x, y, target, 32 * graph.getZoom(), 32 * graph.getZoom());
         }
 
     }
@@ -104,7 +104,6 @@ const index: FC<MyGraphProps> = (props) => {
             pushChildData(thisLoop, element);
         }
     }
-    console.log("render my graph")
     useEffect(() => {
         let data: TreeGraphData = {
             id: 'userNode', size: [32, 32], type: "image",

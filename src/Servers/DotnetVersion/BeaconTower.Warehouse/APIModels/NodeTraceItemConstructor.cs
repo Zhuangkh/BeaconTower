@@ -126,11 +126,5 @@ namespace BeaconTower.Warehouse.APIModels
             }
 
         }
-
-        private class NodePaire
-        {
-            public NodeTracer Begin { get; set; }
-            public NodeTracer End { get; set; }
-        }
     }
 }

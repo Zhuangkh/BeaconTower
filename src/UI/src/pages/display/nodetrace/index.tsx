@@ -1,7 +1,7 @@
-import { Button, PageHeader, Spin, Tooltip } from 'antd'
+import { Button, Descriptions, PageHeader, Popover, Spin, Tooltip } from 'antd'
 import React, { Component } from "react"
 import { RouteComponentProps, withRouter } from "react-router-dom"
-import { NodeIDMapSummaryInfo, NodeTraceItemResponse } from '../../../api/model/nodes'
+import { GetNodeTypeStr, NodeIDMapSummaryInfo, NodeTraceItemResponse } from '../../../api/model/nodes'
 import { GetNodeSummaryInfo, GetNodeTrace } from '../../../api/resource/nodes'
 import MyGraph from "./mygraph"
 import PathModal from "./path"
@@ -19,6 +19,8 @@ interface NodeTraceDisplayState {
     showItemTooltip: NodeTraceItemResponse | null;
     nodeX: number;
     nodeY: number;
+    nodeSizeWidth: number;
+    nodeSizeHeight: number;
 }
 
 class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplayState>{
@@ -32,7 +34,9 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             nodeInfo: undefined,
             showPathModel: false,
             currentTraceInfo: null,
-            showItemTooltip: null
+            showItemTooltip: null,
+            nodeSizeWidth: 32,
+            nodeSizeHeight: 32,
         }
     }
     fetchData = async () => {
@@ -54,6 +58,33 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
     componentDidMount() {
         this.fetchData();
     }
+
+    getPopoverInfo = () => {
+        if (this.state.showItemTooltip == null) { return <></>; }
+        let content = <Descriptions
+            title={`TraceID:${this.state.showItemTooltip.traceID} NodeID:${this.state.showItemTooltip.nodeID}`}
+            bordered
+            layout="vertical">
+            <Descriptions.Item label="请求路径" span={3}>{this.state.showItemTooltip.path}</Descriptions.Item>
+            <Descriptions.Item label="节点类型" span={2}>{GetNodeTypeStr(this.state.showItemTooltip.type)}</Descriptions.Item>
+            <Descriptions.Item label="总耗时">{this.state.showItemTooltip.useMS}ms</Descriptions.Item>
+            <Descriptions.Item label="请求时间" span={3}>{this.state.showItemTooltip.beginTime}至{this.state.showItemTooltip.endTime == null ? "未完成" : this.state.showItemTooltip.endTime} </Descriptions.Item>
+        </Descriptions>;
+        return <Popover overlayClassName={"node-trace-popover-overlay"} content={content}
+            getPopupContainer={() => document.getElementById("toolTipsDiv") as HTMLElement}
+            visible={true} >
+            <div id="toolTipsDiv" style={{
+                position: "fixed",
+                left: this.state.nodeX,
+                top: this.state.nodeY,
+                height: this.state.nodeSizeHeight,
+                width: this.state.nodeSizeWidth,
+                border: "1px solid #1293D7",
+                cursor: "default"
+            }} >　</div>
+        </Popover>
+    }
+
     render() {
         return <Spin spinning={this.state.loading} tip="加载中...">
             <PathModal show={this.state.showPathModel}
@@ -78,13 +109,14 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                     ]}
                 />
                 <MyGraph data={this.state.currentTraceInfo}
-                    showTooltips={(x: number, y: number, data: NodeTraceItemResponse) => {
+                    showTooltips={(x: number, y: number, data: NodeTraceItemResponse, width: number, height: number) => {
                         this.setState({
                             showItemTooltip: data,
                             nodeX: x,
-                            nodeY: y
+                            nodeY: y,
+                            nodeSizeWidth: width,
+                            nodeSizeHeight: height
                         });
-                        console.log(`x:${x} y:${y}`)
                     }}
 
                     hideTooltips={() => {
@@ -96,11 +128,11 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             </div>
             {
                 this.state.showItemTooltip != null ?
-                    <Tooltip visible={true} getPopupContainer={() => document.getElementById("toolTipsDiv") as HTMLElement} title={this.state.showItemTooltip.nodeID}>
-                        <div id="toolTipsDiv" style={{ position: "fixed", left: this.state.nodeX, top: this.state.nodeY }} >　</div>
-                    </Tooltip>
+                    this.getPopoverInfo()
                     : null
             }
+
+
         </Spin>
     }
 }

@@ -42,3 +42,23 @@ export enum NodeType {
     ClientApp = 5,
     Unset = 0xff,
 }
+
+export const GetNodeTypeStr = (type: NodeType): string => {
+    switch (type) {
+        case NodeType.WebServer:
+            return "Web服务";
+        case NodeType.MqConsumer:
+            return "MQ消费者";
+        case NodeType.Gateway:
+            return "网关";
+        case NodeType.AuthCentral:
+            return "权限中心";
+        case NodeType.ConsoleApp:
+            return "控制台应用";
+        case NodeType.ClientApp:
+            return "客户端应用";
+        case NodeType.Unset:
+        default:
+            return "未知";
+    }
+}
