@@ -48,8 +48,8 @@ const index: FC<MyGraphProps> = (props) => {
         const model = item.getModel();
         const point = graph.getCanvasByPoint(model.x, model.y);
         if (point != undefined) {
-            const y = point.y -  32 * graph.getZoom() / 2;
-            const x = point.x -  32 * graph.getZoom() / 2;
+            const y = point.y - 32 * graph.getZoom() / 2;
+            const x = point.x - 32 * graph.getZoom() / 2;
             if (props.data == null) {
                 return;
             }
@@ -120,6 +120,7 @@ const index: FC<MyGraphProps> = (props) => {
             container: g6Ref.current as HTMLElement,
             ...initOpt
         });
+        //console.log(data);
         graph.data(data);
         graph.render();
 

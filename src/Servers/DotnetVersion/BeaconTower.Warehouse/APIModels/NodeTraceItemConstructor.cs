@@ -41,18 +41,13 @@ namespace BeaconTower.Warehouse.APIModels
             }
             NodeTracer begin = null;
             NodeTracer end = null;
-            if (targetIndex.Count > 1)
+            if (targetIndex.Count > 0)
             {
                 begin = source[targetIndex[0]];
             }
             if (targetIndex.Count == 2)
             {
                 end = source[targetIndex[1]];
-            }
-            source.Remove(begin);
-            if (end != null)
-            {
-                source.Remove(end);
             }
             var root = new NodeTraceItemResponse()
             {
@@ -69,6 +64,11 @@ namespace BeaconTower.Warehouse.APIModels
             {
                 root.EndCustomData = end.CustomData;
                 root.EndTimeStamp = end.TimeStamp;
+            }
+            source.Remove(begin);
+            if (end != null)
+            {
+                source.Remove(end);
             }
             return root;
         }

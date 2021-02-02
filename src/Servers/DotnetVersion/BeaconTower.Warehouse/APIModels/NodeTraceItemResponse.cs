@@ -8,28 +8,8 @@ namespace BeaconTower.Warehouse.APIModels
 {
     public class NodeTraceItemResponse
     {
-        public NodeTraceItemResponse(/*NodeTracer begin, NodeTracer end*/)
-        {
-            //if (begin == null)
-            //{
-            //    throw new InvalidOperationException($"Parameter {nameof(begin)} is null object.");
-            //}
-            //this.TraceID = begin.TraceID;
-            //this.NodeID = begin.NodeID;
-            //this.Type = begin.Type;
-            //this.BeginTimeStamp = begin.TimeStamp;
-            //this.PreviousNodeID = begin.PreviousNodeID;
-            //this.Path = begin.Path;
-            //this.QueryString = begin.QueryString;
-            //if (begin.CustomData != null)
-            //{
-            //    this.BeginCustomData = begin.CustomData;
-            //}
-            //if (end != null)
-            //{
-            //    this.EndCustomData = end.CustomData ?? end.CustomData;
-            //    this.EndTimeStamp = end.TimeStamp;
-            //}
+        public NodeTraceItemResponse()
+        { 
         }
         public long TraceID { get; set; }
         public string NodeID { get; set; }
