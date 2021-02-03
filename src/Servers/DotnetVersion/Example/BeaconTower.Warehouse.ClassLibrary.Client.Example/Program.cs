@@ -1,10 +1,5 @@
-﻿using BeaconTower.Client.Abstract;
-using BeaconTower.Client.ClassLibrary;
-using BeaconTower.Client.Console;
-using BeaconTower.Client.Warehouse.Grpc;
-using Microsoft.Extensions.Configuration;
+﻿using BeaconTower.Client.ClassLibrary;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
@@ -23,7 +18,7 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
                 //while (true)
                 //{
                 var level = 0;
-                SendTrace(null, "Main", "", level,0);
+                SendTrace(null, "Main", "", level);
                 //}
             });
             Console.ReadLine();
@@ -31,22 +26,22 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
 
         }
 
-        public static void SendTrace(long? traceID, string path, string previousNodeID, int level,int childNum)
+        public static void SendTrace(long? traceID, string path, string previousNodeID, int level)
         {
             if (level > 3)
             {
                 return;
             }
             var tracer1 = TracerClient.Instance.CreateNodeTracer(traceID, previousNodeID);
-            tracer1.NodeID = $"Node{level}:{childNum}:{previousNodeID}";
+            tracer1.NodeID = $"Node{level}";
             tracer1.TimeStamp = DateTime.Now.Ticks;
             tracer1.Path = path;
             tracer1.QueryString = string.Empty;
             tracer1.BeforeNodeActiveAsync();
-            var childCount = new Random().Next(1,10); 
+            var childCount = new Random().Next(1, 10);
             for (int i = 0; i < childCount; i++)
             {
-                SendTrace(tracer1.TraceID, $"{tracer1.Path}-{level}:child{i}", tracer1.NodeID, level + 1,i);
+                SendTrace(tracer1.TraceID, $"{tracer1.Path}-{level}:child{i}", tracer1.NodeID, level + 1);
             }
             Task.Delay(new Random().Next(1, 100)).Wait();
             tracer1.TimeStamp = DateTime.Now.Ticks;

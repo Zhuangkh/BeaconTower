@@ -17,6 +17,7 @@ export interface PathMapSummaryInfo {
 }
 
 export interface NodeTraceItemResponse {
+    key:string;
     traceID: string;
     nodeID: string;
     type: NodeType;

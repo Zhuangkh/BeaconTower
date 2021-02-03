@@ -9,8 +9,10 @@ namespace BeaconTower.Warehouse.APIModels
     public class NodeTraceItemResponse
     {
         public NodeTraceItemResponse()
-        { 
+        {
         }
+
+        public string Key { get; } = Guid.NewGuid().ToString("N");
         public long TraceID { get; set; }
         public string NodeID { get; set; }
         public NodeType Type { get; init; }

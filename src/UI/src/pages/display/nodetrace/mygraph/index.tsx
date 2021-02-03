@@ -18,7 +18,7 @@ const initOpt = {
     width: 600,
     height: 400,
     maxZoom: 3,
-    minZoom: 1,
+    minZoom: 0.3,
     layout: {
         type: "compactBox",
         direction: 'LR',
@@ -65,13 +65,13 @@ const index: FC<MyGraphProps> = (props) => {
     const nodeClick = (item: any) => {
         console.log(item);
     }
-    const findItemObj = (data: NodeTraceItemResponse, nodeID: string): NodeTraceItemResponse | null => {
-        if (data.nodeID == nodeID) {
+    const findItemObj = (data: NodeTraceItemResponse, key: string): NodeTraceItemResponse | null => {
+        if (data.key == key) {
             return data;
         }
         for (let index = 0; index < data.nextNode.length; index++) {
             const element = data.nextNode[index];
-            var res = findItemObj(element, nodeID);
+            var res = findItemObj(element, key);
             if (res != null) {
                 return res;
             }
@@ -90,7 +90,7 @@ const index: FC<MyGraphProps> = (props) => {
                 break;
         }
         let thisLoop = {
-            id: `${data.nodeID}`,
+            id: `${data.key}`,
             size: [32, 32],
             type: "image",
             img: imgType,
