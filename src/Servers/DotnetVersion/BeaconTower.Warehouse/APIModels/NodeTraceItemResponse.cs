@@ -15,7 +15,7 @@ namespace BeaconTower.Warehouse.APIModels
         public string Key { get; } = Guid.NewGuid().ToString("N");
         public long TraceID { get; set; }
         public string NodeID { get; set; }
-        public NodeType Type { get; init; }
+        public NodeType Type { get; set; }
         public long BeginTimeStamp { get; set; }
         public DateTime BeginTime
         {

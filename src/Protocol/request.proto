@@ -9,22 +9,26 @@ import "enums.proto";
 message NodeActiveRequest {
   int64 TraceID=1;
   string NodeID = 2;
-  string PreviousNodeID =3;
-  NodeTypeEnum NodeType=4;
-  string Path=5;
-  string QueryString=6;
-  int64 TimeStamp=7;  
-  map<string,string> CustomData=8;
+  int64 EventID=3;
+  string PreviousNodeID =4;
+  NodeTypeEnum NodeType=5;
+  string Path=6;
+  string QueryString=7;
+  int64 TimeStamp=8;  
+  map<string,string> CustomData=9;
+  
 }
    
 message MethodActiveReuqest{
   int64 TraceID=1;
   string NodeID=2;
-  int64 MethodID=3;
-  int64 PreMethodID=4;
-  string MethodName=5;
-  int64 TimeStamp=6; 
-  map<string,string> CustomData=7;
+  int64 EventID=3;
+  int64 MethodEventID=4;
+  int64 MethodID=5;
+  int64 PreMethodID=6;
+  string MethodName=7;
+  int64 TimeStamp=8; 
+  map<string,string> CustomData=9;
 }
 
 message GetStateRequest{
@@ -32,9 +36,11 @@ message GetStateRequest{
 }
 
 message LogRequest{
-	int64 TraceID=1;
-	int64 TimeStamp=2;
-	string Message=3;
-	string MethodInfo=4;
-	map<string,string> CustomData=5;
+	int64 TraceID=1;	
+  int64 EventID=2;
+	int64 MethodEventID=3;
+	int64 TimeStamp=4;	
+	string Message=5;
+	string MethodInfo=6;
+	map<string,string> CustomData=7;
 }

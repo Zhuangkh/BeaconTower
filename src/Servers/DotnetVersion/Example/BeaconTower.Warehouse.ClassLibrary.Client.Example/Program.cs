@@ -39,10 +39,10 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
             tracer1.QueryString = string.Empty;
             tracer1.BeforeNodeActiveAsync();
             var childCount = new Random().Next(1, 10);
-            for (int i = 0; i < childCount; i++)
-            {
-                SendTrace(tracer1.TraceID, $"{tracer1.Path}-{level}:child{i}", tracer1.NodeID, level + 1);
-            }
+            //for (int i = 0; i < childCount; i++)
+            //{
+            //    SendTrace(tracer1.TraceID, $"{tracer1.Path}-{level}:child{i}", tracer1.NodeID, level + 1);
+            //}
             Task.Delay(new Random().Next(1, 100)).Wait();
             tracer1.TimeStamp = DateTime.Now.Ticks;
             tracer1.AfterNodeActivedAsync();

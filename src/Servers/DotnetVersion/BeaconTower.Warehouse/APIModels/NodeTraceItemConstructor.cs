@@ -18,11 +18,70 @@ namespace BeaconTower.Warehouse.APIModels
     {
         public static NodeTraceItemResponse ConstructData(List<NodeTracer> source)
         {
-            source = source.OrderBy(item => item.TimeStamp).ToList();
-            var root = ConstructRoot(source);
-            ConstructChildData(source, root);
-            return root;
+            if (source == null || source.Count == 0)
+            {
+                return null;
+            }
+            var orderDic = new Dictionary<string, List<NodeTracer>>();
+            for (int i = 0; i < source.Count; i++)
+            {
+                var item = source[i];
+                if (!orderDic.TryGetValue(item.PreviousNodeID, out var targetList))
+                {
+                    targetList = new List<NodeTracer>();
+                    orderDic.Add(item.PreviousNodeID ?? "", targetList);
+                }
+                targetList.Add(item);
+            }
+
+
+            return ConstructByData("", orderDic);
+
+
+            //source = source.OrderBy(item => item.TimeStamp).ToList();
+            //var root = ConstructRoot(source);
+            //ConstructChildData(source, root);
+            //return root;
         }
+
+        private static NodeTraceItemResponse ConstructByData(
+            string previousNodeID,
+            Dictionary<string, List<NodeTracer>> orderDic)
+        {
+            //var rootInfo = orderDic[previousNodeID].OrderBy(item => item.TimeStamp).ToList();
+            var groupData = orderDic[previousNodeID].GroupBy(item => item.EventID).ToList();
+
+            var i = 0;
+            return i == 0 ? null : null;
+            //for (int i = 0; i < groupData.Count; i++)
+            //{
+            //    var thisLoop=groupData[i];
+
+            //}
+
+
+            //var model = new NodeTraceItemResponse();
+            //if (data.Count > 0)
+            //{
+            //    var begin = data[0];
+            //    model.TraceID = begin.TraceID;
+            //    model.NodeID = begin.NodeID;
+            //    model.Path = begin.Path;
+            //    model.BeginCustomData = begin.CustomData;
+            //    model.BeginTimeStamp = begin.TimeStamp;
+            //    model.QueryString = begin.QueryString;
+            //    model.PreviousNodeID = string.Empty;
+            //    model.Type = begin.Type;
+            //}
+            //if (data.Count > 1)
+            //{
+            //    var end = data[1];
+            //    model.EndCustomData = end.CustomData;
+            //    model.EndTimeStamp = end.TimeStamp;
+            //}
+            //return model;
+        }
+
         //Todo: you can improve performance here...
         private static NodeTraceItemResponse ConstructRoot(List<NodeTracer> source)
         {

@@ -15,6 +15,8 @@ namespace BeaconTower.Client.Abstract
         private bool _alreadSendAfter = false;
         public long TraceID { get; init; }
         public string NodeID { get; init; } = string.Empty;
+        public long EventID { get; set; }
+        public long MethodEventID { get; set; } = LuanNiao.Core.IDGen.GetInstance().NextId();
         public long PreMethodID { get; init; }
         public long MethodID { get; init; }
         public long TimeStamp { get; internal set; }

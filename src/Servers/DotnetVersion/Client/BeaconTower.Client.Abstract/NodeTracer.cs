@@ -19,6 +19,7 @@ namespace BeaconTower.Client.Abstract
 
         public long TraceID { get; set; }
         public string NodeID { get; set; }
+        public long EventID { get; set; } = LuanNiao.Core.IDGen.GetInstance().NextId();
         public NodeType Type { get; init; }
         public long TimeStamp { get; set; }
         public string PreviousNodeID { get; set; } = string.Empty;

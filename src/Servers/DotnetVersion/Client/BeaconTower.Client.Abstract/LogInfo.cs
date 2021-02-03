@@ -10,6 +10,8 @@ namespace BeaconTower.Client.Abstract
             Level = level;
         }
         public LogLevel Level { get; private set; }
+        public long EventID { get; set; }
+        public long MethodEventID { get; set; }
         public long TraceID { get; set; } = LuanNiao.Core.IDGen.GetInstance().NextId();
         public string Message { get; set; }
         public long TimeStamp { get; } = DateTime.Now.Ticks;

@@ -27,6 +27,8 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"TraceID:{info.TraceID} ");
             builder.AppendLine($"MethodID:{info.MethodID} ");
             builder.AppendLine($"MethodName:{info.MethodName} ");
+            builder.AppendLine($"EventID:{info.EventID} ");
+            builder.AppendLine($"MethodEventID:{info.MethodEventID} ");
             builder.AppendLine($"PreMethodID:{info.PreMethodID} ");
             builder.AppendLine($"NodeID:{info.NodeID} ");
             builder.AppendLine($"TimeStamp:{info.TimeStamp} ");
@@ -51,6 +53,7 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"QueryString:{info.QueryString} ");
             builder.AppendLine($"Type:{(Enum.GetName(typeof(NodeType), info.Type))} ");
             builder.AppendLine($"NodeID:{info.NodeID} ");
+            builder.AppendLine($"EventID:{info.EventID} ");
             builder.AppendLine($"PreviousNodeID:{info.PreviousNodeID} ");
             builder.AppendLine($"TimeStamp:{info.TimeStamp} ");
             builder.AppendLine($"Time:{new DateTime(info.TimeStamp):yyyy-MM-dd HH:mm:ss:fff} ");
@@ -69,6 +72,8 @@ namespace BeaconTower.Client.Console
                 builder.Append("\r\n");
             }
             builder.AppendLine($"TraceID:{info.TraceID} ");
+            builder.AppendLine($"EventID:{info.EventID} ");
+            builder.AppendLine($"MethodEventID:{info.MethodEventID} ");
             builder.AppendLine($"Level:{Enum.GetName(typeof(LogLevel), info.Level)} ");
             builder.AppendLine($"Message:{info.Message} ");
             builder.AppendLine($"MethodInfo:{info.MethodInfo} ");
