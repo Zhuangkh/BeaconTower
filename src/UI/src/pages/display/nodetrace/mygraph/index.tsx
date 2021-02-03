@@ -9,16 +9,47 @@ const methodSvg = require("../../../../assets/method.svg")
 const manSvg = require("../../../../assets/man.svg")
 
 
+export interface MyGraphOperations {
+    closeAllNode: () => void;
+    expandAllNode: () => void;
+}
+
 interface MyGraphProps {
     data: NodeTraceItemResponse | null;
     showTooltips: (x: number, y: number, data: NodeTraceItemResponse, currentWidth: number, currentHeight: number) => void;
     hideTooltips: () => void;
+    onCreated: (operations: MyGraphOperations) => void;
 }
+
+
 const initOpt = {
     width: 600,
     height: 400,
     maxZoom: 3,
     minZoom: 0.3,
+    plugins: [new G6.ToolBar({
+        getContent: () => { 
+            return `
+            <ul>
+              <li code='add'>${webapiSvg}</li>
+              <li code='undo'>撤销</li>
+            </ul>
+          `
+        },
+        handleClick: (code: any, graph: any) => {
+            console.log(code);
+            // if (code === 'add') {
+            //     graph.addItem('node', {
+            //         id: 'node2',
+            //         label: 'node2',
+            //         x: 300,
+            //         y: 150
+            //     })
+            // } else if (code === 'undo') {
+            //     toolbar.undo()
+            // }
+        }
+    })],
     layout: {
         type: "compactBox",
         direction: 'LR',
@@ -37,6 +68,9 @@ const initOpt = {
         ],
     },
 }
+
+
+
 const index: FC<MyGraphProps> = (props) => {
     if (props.data == null) {
         return null;
@@ -61,9 +95,6 @@ const index: FC<MyGraphProps> = (props) => {
     }
     const nodeMouseLevel = () => {
         props.hideTooltips();
-    }
-    const nodeClick = (item: any) => {
-        console.log(item);
     }
     const findItemObj = (data: NodeTraceItemResponse, key: string): NodeTraceItemResponse | null => {
         if (data.key == key) {
@@ -97,13 +128,13 @@ const index: FC<MyGraphProps> = (props) => {
             label: data.nodeID,
             collapsed: true,
             children: []
-        }; 
-        data.switchCollapsedState = () => { 
-            const subData = graph.findDataById(data.key);            
+        };
+        data.switchCollapsedState = () => {
+            const subData = graph.findDataById(data.key);
             if (subData != null) {
                 subData.collapsed = !subData.collapsed;
                 graph.refreshLayout();
-            }  
+            }
         }
         target.children?.push(thisLoop);
         for (let index = 0; index < data.nextNode.length; index++) {
@@ -111,6 +142,17 @@ const index: FC<MyGraphProps> = (props) => {
             pushChildData(thisLoop, element);
         }
     }
+
+    const setCollapsed = (target: TreeGraphData, state: boolean) => {
+        target.collapsed = state;
+        if (target.children != null && target.children != undefined) {
+            for (let index = 0; index < target.children.length; index++) {
+                const element = target.children[index];
+                setCollapsed(element, state);
+            }
+        }
+    }
+
     useEffect(() => {
         let data: TreeGraphData = {
             id: 'userNode', size: [32, 32], type: "image",
@@ -137,10 +179,23 @@ const index: FC<MyGraphProps> = (props) => {
         graph.fitCenter();
         graph.on('node:mouseenter', nodeMouseEnter);
         graph.on('node:mouseleave', nodeMouseLevel);
-        graph.on('node:click', nodeClick);
+        props.onCreated({
+            closeAllNode: () => {
+                const root = graph.findDataById("userNode");
+                if (root == null) { return; }
+                setCollapsed(root, true);
+                graph.refreshLayout();
+            },
+            expandAllNode: () => {
+                const root = graph.findDataById("userNode");
+                if (root == null) { return; }
+                setCollapsed(root, false);
+                graph.refreshLayout();
+            }
+        });
     }, []);
 
-    return <div id="graph" ref={g6Ref} style={{ height: "100vh", width: "100%" }} />
+    return <div id="graph" className="my-graph" ref={g6Ref} style={{ height: "100vh", width: "100%" }} />
 
 }
 

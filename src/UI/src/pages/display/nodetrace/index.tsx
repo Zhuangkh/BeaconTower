@@ -1,9 +1,9 @@
-import { Button, Descriptions, PageHeader, Popover, Spin, Tooltip } from 'antd'
+import { Button, Descriptions, PageHeader, Popover, Spin } from 'antd'
 import React, { Component } from "react"
 import { RouteComponentProps, withRouter } from "react-router-dom"
 import { GetNodeTypeStr, NodeIDMapSummaryInfo, NodeTraceItemResponse } from '../../../api/model/nodes'
 import { GetNodeSummaryInfo, GetNodeTrace } from '../../../api/resource/nodes'
-import MyGraph from "./mygraph"
+import MyGraph, { MyGraphOperations } from "./mygraph"
 import PathModal from "./path"
 import "./index.less"
 
@@ -21,6 +21,7 @@ interface NodeTraceDisplayState {
     nodeY: number;
     nodeSizeWidth: number;
     nodeSizeHeight: number;
+    myGraphOperation: MyGraphOperations | null;
 }
 
 class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplayState>{
@@ -37,6 +38,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             showItemTooltip: null,
             nodeSizeWidth: 32,
             nodeSizeHeight: 32,
+            myGraphOperation: null
         }
     }
     fetchData = async () => {
@@ -69,7 +71,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             <Descriptions.Item label="请求时间区间" span={3}>{this.state.showItemTooltip.beginTime}至{this.state.showItemTooltip.endTime == null ? "未完成" : this.state.showItemTooltip.endTime} </Descriptions.Item>
             <Descriptions.Item label="节点类型">{GetNodeTypeStr(this.state.showItemTooltip.type)}</Descriptions.Item>
             <Descriptions.Item label="总耗时">{this.state.showItemTooltip.useMS}ms</Descriptions.Item>
-            <Descriptions.Item label="子节点个数">{this.state.showItemTooltip.nextNode.length}个</Descriptions.Item>
+            <Descriptions.Item label="直系节点">{this.state.showItemTooltip.nextNode.length}个</Descriptions.Item>
 
         </Descriptions>;
         return <Popover overlayClassName={"node-trace-popover-overlay"} content={content}
@@ -84,7 +86,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                     width: this.state.nodeSizeWidth,
                     cursor: "default"
                 }}
-                onClick={()=>{
+                onClick={() => {
                     this.state.showItemTooltip?.switchCollapsedState();
                 }}
             >　</div>
@@ -114,7 +116,13 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                         <Button key="2">Operation</Button>, ``
                     ]}
                 />
-                <MyGraph data={this.state.currentTraceInfo}
+                <MyGraph
+                    onCreated={(op) => {
+                        this.setState({
+                            myGraphOperation: op
+                        })
+                    }}
+                    data={this.state.currentTraceInfo}
                     showTooltips={(x: number, y: number, data: NodeTraceItemResponse, width: number, height: number) => {
                         this.setState({
                             showItemTooltip: data,
