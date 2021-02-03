@@ -9,7 +9,7 @@ namespace BeaconTower.Client.AspNetCore
     internal class NodeTracerMiddleware
     {
         private const string _traceIDHeadKey = "BeaconTower-TraceID";
-        private const string _previewsNodeIDHeadKey = "BeaconTower-NodeID-Previews";
+        private const string _previousEventHeadKey = "BeaconTower-NodeID-Previous-EventID";
         private readonly RequestDelegate _next;
         public NodeTracerMiddleware(RequestDelegate next)
         {
@@ -25,10 +25,12 @@ namespace BeaconTower.Client.AspNetCore
             {
                 tracer.TraceID = traceID;
             }
-            if (context.Request.Headers.TryGetValue(_previewsNodeIDHeadKey, out var previewNodeIDHeadInfo)
+            if (context.Request.Headers.TryGetValue(_previousEventHeadKey, out var previousEventIDHeadInfo)
+                &&
+                long.TryParse(previousEventIDHeadInfo, out var previousEventID)
               )
             {
-                tracer.PreviousNodeID = previewNodeIDHeadInfo;
+                tracer.PreviousEventID = previousEventID;
             }
             tracer.TimeStamp = DateTime.Now.Ticks;
             tracer.Path = context.Request.Path.ToString();

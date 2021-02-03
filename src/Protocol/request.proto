@@ -10,7 +10,7 @@ message NodeActiveRequest {
   int64 TraceID=1;
   string NodeID = 2;
   int64 EventID=3;
-  string PreviousNodeID =4;
+  int64 PreviousEventID =4;
   NodeTypeEnum NodeType=5;
   string Path=6;
   string QueryString=7;
@@ -25,7 +25,7 @@ message MethodActiveReuqest{
   int64 EventID=3;
   int64 MethodEventID=4;
   int64 MethodID=5;
-  int64 PreMethodID=6;
+  int64 PreMethodEventID=6;
   string MethodName=7;
   int64 TimeStamp=8; 
   map<string,string> CustomData=9;

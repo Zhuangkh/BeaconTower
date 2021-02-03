@@ -17,7 +17,7 @@ namespace BeaconTower.Client.Abstract
         public string NodeID { get; init; } = string.Empty;
         public long EventID { get; set; }
         public long MethodEventID { get; set; } = LuanNiao.Core.IDGen.GetInstance().NextId();
-        public long PreMethodID { get; init; }
+        public long PreMethodEventID { get; init; }
         public long MethodID { get; init; }
         public long TimeStamp { get; internal set; }
         public string MethodName { get; init; }

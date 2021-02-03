@@ -44,7 +44,7 @@ namespace BeaconTower.Client.Warehouse.Grpc
                 NodeID = item.NodeID,
                 MethodID = item.MethodID,
                 MethodName = item.MethodName,
-                PreMethodID = item.PreMethodID,
+                 PreMethodEventID = item.PreMethodEventID,
                 EventID = item.EventID,
                 MethodEventID = item.MethodEventID,
                 TimeStamp = item.TimeStamp,
@@ -63,7 +63,7 @@ namespace BeaconTower.Client.Warehouse.Grpc
             {
                 NodeID = item.NodeID,
                 NodeType = (NodeTypeEnum)item.Type,
-                PreviousNodeID = item.PreviousNodeID,
+                 PreviousEventID = item.PreviousEventID,
                 Path = item.Path,
                 EventID = item.EventID,
                 QueryString = item.QueryString,

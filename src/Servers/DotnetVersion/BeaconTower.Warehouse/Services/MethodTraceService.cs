@@ -11,7 +11,7 @@ namespace BeaconTower.Warehouse.Services
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"AfterMethodInvoked MethodName:{request.MethodName} {request.MethodID}  {request.PreMethodID}");
+                Console.WriteLine($"AfterMethodInvoked MethodName:{request.MethodName} {request.MethodID}  {request.PreMethodEventID}");
                 return new NullResponse();
             });
         }
@@ -19,7 +19,7 @@ namespace BeaconTower.Warehouse.Services
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"BeforMethodInvoke MethodName:{request.MethodName} {request.MethodID}  {request.PreMethodID}");
+                Console.WriteLine($"BeforMethodInvoke MethodName:{request.MethodName} {request.MethodID}  {request.PreMethodEventID}");
                 return new NullResponse();
             });
         }

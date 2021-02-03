@@ -29,7 +29,7 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"MethodName:{info.MethodName} ");
             builder.AppendLine($"EventID:{info.EventID} ");
             builder.AppendLine($"MethodEventID:{info.MethodEventID} ");
-            builder.AppendLine($"PreMethodID:{info.PreMethodID} ");
+            builder.AppendLine($"PreMethodEventID:{info.PreMethodEventID} ");
             builder.AppendLine($"NodeID:{info.NodeID} ");
             builder.AppendLine($"TimeStamp:{info.TimeStamp} ");
             builder.AppendLine($"Time:{new DateTime(info.TimeStamp):yyyy-MM-dd HH:mm:ss:fff} ");
@@ -54,7 +54,7 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"Type:{(Enum.GetName(typeof(NodeType), info.Type))} ");
             builder.AppendLine($"NodeID:{info.NodeID} ");
             builder.AppendLine($"EventID:{info.EventID} ");
-            builder.AppendLine($"PreviousNodeID:{info.PreviousNodeID} ");
+            builder.AppendLine($"PreviousEventID:{info.PreviousEventID} ");
             builder.AppendLine($"TimeStamp:{info.TimeStamp} ");
             builder.AppendLine($"Time:{new DateTime(info.TimeStamp):yyyy-MM-dd HH:mm:ss:fff} ");
             builder.AppendLine($"CustomData:{System.Text.Json.JsonSerializer.Serialize(info.CustomData)} ");

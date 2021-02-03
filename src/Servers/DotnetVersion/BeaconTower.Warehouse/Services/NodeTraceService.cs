@@ -1,6 +1,7 @@
 ﻿using BeaconTower.Client.Abstract;
 using BeaconTower.Protocol;
 using Grpc.Core;
+using System.Linq;
 using System.Threading.Tasks;
 using NodeTraceDBManager = BeaconTower.TraceDB.NodeTraceDB.DBManager;
 
@@ -21,12 +22,21 @@ namespace BeaconTower.Warehouse.Services
                 {
                     NodeID = request.NodeID,
                     Path = request.Path,
-                    PreviousNodeID = request.PreviousNodeID,
+                    PreviousEventID = request.PreviousEventID,
+                    EventID = request.EventID,
                     QueryString = request.QueryString,
                     TimeStamp = request.TimeStamp,
                     TraceID = request.TraceID,
                     Type = (NodeType)request.NodeType
                 };
+                if (request.CustomData != null)
+                {
+                    var keys = request.CustomData.Keys.ToArray();
+                    for (int i = 0; i < keys.Length; i++)
+                    {
+                        item.CustomData.Add(keys[i], request.CustomData[keys[i]]);
+                    }
+                }
                 _dbInstance.SaveItem(item);
                 return new NullResponse();
             });
@@ -39,12 +49,21 @@ namespace BeaconTower.Warehouse.Services
                 {
                     NodeID = request.NodeID,
                     Path = request.Path,
-                    PreviousNodeID = request.PreviousNodeID,
+                    PreviousEventID = request.PreviousEventID,
                     QueryString = request.QueryString,
                     TimeStamp = request.TimeStamp,
+                    EventID = request.EventID,
                     TraceID = request.TraceID,
                     Type = (NodeType)request.NodeType
                 };
+                if (request.CustomData != null)
+                {
+                    var keys = request.CustomData.Keys.ToArray();
+                    for (int i = 0; i < keys.Length; i++)
+                    {
+                        item.CustomData.Add(keys[i], request.CustomData[keys[i]]);
+                    }
+                }
                 _dbInstance.SaveItem(item);
                 return new NullResponse();
             });

@@ -22,7 +22,7 @@ namespace BeaconTower.Client.Abstract
         public long EventID { get; set; } = LuanNiao.Core.IDGen.GetInstance().NextId();
         public NodeType Type { get; init; }
         public long TimeStamp { get; set; }
-        public string PreviousNodeID { get; set; } = string.Empty;
+        public long PreviousEventID { get; set; }
         public string Path { get; set; } = string.Empty;
         public string QueryString { get; set; } = string.Empty;
         public Dictionary<string, string> CustomData { get; } = new Dictionary<string, string>();
@@ -38,23 +38,25 @@ namespace BeaconTower.Client.Abstract
             }
             throw new NotImplementedException();
         }
-        public MethodTracer CreateMethodTrace(string methodName)
+        public MethodTracer CreateMethodTrace(string methodName, long? methodID = null)
         {
             if (string.IsNullOrWhiteSpace(methodName))
             {
                 throw new InvalidOperationException($"Parameter:{nameof(methodName)} was null or empty");
             }
-            var thisMethodID = IDGen.GetInstance().NextId();
+            var thisMethodID = methodID ?? IDGen.GetInstance().NextId();
+            var thisMethodEventID = methodID ?? IDGen.GetInstance().NextId();
             var res = new MethodTracer()
             {
                 NodeID = NodeID,
                 TimeStamp = DateTime.Now.Ticks,
                 TraceID = this.TraceID,
                 MethodID = thisMethodID,
-                PreMethodID = _methodStack.Count == 0 ? 0 : _methodStack.Peek(),
+                MethodEventID = thisMethodEventID,
+                PreMethodEventID = _methodStack.Count == 0 ? 0 : _methodStack.Peek(),
                 MethodName = methodName
             };
-            _methodStack.Push(thisMethodID);
+            _methodStack.Push(thisMethodEventID);
             return res;
         }
 

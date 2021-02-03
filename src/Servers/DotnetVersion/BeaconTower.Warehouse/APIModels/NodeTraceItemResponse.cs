@@ -16,6 +16,7 @@ namespace BeaconTower.Warehouse.APIModels
         public long TraceID { get; set; }
         public string NodeID { get; set; }
         public NodeType Type { get; set; }
+        public long EventID { get; set; }
         public long BeginTimeStamp { get; set; }
         public DateTime BeginTime
         {

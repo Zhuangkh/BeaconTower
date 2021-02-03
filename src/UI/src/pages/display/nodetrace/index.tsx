@@ -66,9 +66,11 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             bordered
             layout="vertical">
             <Descriptions.Item label="请求路径" span={3}>{this.state.showItemTooltip.path}</Descriptions.Item>
-            <Descriptions.Item label="节点类型" span={2}>{GetNodeTypeStr(this.state.showItemTooltip.type)}</Descriptions.Item>
+            <Descriptions.Item label="请求时间区间" span={3}>{this.state.showItemTooltip.beginTime}至{this.state.showItemTooltip.endTime == null ? "未完成" : this.state.showItemTooltip.endTime} </Descriptions.Item>
+            <Descriptions.Item label="节点类型">{GetNodeTypeStr(this.state.showItemTooltip.type)}</Descriptions.Item>
             <Descriptions.Item label="总耗时">{this.state.showItemTooltip.useMS}ms</Descriptions.Item>
-            <Descriptions.Item label="请求时间" span={3}>{this.state.showItemTooltip.beginTime}至{this.state.showItemTooltip.endTime == null ? "未完成" : this.state.showItemTooltip.endTime} </Descriptions.Item>
+            <Descriptions.Item label="子节点个数">{this.state.showItemTooltip.nextNode.length}个</Descriptions.Item>
+
         </Descriptions>;
         return <Popover overlayClassName={"node-trace-popover-overlay"} content={content}
             getPopupContainer={() => document.getElementById("toolTipsDiv") as HTMLElement}

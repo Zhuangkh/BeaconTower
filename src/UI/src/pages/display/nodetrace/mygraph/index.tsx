@@ -119,8 +119,7 @@ const index: FC<MyGraphProps> = (props) => {
         graph = new G6.TreeGraph({
             container: g6Ref.current as HTMLElement,
             ...initOpt
-        });
-        //console.log(data);
+        }); 
         graph.data(data);
         graph.render();
 
