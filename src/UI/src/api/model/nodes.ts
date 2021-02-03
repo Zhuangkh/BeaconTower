@@ -17,7 +17,7 @@ export interface PathMapSummaryInfo {
 }
 
 export interface NodeTraceItemResponse {
-    key:string;
+    key: string;
     traceID: string;
     nodeID: string;
     type: NodeType;
@@ -32,6 +32,7 @@ export interface NodeTraceItemResponse {
     beginCustomData: any;
     endCustomData: any;
     nextNode: Array<NodeTraceItemResponse>;
+    switchCollapsedState: () => void; 
 }
 
 export enum NodeType {

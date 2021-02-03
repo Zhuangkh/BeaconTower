@@ -75,14 +75,19 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
         return <Popover overlayClassName={"node-trace-popover-overlay"} content={content}
             getPopupContainer={() => document.getElementById("toolTipsDiv") as HTMLElement}
             visible={true} >
-            <div id="toolTipsDiv" style={{
-                position: "fixed",
-                left: this.state.nodeX,
-                top: this.state.nodeY,
-                height: this.state.nodeSizeHeight,
-                width: this.state.nodeSizeWidth, 
-                cursor: "default"
-            }} >　</div>
+            <div id="toolTipsDiv"
+                style={{
+                    position: "fixed",
+                    left: this.state.nodeX,
+                    top: this.state.nodeY,
+                    height: this.state.nodeSizeHeight,
+                    width: this.state.nodeSizeWidth,
+                    cursor: "default"
+                }}
+                onClick={()=>{
+                    this.state.showItemTooltip?.switchCollapsedState();
+                }}
+            >　</div>
         </Popover>
     }
 

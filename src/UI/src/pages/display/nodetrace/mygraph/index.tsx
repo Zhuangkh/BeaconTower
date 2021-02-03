@@ -97,7 +97,14 @@ const index: FC<MyGraphProps> = (props) => {
             label: data.nodeID,
             collapsed: true,
             children: []
-        };
+        }; 
+        data.switchCollapsedState = () => { 
+            const subData = graph.findDataById(data.key);            
+            if (subData != null) {
+                subData.collapsed = !subData.collapsed;
+                graph.refreshLayout();
+            }  
+        }
         target.children?.push(thisLoop);
         for (let index = 0; index < data.nextNode.length; index++) {
             const element = data.nextNode[index];
