@@ -95,7 +95,7 @@ const index: FC<MyGraphProps> = (props) => {
             type: "image",
             img: imgType,
             label: data.nodeID,
-            collapsed: false,
+            collapsed: true,
             children: []
         };
         target.children?.push(thisLoop);
@@ -119,7 +119,7 @@ const index: FC<MyGraphProps> = (props) => {
         graph = new G6.TreeGraph({
             container: g6Ref.current as HTMLElement,
             ...initOpt
-        }); 
+        });
         graph.data(data);
         graph.render();
 

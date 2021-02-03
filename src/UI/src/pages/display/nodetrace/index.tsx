@@ -80,8 +80,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                 left: this.state.nodeX,
                 top: this.state.nodeY,
                 height: this.state.nodeSizeHeight,
-                width: this.state.nodeSizeWidth,
-                border: "1px solid #1293D7",
+                width: this.state.nodeSizeWidth, 
                 cursor: "default"
             }} >　</div>
         </Popover>
