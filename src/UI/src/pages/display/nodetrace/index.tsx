@@ -3,7 +3,7 @@ import React, { Component } from "react"
 import { RouteComponentProps, withRouter } from "react-router-dom"
 import { GetNodeTypeStr, NodeIDMapSummaryInfo, NodeTraceItemResponse } from '../../../api/model/nodes'
 import { GetNodeSummaryInfo, GetNodeTrace } from '../../../api/resource/nodes'
-import MyGraph, { MyGraphOperations } from "./mygraph"
+import MyGraph from "./mygraph"
 import PathModal from "./path"
 import "./index.less"
 
@@ -17,11 +17,11 @@ interface NodeTraceDisplayState {
     showPathModel: boolean;
     currentTraceInfo: NodeTraceItemResponse | null;
     showItemTooltip: NodeTraceItemResponse | null;
+    nodeCount: number;
     nodeX: number;
     nodeY: number;
     nodeSizeWidth: number;
     nodeSizeHeight: number;
-    myGraphOperation: MyGraphOperations | null;
 }
 
 class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplayState>{
@@ -32,13 +32,13 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             nodeX: 0,
             nodeY: 0,
             loading: true,
+            nodeCount: 0,
             nodeInfo: undefined,
             showPathModel: false,
             currentTraceInfo: null,
             showItemTooltip: null,
             nodeSizeWidth: 32,
             nodeSizeHeight: 32,
-            myGraphOperation: null
         }
     }
     fetchData = async () => {
@@ -70,9 +70,8 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             <Descriptions.Item label="请求路径" span={3}>{this.state.showItemTooltip.path}</Descriptions.Item>
             <Descriptions.Item label="请求时间区间" span={3}>{this.state.showItemTooltip.beginTime}至{this.state.showItemTooltip.endTime == null ? "未完成" : this.state.showItemTooltip.endTime} </Descriptions.Item>
             <Descriptions.Item label="节点类型">{GetNodeTypeStr(this.state.showItemTooltip.type)}</Descriptions.Item>
-            <Descriptions.Item label="总耗时">{this.state.showItemTooltip.useMS}ms</Descriptions.Item>
+            <Descriptions.Item label="总耗时(天:时:分:秒.秒的小数部分)">{this.state.showItemTooltip.duration}</Descriptions.Item>
             <Descriptions.Item label="直系节点">{this.state.showItemTooltip.nextNode.length}个</Descriptions.Item>
-
         </Descriptions>;
         return <Popover overlayClassName={"node-trace-popover-overlay"} content={content}
             getPopupContainer={() => document.getElementById("toolTipsDiv") as HTMLElement}
@@ -105,7 +104,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                 <PageHeader
                     ghost={false}
                     title={this.state.nodeInfo != undefined ? `${this.state.nodeInfo.orignalID}详情` : ""}
-                    subTitle="当前页面可以查阅该节点的具体详细信息"
+                    subTitle={this.state.currentTraceInfo == null ? "" : `当前展示的是请求TraceID为:${this.state.currentTraceInfo.traceID}的路径信息,共计追踪到${this.state.nodeCount}个节点信息`}
                     className="page-header"
                     extra={[
                         <Button key="3" onClick={() => {
@@ -117,9 +116,9 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                     ]}
                 />
                 <MyGraph
-                    onCreated={(op) => {
+                    onCreated={(nodeCount) => {
                         this.setState({
-                            myGraphOperation: op
+                            nodeCount: nodeCount
                         })
                     }}
                     data={this.state.currentTraceInfo}

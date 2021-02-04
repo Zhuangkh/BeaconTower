@@ -25,7 +25,7 @@ export interface NodeTraceItemResponse {
     beginTime: string;
     endTimeStamp: string | null;
     endTime: string | null;
-    useMS: number | null;
+    duration: string | null;
     previousNodeID: string;
     path: string;
     queryString: string;

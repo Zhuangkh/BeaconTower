@@ -34,7 +34,7 @@ namespace BeaconTower.Warehouse.APIModels
             }
         }
 
-        public int? UseMS
+        public string Duration
         {
             get
             {
@@ -42,7 +42,7 @@ namespace BeaconTower.Warehouse.APIModels
                 {
                     return null;
                 }
-                return (EndTime.Value - BeginTime).Milliseconds;
+                return (EndTime.Value - BeginTime).ToString("G");
             }
         }
         public string PreviousNodeID { get; set; } = string.Empty;

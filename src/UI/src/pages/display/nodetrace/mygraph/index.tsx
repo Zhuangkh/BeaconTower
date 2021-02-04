@@ -9,18 +9,26 @@ const methodSvg = require("../../../../assets/method.svg")
 const manSvg = require("../../../../assets/man.svg")
 
 
-export interface MyGraphOperations {
-    closeAllNode: () => void;
-    expandAllNode: () => void;
-}
 
 interface MyGraphProps {
     data: NodeTraceItemResponse | null;
     showTooltips: (x: number, y: number, data: NodeTraceItemResponse, currentWidth: number, currentHeight: number) => void;
     hideTooltips: () => void;
-    onCreated: (operations: MyGraphOperations) => void;
+    onCreated: (nodeCount: number) => void;
 }
 
+const setCollapsed = (target: TreeGraphData, state: boolean) => {
+    if (target.id != "userNode") {
+        target.collapsed = state;
+    }
+
+    if (target.children != null && target.children != undefined) {
+        for (let index = 0; index < target.children.length; index++) {
+            const element = target.children[index];
+            setCollapsed(element, state);
+        }
+    }
+}
 
 const initOpt = {
     width: 600,
@@ -28,26 +36,23 @@ const initOpt = {
     maxZoom: 3,
     minZoom: 0.3,
     plugins: [new G6.ToolBar({
-        getContent: () => { 
+        getContent: () => {
             return `
             <ul>
-              <li code='add'>${webapiSvg}</li>
-              <li code='undo'>撤销</li>
+              <li code='fold' title='折叠所有'><svg viewBox="64 64 896 896" focusable="false" data-icon="menu-fold" width="28px" height="28px" fill="currentColor" aria-hidden="true"><path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 000 13.8z"></path></svg></li>
+              <li code='unfold' title='展开所有'><svg viewBox="64 64 896 896" focusable="false" data-icon="menu-unfold" width="28px" height="28px" fill="currentColor" aria-hidden="true"><path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 000-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0014.4 7z"></path></svg></li>
             </ul>
           `
         },
-        handleClick: (code: any, graph: any) => {
-            console.log(code);
-            // if (code === 'add') {
-            //     graph.addItem('node', {
-            //         id: 'node2',
-            //         label: 'node2',
-            //         x: 300,
-            //         y: 150
-            //     })
-            // } else if (code === 'undo') {
-            //     toolbar.undo()
-            // }
+        handleClick: (code: any, graph: TreeGraph) => {
+            const root = graph.findDataById("userNode");
+            if (root == null) { return; }
+            if (code === 'unfold') {
+                setCollapsed(root, false);
+            } else if (code === 'fold') {
+                setCollapsed(root, true);
+            }
+            graph.refreshLayout();
         }
     })],
     layout: {
@@ -77,6 +82,7 @@ const index: FC<MyGraphProps> = (props) => {
     }
     const g6Ref = React.useRef<any>()
     let graph: TreeGraph;
+    let nodeCount: number = 0;
     const nodeMouseEnter = (evt: any) => {
         const { item } = evt
         const model = item.getModel();
@@ -111,6 +117,7 @@ const index: FC<MyGraphProps> = (props) => {
     }
 
     const pushChildData = (target: TreeGraphData, data: NodeTraceItemResponse) => {
+        nodeCount++;
         let imgType: any = manSvg.default;
         switch (data.type) {
             case NodeType.WebServer:
@@ -143,15 +150,6 @@ const index: FC<MyGraphProps> = (props) => {
         }
     }
 
-    const setCollapsed = (target: TreeGraphData, state: boolean) => {
-        target.collapsed = state;
-        if (target.children != null && target.children != undefined) {
-            for (let index = 0; index < target.children.length; index++) {
-                const element = target.children[index];
-                setCollapsed(element, state);
-            }
-        }
-    }
 
     useEffect(() => {
         let data: TreeGraphData = {
@@ -179,20 +177,7 @@ const index: FC<MyGraphProps> = (props) => {
         graph.fitCenter();
         graph.on('node:mouseenter', nodeMouseEnter);
         graph.on('node:mouseleave', nodeMouseLevel);
-        props.onCreated({
-            closeAllNode: () => {
-                const root = graph.findDataById("userNode");
-                if (root == null) { return; }
-                setCollapsed(root, true);
-                graph.refreshLayout();
-            },
-            expandAllNode: () => {
-                const root = graph.findDataById("userNode");
-                if (root == null) { return; }
-                setCollapsed(root, false);
-                graph.refreshLayout();
-            }
-        });
+        props.onCreated(nodeCount);
     }, []);
 
     return <div id="graph" className="my-graph" ref={g6Ref} style={{ height: "100vh", width: "100%" }} />
