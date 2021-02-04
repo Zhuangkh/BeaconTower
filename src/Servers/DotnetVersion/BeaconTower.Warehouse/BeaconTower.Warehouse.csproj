@@ -10,6 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\DB\Extends\BeaconTower.TraceDB.MethodTraceDB\BeaconTower.TraceDB.MethodTraceDB.csproj" />
         <ProjectReference Include="..\DB\Extends\BeaconTower.TraceDB.NodeTraceDB\BeaconTower.TraceDB.NodeTraceDB.csproj" />
     </ItemGroup>
 

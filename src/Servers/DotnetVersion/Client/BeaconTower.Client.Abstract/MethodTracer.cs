@@ -8,22 +8,22 @@ namespace BeaconTower.Client.Abstract
     public sealed class MethodTracer : IDisposable, IUseLNJsonExtends
     {
 
-        internal MethodTracer()
+        public MethodTracer()
         {
         }
 
 
         private bool _alreadSendAfter = false;
-        public long TraceID { get; init; }
-        public string NodeID { get; init; } = string.Empty;
+        public long TraceID { get; set; }
+        public string NodeID { get; set; } = string.Empty;
         public long EventID { get; set; }
         public long MethodEventID { get; set; } = LuanNiao.Core.IDGen.GetInstance().NextId();
-        public long PreMethodEventID { get; init; }
-        public long MethodID { get; init; }
-        public long TimeStamp { get; internal set; }
-        public string MethodName { get; init; }
-        public string FileName { get; init; }
-        public int LineNumber { get; init; } 
+        public long PreMethodEventID { get; set; }
+        public long MethodID { get; set; }
+        public long TimeStamp { get;  set; }
+        public string MethodName { get; set; }
+        public string FileName { get; set; }
+        public int LineNumber { get; set; } 
         public Dictionary<string, string> CustomData { get; } = new Dictionary<string, string>();
 
 

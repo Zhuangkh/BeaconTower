@@ -1,19 +1,18 @@
-﻿using BeaconTower.TraceDB;
-using BeaconTower.TraceDB.NodeTraceDB;
+﻿using BeaconTower.TraceDB; 
 using BeaconTower.Warehouse.Services;
 using LuanNiao.JsonConverterExtends;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+
+using NodeDB = BeaconTower.TraceDB.NodeTraceDB.DBManager;
+using MethodDB = BeaconTower.TraceDB.MethodTraceDB.DBManager;
 
 namespace BeaconTower.Warehouse
 {
@@ -21,10 +20,15 @@ namespace BeaconTower.Warehouse
     {
         public Startup(IConfiguration configuration)
         {
-            DBManager.Instance.RegistNodeTraceDB(
+            NodeDB.Instance.RegistNodeTraceDB(
                    "Test"
                    , (new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName)
-                  ).StartServer();
+                  );
+            MethodDB.Instance.RegistNodeTraceDB("Test"
+                   , (new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName)
+                );
+
+            NodeDB.Instance.StartServer();
             Configuration = configuration;
         }
         public IConfiguration Configuration { get; }
@@ -34,7 +38,8 @@ namespace BeaconTower.Warehouse
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton(DataBase.Instance);
-            services.AddSingleton(DBManager.Instance);
+            services.AddSingleton(NodeDB.Instance);
+            services.AddSingleton(MethodDB.Instance);
             services.AddControllers().AddJsonOptions((opt) =>
             {
                 opt.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
@@ -65,7 +70,7 @@ namespace BeaconTower.Warehouse
                 endpoints.MapGrpcService<MethodTraceService>();
                 endpoints.MapGrpcService<NodeTraceService>();
                 endpoints.MapControllers();
-            }); 
+            });
 #if !DEBUG
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -75,7 +80,7 @@ namespace BeaconTower.Warehouse
             });
 #endif
             app.UseSpa(spa =>
-            { 
+            {
 #if DEBUG
                 spa.UseProxyToSpaDevelopmentServer("http://127.0.0.1:8081");
 #else 

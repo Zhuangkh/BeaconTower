@@ -58,14 +58,11 @@ namespace BeaconTower.TraceDB
                     return;
                 }
                 var dbInitList = new Task[_dbRootPool.Count];
-                for (int i = 0; i < _dbRootPool.Count; i++)
-                {
-
-                }
+             
                 var index = 0;
                 foreach (var item in _dbRootPool)
                 {
-                    dbInitList[index] = Task.Run(() =>
+                    dbInitList[index++] = Task.Run(() =>
                     {
                         item.Value.Init();
                     });

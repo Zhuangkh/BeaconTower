@@ -25,9 +25,9 @@ namespace BeaconTower.TraceDB.MethodTraceDB
            , string folderPath
            , string dbFolder = Constants.SourceDBFolder)
         {
-            _alias = projectName;
+            _alias = $"{projectName}{Constants.Suffix}";
             _sourceFolder = Path.Combine(folderPath
-                , $"{projectName}{Constants.Suffix}");
+                , _alias);
             _dbFolder = dbFolder;
             _indexManager = new IndexManager(_sourceFolder);
             _dbRoot = DataBase.Instance.RegistDB(_alias
