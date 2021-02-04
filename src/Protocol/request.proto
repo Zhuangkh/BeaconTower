@@ -27,8 +27,10 @@ message MethodActiveReuqest{
   int64 MethodID=5;
   int64 PreMethodEventID=6;
   string MethodName=7;
-  int64 TimeStamp=8; 
-  map<string,string> CustomData=9;
+  string FileName=8;
+  int32 LineNumber=9;
+  int64 TimeStamp=10; 
+  map<string,string> CustomData=11;
 }
 
 message GetStateRequest{

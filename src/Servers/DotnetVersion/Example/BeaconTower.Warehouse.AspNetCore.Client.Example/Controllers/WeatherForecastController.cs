@@ -27,7 +27,7 @@ namespace BeaconTower.Warehouse.AspNetCore.Client.Example.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            using var method = NodeTracer.CreateMethodTrace($"{nameof(WeatherForecastController)}.{nameof(Get)}");
+            using var method = NodeTracer.CreateMethodTrace(123);
 
             method.BeforMethodInvokeAsync();
             Console.WriteLine($"Get:{NodeTracer.TraceID}");
@@ -44,7 +44,7 @@ namespace BeaconTower.Warehouse.AspNetCore.Client.Example.Controllers
 
         private void Method1()
         {
-            using var method = NodeTracer.CreateMethodTrace($"{nameof(WeatherForecastController)}.{nameof(Method1)}");
+            using var method = NodeTracer.CreateMethodTrace(321);
 
             method.BeforMethodInvokeAsync();
             Console.WriteLine($"Method1:{NodeTracer.TraceID}");

@@ -30,6 +30,7 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"EventID:{info.EventID} ");
             builder.AppendLine($"MethodEventID:{info.MethodEventID} ");
             builder.AppendLine($"PreMethodEventID:{info.PreMethodEventID} ");
+            builder.AppendLine($"FileName:{info.FileName} LineNumber:{info.LineNumber} "); 
             builder.AppendLine($"NodeID:{info.NodeID} ");
             builder.AppendLine($"TimeStamp:{info.TimeStamp} ");
             builder.AppendLine($"Time:{new DateTime(info.TimeStamp):yyyy-MM-dd HH:mm:ss:fff} ");

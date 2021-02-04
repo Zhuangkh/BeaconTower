@@ -1,14 +1,17 @@
 ﻿using BeaconTower.Client.Abstract;
-using BeaconTower.TraceDB.NodeTraceDB.Common;
-using BeaconTower.TraceDB.NodeTraceDB.Index;
+using BeaconTower.TraceDB.MethodTraceDB.Common;
 using LuanNiao.JsonConverterExtends;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using DBRoot = BeaconTower.TraceDB.Root.Manager;
-using IndexManager = BeaconTower.TraceDB.NodeTraceDB.Index.Manager;
+using IndexManager = BeaconTower.TraceDB.MethodTraceDB.Index.Manager;
 
-namespace BeaconTower.TraceDB.NodeTraceDB
+namespace BeaconTower.TraceDB.MethodTraceDB
 {
+    /// <summary>
+    /// Method的DB目前就做一个壳子,用于未来扩展好了呀~~~ヾ(。￣□￣)ﾂ゜゜゜
+    /// </summary>
     public class DBManager
     {
         public static readonly DBManager Instance = new();
@@ -16,12 +19,11 @@ namespace BeaconTower.TraceDB.NodeTraceDB
         private string _dbFolder = "";
         private string _alias = "";
         private DBRoot _dbRoot;
-
         private IndexManager _indexManager;
 
         public DBManager RegistNodeTraceDB(string projectName
-            , string folderPath
-            , string dbFolder = Constants.SourceDBFolder)
+           , string folderPath
+           , string dbFolder = Constants.SourceDBFolder)
         {
             _alias = projectName;
             _sourceFolder = Path.Combine(folderPath
@@ -40,7 +42,6 @@ namespace BeaconTower.TraceDB.NodeTraceDB
             _indexManager.StartServer();
         }
 
-
         public string Alias => _alias;
         public int UnhandledItemCount => _dbRoot.UnhandledItemCount;
         public bool State => _dbRoot.IsRunning;
@@ -49,66 +50,34 @@ namespace BeaconTower.TraceDB.NodeTraceDB
         public int SliceCount => _dbRoot.SliceCount;
         public int BlockCount => _dbRoot.BlockCount;
         public int TraceItemCount => _dbRoot.TraceItemCount;
-
-        public List<NodeIDMapSummaryInfo> AllNodeInfo => _indexManager.AllNodeID;
-        public int NodeCount => _indexManager.AllNodeID.Count;
-
-        public List<long> NodeTraceIDList(NodeIDMapSummaryInfo nodeInfo)
-        {
-            if (nodeInfo == null)
-            {
-                return default(List<long>);
-            }
-            return _indexManager.NodeTraceIDList(nodeInfo);
-        }
-        public List<long> GetTraceIDByPath(long pathAlias)
-        {
-            return _indexManager.PathTraceIDList(pathAlias);
-        }
-        public int NodeTraceItemCount(NodeIDMapSummaryInfo nodeInfo)
-        {
-            if (nodeInfo == null)
-            {
-                return 0;
-            }
-            return _indexManager.NodeTraceItemCount(nodeInfo);
-        }
-
-        public List<PathMapSummaryInfo> AllPathInfo => _indexManager.AllPathInfo;
-
-        public int GetNodePathItemCount(long nodeAlias, long pathAlias)
-        {
-            return _indexManager.GetNodePathItemCount(nodeAlias, pathAlias);
-        }
-
-
-        public bool SaveItem(NodeTracer item)
+        public bool SaveItem(MethodTracer item)
         {
             if (item == null)
             {
                 return false;
             }
-            if (_indexManager.TrySaveItem(item))
-            {
-                return _dbRoot.SaveItem(item.TraceID, item.TimeStamp, item.GetBytes());
-            }
-            return false;
+            //if (_indexManager.TrySaveItem(item))
+            //{
+            //    return _dbRoot.SaveItem(item.TraceID, item.TimeStamp, item.GetBytes());
+            //}
+            //return false;
+            return _dbRoot.SaveItem(item.TraceID, item.TimeStamp, item.GetBytes());
         }
 
-        public bool TryGetNodeTraceItem(long traceID, out List<NodeTracer> nodeTracers)
+        public bool TryGetMethodTraceItem(long traceID, out List<MethodTracer> nodeTracers)
         {
-            nodeTracers = new List<NodeTracer>();
+            nodeTracers = new List<MethodTracer>();
             if (_dbRoot.TryGetItem(traceID, out var items))
             {
                 for (int i = 0; i < items.Count; i++)
                 {
-                    nodeTracers.Add(items[i].Data.GetObject<NodeTracer>());
+                    nodeTracers.Add(items[i].Data.GetObject<MethodTracer>());
                 }
                 return true;
             }
             return false;
         }
-        public bool TryGetNodeTraceItemSummary(long traceID, out List<TraceItemSummary> data)
+        public bool TryGetMethodTraceItemSummary(long traceID, out List<TraceItemSummary> data)
         {
             data = null;
             if (_dbRoot.TryGetItemMetadata(traceID, out var items))
@@ -125,5 +94,6 @@ namespace BeaconTower.TraceDB.NodeTraceDB
         {
             return _dbRoot.TryGetItem(traceID, out traceItems);
         }
+
     }
 }

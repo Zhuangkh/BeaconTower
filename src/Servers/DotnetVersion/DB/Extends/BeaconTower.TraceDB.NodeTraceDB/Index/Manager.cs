@@ -10,6 +10,9 @@ using NodeIDIndexHandler = BeaconTower.TraceDB.NodeTraceDB.Index.NodeIndex.Handl
 
 namespace BeaconTower.TraceDB.NodeTraceDB.Index
 {
+    /// <summary>
+    /// node id index file can merge into single file, current version there has too many file handle
+    /// </summary>
     internal partial class Manager
     {
         public Manager(string sourceFolder)

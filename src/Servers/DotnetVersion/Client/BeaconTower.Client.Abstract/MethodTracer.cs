@@ -1,10 +1,11 @@
-﻿using System;
+﻿using LuanNiao.JsonConverterExtends;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BeaconTower.Client.Abstract
 {
-    public sealed class MethodTracer : IDisposable
+    public sealed class MethodTracer : IDisposable, IUseLNJsonExtends
     {
 
         internal MethodTracer()
@@ -21,6 +22,8 @@ namespace BeaconTower.Client.Abstract
         public long MethodID { get; init; }
         public long TimeStamp { get; internal set; }
         public string MethodName { get; init; }
+        public string FileName { get; init; }
+        public int LineNumber { get; init; } 
         public Dictionary<string, string> CustomData { get; } = new Dictionary<string, string>();
 
 

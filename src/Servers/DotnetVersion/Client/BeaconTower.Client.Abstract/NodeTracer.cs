@@ -2,6 +2,8 @@
 using LuanNiao.JsonConverterExtends;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace BeaconTower.Client.Abstract
@@ -38,21 +40,29 @@ namespace BeaconTower.Client.Abstract
             }
             throw new NotImplementedException();
         }
-        public MethodTracer CreateMethodTrace(string methodName, long? methodID = null)
+
+        public MethodTracer CreateMethodTrace(
+             long methodID,
+             long? methodEventID = null,
+             [CallerMemberName] string methodName = "",
+             [CallerFilePath] string sourceFilePath = "",
+             [CallerLineNumber] int sourceLineNumber = 0)
         {
             if (string.IsNullOrWhiteSpace(methodName))
             {
                 throw new InvalidOperationException($"Parameter:{nameof(methodName)} was null or empty");
             }
-            var thisMethodID = methodID ?? IDGen.GetInstance().NextId();
-            var thisMethodEventID = methodID ?? IDGen.GetInstance().NextId();
+            var thisMethodEventID = methodEventID ?? IDGen.GetInstance().NextId();
             var res = new MethodTracer()
             {
                 NodeID = NodeID,
                 TimeStamp = DateTime.Now.Ticks,
                 TraceID = this.TraceID,
-                MethodID = thisMethodID,
+                MethodID = methodID,
+                EventID = EventID,
                 MethodEventID = thisMethodEventID,
+                FileName = sourceFilePath == null ? "" : sourceFilePath.Split("\\").Last(),
+                LineNumber = sourceLineNumber,
                 PreMethodEventID = _methodStack.Count == 0 ? 0 : _methodStack.Peek(),
                 MethodName = methodName
             };
