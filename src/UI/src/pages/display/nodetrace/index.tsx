@@ -3,7 +3,7 @@ import React, { Component } from "react"
 import { RouteComponentProps, withRouter } from "react-router-dom"
 import { NodeIDMapSummaryInfo, NodeTraceItemResponse } from '../../../api/model/nodes'
 import { GetNodeSummaryInfo, GetNodeTrace } from '../../../api/resource/nodes'
-import MyGraph from "./mygraph"
+import MyGraph from "./nodeTraceTreeGraph"
 import ItemPopover from "./itemPopover"
 import PathModal from "./path"
 import MethodDrawer from "./methodDrawer"
