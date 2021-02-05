@@ -13,7 +13,7 @@ const manSvg = require("../../../../assets/man.svg")
 interface MyGraphProps {
     data: NodeTraceItemResponse | null;
     showTooltips: (x: number, y: number, data: NodeTraceItemResponse, currentWidth: number, currentHeight: number) => void;
-    hideTooltips: () => void;
+    hideTooltips?: () => void;
     onCreated: (nodeCount: number) => void;
 }
 
@@ -100,7 +100,7 @@ const index: FC<MyGraphProps> = (props) => {
 
     }
     const nodeMouseLevel = () => {
-        props.hideTooltips();
+        props.hideTooltips?.();
     }
     const findItemObj = (data: NodeTraceItemResponse, key: string): NodeTraceItemResponse | null => {
         if (data.key == key) {

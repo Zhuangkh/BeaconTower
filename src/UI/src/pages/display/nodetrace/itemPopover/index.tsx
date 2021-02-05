@@ -1,6 +1,7 @@
 import { Button, Descriptions, Popover, Space } from "antd";
-import React, { FC, useEffect, useState } from "react"
-import { GetNodeTypeStr, NodeIDMapSummaryInfo, NodeTraceItemResponse } from '../../../../api/model/nodes'
+import React, { FC } from "react"
+import { GetNodeTypeStr, NodeTraceItemResponse } from '../../../../api/model/nodes'
+import { CloseOutlined } from "@ant-design/icons"
 
 
 interface indexProps {
@@ -9,7 +10,9 @@ interface indexProps {
     nodeY: number;
     nodeSizeHeight: number;
     nodeSizeWidth: number;
+    showClose?: boolean;
     onShowMethodClicked?: (eventID: string) => void;
+    onCloseClicked?: () => void;
 }
 
 const index: FC<indexProps> = (props) => {
@@ -18,11 +21,22 @@ const index: FC<indexProps> = (props) => {
         title={`节点:${props.data.nodeID} 事件ID:${props.data.eventID}`}
         bordered
         layout="vertical"
-        extra={<Space><Button shape="round" onClick={() => {
-            if (props.onShowMethodClicked != null && props.onShowMethodClicked != undefined) {
-                props.onShowMethodClicked(props.data?.eventID as string);
-            }
-        }}>节点函数</Button></Space>}
+        extra={<Space>
+            <Button shape="round" onClick={() => {
+                if (props.onShowMethodClicked != null && props.onShowMethodClicked != undefined) {
+                    props.onShowMethodClicked(props.data?.eventID as string);
+                }
+            }}>节点函数</Button>
+            {props.showClose === true ?
+                <Button
+                    size="small"
+                    danger
+                    icon={<CloseOutlined />}
+                    shape="circle"
+                    type="dashed"
+                    onClick={() => { props.onCloseClicked?.(); }} />
+                : null}
+        </Space>}
     >
         <Descriptions.Item label="请求路径" span={3}>{props.data.path}</Descriptions.Item>
         <Descriptions.Item label="请求时间区间" span={3}>{props.data.beginTime}至{props.data.endTime == null ? "未完成" : props.data.endTime} </Descriptions.Item>

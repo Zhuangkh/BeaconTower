@@ -106,15 +106,11 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                             nodeSizeHeight: height
                         });
                     }}
-
-                    hideTooltips={() => {
-                        this.setState({
-                            showItemTooltip: null,
-                        });
-                    }}
                 />
             </div>
             <ItemPopover
+                showClose={true}
+                onCloseClicked={() => { this.setState({ showItemTooltip: null }) }}
                 data={this.state.showItemTooltip}
                 nodeX={this.state.nodeX}
                 nodeY={this.state.nodeY}
