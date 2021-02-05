@@ -24,6 +24,7 @@ interface NodeTraceDisplayState {
     nodeY: number;
     nodeSizeWidth: number;
     nodeSizeHeight: number;
+    eventID: string | null;
 }
 
 class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplayState>{
@@ -41,6 +42,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             showItemTooltip: null,
             nodeSizeWidth: 32,
             nodeSizeHeight: 32,
+            eventID: null
         }
     }
     fetchData = async () => {
@@ -118,8 +120,15 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                 nodeY={this.state.nodeY}
                 nodeSizeHeight={this.state.nodeSizeHeight}
                 nodeSizeWidth={this.state.nodeSizeWidth}
+                onShowMethodClicked={(eventID) => {
+                    this.setState({ eventID: eventID });
+                }}
             />
-            <MethodDrawer />
+            <MethodDrawer eventID={this.state.eventID} onClose={() => {
+                this.setState({
+                    eventID: null
+                })
+            }} />
 
         </Spin>
     }

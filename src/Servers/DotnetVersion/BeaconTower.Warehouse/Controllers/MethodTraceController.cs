@@ -1,5 +1,8 @@
-﻿using BeaconTower.Warehouse.Controllers;
+﻿using BeaconTower.Warehouse.APIModels;
+using BeaconTower.Warehouse.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using MethodTraceDBManager = BeaconTower.TraceDB.MethodTraceDB.DBManager;
 
 namespace BeaconTower.Warehouse
@@ -13,13 +16,21 @@ namespace BeaconTower.Warehouse
         {
             _dbInstance = methodTrceDB;
         }
-
+ 
         [HttpGet("items/traceid({traceID})")]
-        public void GetMethodTraceInfoByTraceID([FromRoute] long traceID)
+        public Response<List<MethodTraceItemResponse>> GetMethodTraceInfoByTraceID(
+            [FromRoute] long traceID,
+            [FromQuery] long? eventID)
         {
-            
-            _dbInstance.TryGetMethodTraceItem(traceID, out var res);
 
+            _dbInstance.TryGetMethodTraceItem(traceID, out var res);
+            if (eventID != null)
+            {
+                res = res.Where(item => item.EventID == eventID.Value).ToList();
+            }
+
+            var result = MethodTraceItemConstructor.ConstructData(res);
+            return Success(result);
         }
     }
 }
