@@ -1,9 +1,10 @@
-import { Button, Descriptions, PageHeader, Popover, Spin } from 'antd'
+import { Button, PageHeader, Spin } from 'antd'
 import React, { Component } from "react"
 import { RouteComponentProps, withRouter } from "react-router-dom"
-import { GetNodeTypeStr, NodeIDMapSummaryInfo, NodeTraceItemResponse } from '../../../api/model/nodes'
+import { NodeIDMapSummaryInfo, NodeTraceItemResponse } from '../../../api/model/nodes'
 import { GetNodeSummaryInfo, GetNodeTrace } from '../../../api/resource/nodes'
 import MyGraph from "./mygraph"
+import ItemPopover from "./itemPopover"
 import PathModal from "./path"
 import "./index.less"
 
@@ -61,36 +62,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
         this.fetchData();
     }
 
-    getPopoverInfo = () => {
-        if (this.state.showItemTooltip == null) { return <></>; }
-        let content = <Descriptions
-            title={`TraceID:${this.state.showItemTooltip.traceID} NodeID:${this.state.showItemTooltip.nodeID}`}
-            bordered
-            layout="vertical">
-            <Descriptions.Item label="请求路径" span={3}>{this.state.showItemTooltip.path}</Descriptions.Item>
-            <Descriptions.Item label="请求时间区间" span={3}>{this.state.showItemTooltip.beginTime}至{this.state.showItemTooltip.endTime == null ? "未完成" : this.state.showItemTooltip.endTime} </Descriptions.Item>
-            <Descriptions.Item label="节点类型">{GetNodeTypeStr(this.state.showItemTooltip.type)}</Descriptions.Item>
-            <Descriptions.Item label="总耗时(天:时:分:秒.秒的小数部分)">{this.state.showItemTooltip.duration}</Descriptions.Item>
-            <Descriptions.Item label="直系节点">{this.state.showItemTooltip.nextNode.length}个</Descriptions.Item>
-        </Descriptions>;
-        return <Popover overlayClassName={"node-trace-popover-overlay"} content={content}
-            getPopupContainer={() => document.getElementById("toolTipsDiv") as HTMLElement}
-            visible={true} >
-            <div id="toolTipsDiv"
-                style={{
-                    position: "fixed",
-                    left: this.state.nodeX,
-                    top: this.state.nodeY,
-                    height: this.state.nodeSizeHeight,
-                    width: this.state.nodeSizeWidth,
-                    cursor: "default"
-                }}
-                onClick={() => {
-                    this.state.showItemTooltip?.switchCollapsedState();
-                }}
-            >　</div>
-        </Popover>
-    }
+
 
     render() {
         return <Spin spinning={this.state.loading} tip="加载中...">
@@ -139,11 +111,13 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                     }}
                 />
             </div>
-            {
-                this.state.showItemTooltip != null ?
-                    this.getPopoverInfo()
-                    : null
-            }
+            <ItemPopover
+                data={this.state.showItemTooltip}
+                nodeX={this.state.nodeX}
+                nodeY={this.state.nodeY}
+                nodeSizeHeight={this.state.nodeSizeHeight}
+                nodeSizeWidth={this.state.nodeSizeWidth}
+            />
 
 
         </Spin>

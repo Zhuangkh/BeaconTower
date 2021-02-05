@@ -27,12 +27,13 @@ export interface NodeTraceItemResponse {
     endTime: string | null;
     duration: string | null;
     previousNodeID: string;
+    eventID: string;
     path: string;
     queryString: string;
     beginCustomData: any;
     endCustomData: any;
     nextNode: Array<NodeTraceItemResponse>;
-    switchCollapsedState: () => void; 
+    switchCollapsedState: () => void;
 }
 
 export enum NodeType {

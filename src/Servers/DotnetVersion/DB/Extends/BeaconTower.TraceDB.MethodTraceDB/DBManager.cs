@@ -67,6 +67,7 @@ namespace BeaconTower.TraceDB.MethodTraceDB
         public bool TryGetMethodTraceItem(long traceID, out List<MethodTracer> nodeTracers)
         {
             nodeTracers = new List<MethodTracer>();
+            var info=_dbRoot.AllTraceID;
             if (_dbRoot.TryGetItem(traceID, out var items))
             {
                 for (int i = 0; i < items.Count; i++)
