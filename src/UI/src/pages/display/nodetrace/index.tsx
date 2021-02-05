@@ -124,7 +124,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                     this.setState({ eventID: eventID });
                 }}
             />
-            <MethodDrawer eventID={this.state.eventID} onClose={() => {
+            <MethodDrawer eventID={this.state.eventID} item={this.state.showItemTooltip} onClose={() => {
                 this.setState({
                     eventID: null
                 })
