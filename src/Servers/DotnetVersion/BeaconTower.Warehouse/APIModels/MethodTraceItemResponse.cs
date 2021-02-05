@@ -17,9 +17,6 @@ namespace BeaconTower.Warehouse.APIModels
         public string MethodName { get; set; }
         public string FileName { get; set; }
         public int LineNumber { get; set; }
-
-
-
         public long BeginTimeStamp { get; set; }
         public DateTime BeginTime
         {
@@ -36,7 +33,6 @@ namespace BeaconTower.Warehouse.APIModels
                 return EndTimeStamp == null ? null : new DateTime(EndTimeStamp.Value);
             }
         }
-
         public string Duration
         {
             get

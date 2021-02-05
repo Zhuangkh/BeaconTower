@@ -5,6 +5,8 @@ import { GetMethodInfoByEventID } from "../../../../api/resource/methods"
 import { NodeTraceItemResponse } from "../../../../api/model/nodes";
 
 import "./index.less"
+import { MethodInfoResponse } from "../../../../api/model/methods";
+import { ResponseCode } from "../../../../api/common";
 
 interface indexProps {
     eventID: string | null;
@@ -14,9 +16,14 @@ interface indexProps {
 
 const index: FC<indexProps> = (props) => {
     if (props.eventID == null) { return null; }
+    const [data, setData] = useState<Array<MethodInfoResponse>>([]);
 
     const fetch = async () => {
-        const data = await GetMethodInfoByEventID(props.item?.traceID as string, props.eventID as string);
+        const res = await GetMethodInfoByEventID(props.item?.traceID as string, props.eventID as string);
+        if (res.code == ResponseCode.Success) {
+            setData(res.data!);
+        }
+
     }
 
     useEffect(() => {
@@ -29,7 +36,7 @@ const index: FC<indexProps> = (props) => {
         onClose={() => { props.onClose() }}
         width="100vw"
     >
-        <MethodGraph />
+        <MethodGraph item={props.item!} data={data} />
 
     </Drawer>
 }
