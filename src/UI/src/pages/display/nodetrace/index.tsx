@@ -6,6 +6,7 @@ import { GetNodeSummaryInfo, GetNodeTrace } from '../../../api/resource/nodes'
 import MyGraph from "./mygraph"
 import ItemPopover from "./itemPopover"
 import PathModal from "./path"
+import MethodDrawer from "./methodDrawer"
 import "./index.less"
 
 
@@ -118,7 +119,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                 nodeSizeHeight={this.state.nodeSizeHeight}
                 nodeSizeWidth={this.state.nodeSizeWidth}
             />
-
+            <MethodDrawer />
 
         </Spin>
     }
