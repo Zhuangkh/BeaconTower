@@ -1,9 +1,10 @@
-﻿using System;
+﻿using LuanNiao.JsonConverterExtends;
+using System;
 using System.Collections.Generic;
 
 namespace BeaconTower.Client.Abstract
 {
-    public class LogInfo
+    public class LogInfo : IUseLNJsonExtends
     {
         public LogInfo(LogLevel level = LogLevel.Trace)
         {

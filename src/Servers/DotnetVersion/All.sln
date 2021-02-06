@@ -57,7 +57,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.Client.ClassLib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.Warehouse.ClassLibrary.Client.Example", "Example\BeaconTower.Warehouse.ClassLibrary.Client.Example\BeaconTower.Warehouse.ClassLibrary.Client.Example.csproj", "{7B4F4DE6-9B37-424A-A40A-E7E85173DEF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeaconTower.TraceDB.MethodTraceDB", "DB\Extends\BeaconTower.TraceDB.MethodTraceDB\BeaconTower.TraceDB.MethodTraceDB.csproj", "{9711D2D9-C7BC-413A-8EC6-C22CF30552F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeaconTower.TraceDB.MethodTraceDB", "DB\Extends\BeaconTower.TraceDB.MethodTraceDB\BeaconTower.TraceDB.MethodTraceDB.csproj", "{9711D2D9-C7BC-413A-8EC6-C22CF30552F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeaconTower.TraceDB.LogDB", "DB\Extends\BeaconTower.TraceDB.LogDB\BeaconTower.TraceDB.LogDB.csproj", "{CF932331-A0DD-4192-B9F9-75E34A201AEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,10 @@ Global
 		{9711D2D9-C7BC-413A-8EC6-C22CF30552F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9711D2D9-C7BC-413A-8EC6-C22CF30552F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9711D2D9-C7BC-413A-8EC6-C22CF30552F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF932331-A0DD-4192-B9F9-75E34A201AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF932331-A0DD-4192-B9F9-75E34A201AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF932331-A0DD-4192-B9F9-75E34A201AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF932331-A0DD-4192-B9F9-75E34A201AEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +147,7 @@ Global
 		{4AF9C004-61CA-4366-8081-81567DF0803D} = {FA7966FE-5E7E-4BA1-8C58-4C6B7F5CAC31}
 		{7B4F4DE6-9B37-424A-A40A-E7E85173DEF3} = {2A97C844-0157-4A45-8C68-B59E12B75B25}
 		{9711D2D9-C7BC-413A-8EC6-C22CF30552F1} = {F113AAA1-6AC2-439E-AB15-CB010118AABE}
+		{CF932331-A0DD-4192-B9F9-75E34A201AEB} = {F113AAA1-6AC2-439E-AB15-CB010118AABE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C1D5E3F-9346-4028-90C4-458D0E5B48E4}
