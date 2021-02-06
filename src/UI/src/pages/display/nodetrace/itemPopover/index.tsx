@@ -13,6 +13,8 @@ interface indexProps {
     showClose?: boolean;
     onShowMethodClicked?: (eventID: string) => void;
     onCloseClicked?: () => void;
+    showMethodGraphBtn?: boolean;
+    popoverDivID: string;
 }
 
 const index: FC<indexProps> = (props) => {
@@ -22,11 +24,13 @@ const index: FC<indexProps> = (props) => {
         bordered
         layout="vertical"
         extra={<Space>
-            <Button shape="round" onClick={() => {
-                if (props.onShowMethodClicked != null && props.onShowMethodClicked != undefined) {
-                    props.onShowMethodClicked(props.data?.eventID as string);
-                }
-            }}>节点函数</Button>
+            {props.showMethodGraphBtn === false ? null :
+                <Button shape="round" onClick={() => {
+                    if (props.onShowMethodClicked != null && props.onShowMethodClicked != undefined) {
+                        props.onShowMethodClicked(props.data?.eventID as string);
+                    }
+                }}>节点函数</Button>
+            }
             {props.showClose === true ?
                 <Button
                     size="small"
@@ -45,9 +49,9 @@ const index: FC<indexProps> = (props) => {
         <Descriptions.Item label="直系节点">{props.data.nextNode.length}个</Descriptions.Item>
     </Descriptions>;
     return <Popover overlayClassName={"node-trace-popover-overlay"} content={content}
-        getPopupContainer={() => document.getElementById("toolTipsDiv") as HTMLElement}
+        getPopupContainer={() => document.getElementById(props.popoverDivID) as HTMLElement}
         visible={true} >
-        <div id="toolTipsDiv"
+        <div id={props.popoverDivID}
             style={{
                 position: "fixed",
                 left: props.nodeX,

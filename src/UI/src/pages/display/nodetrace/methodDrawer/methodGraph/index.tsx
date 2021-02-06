@@ -14,6 +14,9 @@ const manSvg = require("../../../../../assets/man.svg")
 interface indexProps {
     item: NodeTraceItemResponse;
     data: Array<MethodInfoResponse>;
+    showNodeTooltips: (x: number, y: number, currentWidth: number, currentHeight: number) => void;
+    showMethodTooltips: (x: number, y: number, data: MethodInfoResponse, currentWidth: number, currentHeight: number) => void;
+    hideTooltips?: () => void;
 }
 
 const setCollapsed = (target: TreeGraphData, state: boolean) => {
@@ -44,14 +47,14 @@ const initOpt = {
           `
         },
         handleClick: (code: any, graph: TreeGraph) => {
-            const root = graph.findDataById("userNode");
+            const root = graph.findDataById("nodeTraceNode");
             if (root == null) { return; }
             if (code === 'unfold') {
                 setCollapsed(root, false);
             } else if (code === 'fold') {
                 setCollapsed(root, true);
             }
-            graph.refreshLayout();
+            graph.layout();
         }
     })],
     layout: {
@@ -80,42 +83,44 @@ const index: FC<indexProps> = (props) => {
     const g6Ref = React.useRef<any>()
     let graph: TreeGraph;
     let nodeCount: number = 0;
-    // const nodeMouseEnter = (evt: any) => {
-    //     const { item } = evt
-    //     const model = item.getModel();
-    //     const point = graph.getCanvasByPoint(model.x, model.y);
-    //     if (point != undefined) {
-    //         const y = point.y - 32 * graph.getZoom() / 2;
-    //         const x = point.x - 32 * graph.getZoom() / 2;
-    //         if (props.data == null) {
-    //             return;
-    //         }
-    //         var target = findItemObj(props.data, model.id);
-    //         if (target == null) { return; }
-    //         props.showTooltips(x, y, target, 32 * graph.getZoom(), 32 * graph.getZoom());
-    //     }
+    const nodeMouseEnter = (evt: any) => {
+        const { item } = evt
+        const model = item.getModel();
+        const point = graph.getCanvasByPoint(model.x, model.y);
+        if (point != undefined) {
+            const y = point.y - 32 * graph.getZoom() / 2;
+            const x = point.x - 32 * graph.getZoom() / 2;
+            if (props.data == null) {
+                return;
+            }
+            if (model.id == "nodeTraceNode") {
+                props.showNodeTooltips(x, y, 32 * graph.getZoom(), 32 * graph.getZoom());
+            }
+            var target = findItemObj(props.data, model.id);
+            if (target == null) { return; }
+            props.showMethodTooltips(x, y, target, 32 * graph.getZoom(), 32 * graph.getZoom());
+        }
 
-    // }
-    // const nodeMouseLevel = () => {
+    }
+    const nodeMouseLevel = () => {
 
-    // }
-    // const findItemObj = (data: MethodInfoResponse, key: string): MethodInfoResponse | null => {
-    //     if (data.key == key) {
-    //         return data;
-    //     }
-    //     for (let index = 0; index < data.Children.length; index++) {
-    //         const element = data.nextNode[index];
-    //         var res = findItemObj(element, key);
-    //         if (res != null) {
-    //             return res;
-    //         }
-    //     }
-    //     return null;
-    // }
+    }
+    const findItemObj = (dataList: Array<MethodInfoResponse>, key: string): MethodInfoResponse | null => {
+        for (let index = 0; index < dataList.length; index++) {
+            const data = dataList[index];
+            if (data.key == key) {
+                return data;
+            }
+            var res = findItemObj(data.children, key);
+            if (res != null) {
+                return res;
+            }
+        }
+        return null;
+    }
 
     const pushChildData = (target: TreeGraphData, data: Array<MethodInfoResponse>) => {
-        nodeCount++;
-        console.log(data);
+        nodeCount++; 
         for (let index = 0; index < data.length; index++) {
             const item = data[index];
             let thisLoop = {
@@ -135,9 +140,7 @@ const index: FC<indexProps> = (props) => {
                 }
             }
             target.children?.push(thisLoop);
-            for (let index = 0; index < item.children.length; index++) {
-                pushChildData(thisLoop, item.children);
-            }
+            pushChildData(thisLoop, item.children);
         }
     }
 
@@ -175,10 +178,10 @@ const index: FC<indexProps> = (props) => {
             (g6Ref as any).current.scrollHeight
         );
         graph.fitCenter();
-        // graph.on('node:mouseenter', nodeMouseEnter);
-        // graph.on('node:mouseleave', nodeMouseLevel);
+        graph.on('node:mouseenter', nodeMouseEnter);
+        graph.on('node:mouseleave', nodeMouseLevel);
     }, []);
 
-    return <div className="method-trace-graph" ref={g6Ref} style={{ height: "100vh", width: "100%" }} />
+    return <div className="method-trace-graph" ref={g6Ref} style={{ height: "100%", width: "100%" }} />
 }
 export default index;

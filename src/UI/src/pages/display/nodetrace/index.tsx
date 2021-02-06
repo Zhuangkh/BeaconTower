@@ -119,6 +119,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                 onShowMethodClicked={(eventID) => {
                     this.setState({ eventID: eventID });
                 }}
+                popoverDivID={"nodeTraceItemPopover"}
             />
             <MethodDrawer eventID={this.state.eventID} item={this.state.showItemTooltip} onClose={() => {
                 this.setState({
