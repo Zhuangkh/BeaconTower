@@ -85,8 +85,11 @@ namespace BeaconTower.Client.Warehouse.Grpc
                 TraceID = item.TraceID,
                 Message = item.Message,
                 EventID = item.EventID,
-                MethodEventID = item.MethodEventID,
-                MethodInfo = item.MethodInfo,
+                FileName = item.FileName,
+                LineNumber = item.LineNumber,
+                MethodID = item.MethodID,
+                MethodName = item.MethodName,
+                MethodEventID = item.MethodEventID, 
                 TimeStamp = item.TimeStamp
             };
             foreach (var data in item.CustomData)
@@ -172,7 +175,6 @@ namespace BeaconTower.Client.Warehouse.Grpc
             var task = info.Level switch
             {
                 LogLevel.Trace => client.TraceAsync(ConstructRequestData(info)),
-
                 LogLevel.Debug => client.DebugAsync(ConstructRequestData(info)),
                 LogLevel.Info => client.InfoAsync(ConstructRequestData(info)),
                 LogLevel.Warning => client.WarningAsync(ConstructRequestData(info)),

@@ -57,6 +57,8 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
             }
             using var mT = item.CreateMethodTrace(1);
             mT.BeforMethodInvokeAsync();
+            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SendAsync();
+            
             var level1 = 0;
             CallMethod1(item, ref level1);
             var level2 = 0;
@@ -74,6 +76,7 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
                 return;
             }
             using var mT = item.CreateMethodTrace(2);
+            mT.CreateLog(message: $"这时候进入了{nameof(CallMethod1)}调用了一下~,这时候是level:{level}").SendAsync();
             mT.BeforMethodInvokeAsync();
             level++;
             CallMethod1(item, ref level);
@@ -89,6 +92,7 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
                 return;
             }
             using var mT = item.CreateMethodTrace(3);
+            mT.CreateLog(message: $"这时候进入了{nameof(CallMethod2)}调用了一下~,这时候是level:{level}").SendAsync();
             mT.BeforMethodInvokeAsync();
             level++;
             CallMethod2(item, ref level);

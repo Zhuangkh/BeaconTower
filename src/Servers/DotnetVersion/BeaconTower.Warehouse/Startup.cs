@@ -13,6 +13,7 @@ using System.Text.Unicode;
 
 using NodeDB = BeaconTower.TraceDB.NodeTraceDB.DBManager;
 using MethodDB = BeaconTower.TraceDB.MethodTraceDB.DBManager;
+using LogDB = BeaconTower.TraceDB.LogDB.DBManager;
 
 namespace BeaconTower.Warehouse
 {
@@ -29,6 +30,9 @@ namespace BeaconTower.Warehouse
             MethodDB.Instance.RegistNodeTraceDB("Test"
                    , rootFolder
                 );
+            LogDB.Instance.RegistNodeTraceDB("Test"
+                   , rootFolder
+                );
 
             NodeDB.Instance.StartServer();
             Configuration = configuration;
@@ -41,6 +45,7 @@ namespace BeaconTower.Warehouse
         {
             services.AddSingleton(DataBase.Instance);
             services.AddSingleton(NodeDB.Instance);
+            services.AddSingleton(LogDB.Instance);
             services.AddSingleton(MethodDB.Instance);
             services.AddControllers().AddJsonOptions((opt) =>
             {
@@ -71,6 +76,7 @@ namespace BeaconTower.Warehouse
                 endpoints.MapGrpcService<CommonService>();
                 endpoints.MapGrpcService<MethodTraceService>();
                 endpoints.MapGrpcService<NodeTraceService>();
+                endpoints.MapGrpcService<LogService>();
                 endpoints.MapControllers();
             });
 #if !DEBUG

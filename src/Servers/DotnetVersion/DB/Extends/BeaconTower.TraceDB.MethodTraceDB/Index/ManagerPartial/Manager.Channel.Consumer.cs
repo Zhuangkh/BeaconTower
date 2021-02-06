@@ -21,7 +21,7 @@ namespace BeaconTower.TraceDB.MethodTraceDB.Index
             t.Start();
         }
 
-        private void SaveMethodInfo(MethodTracer item)
+        private void SaveMethodInfo(MethodTracer _)
         {
             //问题是TraceID完全一样啊~~~~~
             //那应该就是webapi的事情,他可以去node里头查找,也以来methodDB来查找

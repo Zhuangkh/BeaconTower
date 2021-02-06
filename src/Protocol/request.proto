@@ -39,10 +39,13 @@ message GetStateRequest{
 
 message LogRequest{
 	int64 TraceID=1;	
-  int64 EventID=2;
-	int64 MethodEventID=3;
-	int64 TimeStamp=4;	
-	string Message=5;
-	string MethodInfo=6;
-	map<string,string> CustomData=7;
+	int64 EventID=2;
+	int64 MethodID=3;
+	int64 MethodEventID=4;
+	string MethodName=5;
+	string FileName=6;
+	int32 LineNumber=7;
+	int64 TimeStamp=8;	
+	string Message=9; 
+	map<string,string> CustomData=10;
 }

@@ -1,6 +1,8 @@
 ﻿using LuanNiao.JsonConverterExtends;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace BeaconTower.Client.Abstract
@@ -30,6 +32,30 @@ namespace BeaconTower.Client.Abstract
         public int LineNumber { get; set; }
         public Dictionary<string, string> CustomData { get; } = new Dictionary<string, string>();
 
+
+        public LogInfo CreateLog(
+            LogLevel level = LogLevel.Trace,
+            string message = null,
+             [CallerMemberName] string methodName = "",
+             [CallerFilePath] string sourceFilePath = "",
+             [CallerLineNumber] int sourceLineNumber = 0
+            )
+        {
+            var res = new LogInfo()
+            {
+                EventID = EventID,
+                MethodID = MethodID,
+                FileName = sourceFilePath == null ? "" : sourceFilePath.Split("\\").Last(),
+                Level = level,
+                LineNumber = sourceLineNumber,
+                MethodEventID = MethodEventID,
+                MethodName = methodName,
+                TraceID = TraceID,
+                Message = message
+            };
+
+            return res;
+        }
 
 
         public void Dispose()

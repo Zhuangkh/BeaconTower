@@ -30,7 +30,7 @@ namespace BeaconTower.Client.Console
             builder.AppendLine($"EventID:{info.EventID} ");
             builder.AppendLine($"MethodEventID:{info.MethodEventID} ");
             builder.AppendLine($"PreMethodEventID:{info.PreMethodEventID} ");
-            builder.AppendLine($"FileName:{info.FileName} LineNumber:{info.LineNumber} "); 
+            builder.AppendLine($"FileName:{info.FileName} LineNumber:{info.LineNumber} ");
             builder.AppendLine($"NodeID:{info.NodeID} ");
             builder.AppendLine($"TimeStamp:{info.TimeStamp} ");
             builder.AppendLine($"Time:{new DateTime(info.TimeStamp):yyyy-MM-dd HH:mm:ss:fff} ");
@@ -74,10 +74,13 @@ namespace BeaconTower.Client.Console
             }
             builder.AppendLine($"TraceID:{info.TraceID} ");
             builder.AppendLine($"EventID:{info.EventID} ");
+            builder.AppendLine($"MethodID:{info.MethodID} ");
             builder.AppendLine($"MethodEventID:{info.MethodEventID} ");
+            builder.AppendLine($"MethodName:{info.MethodName} ");
+            builder.AppendLine($"FileName:{info.FileName} ");
+            builder.AppendLine($"LineNumber:{info.LineNumber} ");
             builder.AppendLine($"Level:{Enum.GetName(typeof(LogLevel), info.Level)} ");
-            builder.AppendLine($"Message:{info.Message} ");
-            builder.AppendLine($"MethodInfo:{info.MethodInfo} ");
+            builder.AppendLine($"Message:{info.Message} "); 
             builder.AppendLine($"Time:{new DateTime(info.TimeStamp):yyyy-MM-dd HH:mm:ss:fff} ");
             builder.AppendLine($"CustomData:{System.Text.Json.JsonSerializer.Serialize(info.CustomData)} ");
             builder.AppendLine();
@@ -120,9 +123,13 @@ namespace BeaconTower.Client.Console
             await Task.Run(() => { System.Console.WriteLine(GetInfo(info, new StringBuilder($"{nameof(BeforMethodInvokeAsync)}:"))); });
         }
 
-        public override Task Log(LogInfo info)
+        public override async Task Log(LogInfo info)
         {
-            throw new NotImplementedException();
+            if (info == null)
+            {
+                return;
+            }
+            await Task.Run(() => { System.Console.WriteLine(GetInfo(info, new StringBuilder($"{nameof(Log)}:"))); });
         }
     }
 }
