@@ -10,7 +10,7 @@ namespace BeaconTower.Warehouse.APIModels
     {
         public LogInfoItemResponse(LogInfo logInfo)
         {
-            if (logInfo==null)
+            if (logInfo == null)
             {
                 return;
             }
@@ -26,6 +26,8 @@ namespace BeaconTower.Warehouse.APIModels
             this.TimeStamp = logInfo.TimeStamp;
             this.CustomData = logInfo.CustomData;
         }
+
+        public string Key { get; set; } = Guid.NewGuid().ToString("N");
         public LogLevel Level { get; set; }
         public long EventID { get; set; }
         public long MethodEventID { get; set; }
