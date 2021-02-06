@@ -30,11 +30,11 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
 
         public static void SendTrace(long? traceID, string path, long previousEventID, int level)
         {
-            if (level > 1)
+            if (level > 3)
             {
                 return;
             }
-            var tracer1 = TracerClient.Instance.CreateNodeTracer(traceID, previousEventID);
+            using var tracer1 = TracerClient.Instance.CreateNodeTracer(traceID, previousEventID);
             tracer1.NodeID = $"Node{level}";
             tracer1.TimeStamp = DateTime.Now.Ticks;
             tracer1.Path = path;
@@ -47,9 +47,6 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
             {
                 SendTrace(tracer1.TraceID, "main", tracer1.EventID, level + 1);
             }
-            Task.Delay(new Random().Next(1, 100)).Wait();
-            tracer1.TimeStamp = DateTime.Now.Ticks;
-            tracer1.AfterNodeActivedAsync();
         }
 
         public static void CallMethod(NodeTracer item)
@@ -58,10 +55,43 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
             {
                 return;
             }
-            var mT = item.CreateMethodTrace(123);
+            using var mT = item.CreateMethodTrace(1);
             mT.BeforMethodInvokeAsync();
-            mT.AfterMethodInvokedAsync();
+            var level1 = 0;
+            CallMethod1(item, ref level1);
+            var level2 = 0;
+            CallMethod2(item, ref level2); 
+        }
 
+        public static void CallMethod1(NodeTracer item, ref int level)
+        {
+            if (level > 3)
+            {
+                return;
+            }
+            if (item == null)
+            {
+                return;
+            }
+            using var mT = item.CreateMethodTrace(2);
+            mT.BeforMethodInvokeAsync();
+            level++;
+            //CallMethod1(item, ref level);
+        }
+        public static void CallMethod2(NodeTracer item, ref int level)
+        {
+            if (level > 3)
+            {
+                return;
+            }
+            if (item == null)
+            {
+                return;
+            }
+            using var mT = item.CreateMethodTrace(3);
+            mT.BeforMethodInvokeAsync();
+            level++;
+            //CallMethod2(item, ref level);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using BeaconTower.TraceDB; 
+﻿using BeaconTower.TraceDB;
 using BeaconTower.Warehouse.Services;
 using LuanNiao.JsonConverterExtends;
 using Microsoft.AspNetCore.Builder;
@@ -20,12 +20,14 @@ namespace BeaconTower.Warehouse
     {
         public Startup(IConfiguration configuration)
         {
+            var rootFolder = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName, "BTraceDB");
+
             NodeDB.Instance.RegistNodeTraceDB(
                    "Test"
-                   , (new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName)
+                   , rootFolder
                   );
             MethodDB.Instance.RegistNodeTraceDB("Test"
-                   , (new FileInfo(Assembly.GetExecutingAssembly().Location).DirectoryName)
+                   , rootFolder
                 );
 
             NodeDB.Instance.StartServer();

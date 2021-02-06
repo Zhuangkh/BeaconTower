@@ -8,6 +8,7 @@ import "./index.less"
 import { MethodInfoResponse } from "../../../../api/model/methods";
 import { ResponseCode } from "../../../../api/common";
 import NodeitemPopover from "../itemPopover"
+import MethodItemPopover from "./itemPopover"
 
 interface indexProps {
     eventID: string | null;
@@ -62,7 +63,6 @@ const index: FC<indexProps> = (props) => {
                 setNodeItemData(null);
                 setNodeSizeWidth(currentWidth);
                 setNodeSizeHeight(currentHeight);
-                setNodeItemData(props.item);
             }}
         />
         <NodeitemPopover
@@ -77,6 +77,18 @@ const index: FC<indexProps> = (props) => {
                 setNodeItemData(null);
             }}
             popoverDivID={"methodItemTraceNodeTraceItemPopover"}
+        />
+        <MethodItemPopover
+            data={methodItemData}
+            nodeX={nodeX}
+            nodeY={nodeY}
+            nodeSizeHeight={nodeSizeHeight}
+            nodeSizeWidth={nodeSizeWidth}
+            showClose={true} 
+            onCloseClicked={() => {
+                setMethodItemData(null);
+            }}
+            popoverDivID={"methodItemPopover"}
         />
 
     </Drawer>

@@ -92,10 +92,18 @@ namespace BeaconTower.Warehouse
             var pSize = pageSize ?? 3;
             var pIndex = pageIndex ?? 0;
             var res = _dbInstance.GetTraceIDByPath(pathAlias);
-            Console.WriteLine(pSize * (pIndex - 1));
             return Success(res.Skip(pSize * (pIndex - 1)).Take(pSize).ToList(), res.Count);
         }
 
+
+        [HttpGet("nodes/alias({nodeAlias})/items/path/alias({pathAlias})/items/traceID({traceID})/begintime")]
+        public Response<DateTime?> GetTraceBeginTime(
+           [FromRoute] long traceID
+           )
+        {
+            var timeStamp = _dbInstance.TryGetTraceBeginTime(traceID);
+            return Success<DateTime?>(timeStamp == 0 ? null : new DateTime(timeStamp));
+        }
 
         [HttpGet("nodes/alias({nodeAlias})/items/count")]
         public Response<int> NodeTraceItemCount([FromRoute] long nodeAlias)
@@ -112,9 +120,9 @@ namespace BeaconTower.Warehouse
         public Response<NodeTraceItemResponse> TryGetNodeTraceItem([FromRoute] long traceID)
         {
             _dbInstance.TryGetNodeTraceItem(traceID, out var res);
-            
 
-           var result = NodeTraceItemConstructor.ConstructData(res);
+
+            var result = NodeTraceItemConstructor.ConstructData(res);
 
             var orderedData = res.OrderBy(item => item.TimeStamp).ToList();
 

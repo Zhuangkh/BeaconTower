@@ -133,7 +133,7 @@ const index: FC<MyGraphProps> = (props) => {
             type: "image",
             img: imgType,
             label: data.nodeID,
-            collapsed: true,
+            collapsed: false,
             children: []
         };
         data.switchCollapsedState = () => {

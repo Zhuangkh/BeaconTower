@@ -29,7 +29,7 @@ namespace BeaconTower.Warehouse.APIModels
 
             foreach (var item in orderDic)
             {
-                var groupData = item.Value.GroupBy(item => item.PreMethodEventID).ToList();
+                var groupData = item.Value.GroupBy(item => item.MethodEventID).ToList();
                 if (!resDic.ContainsKey(item.Key))
                 {
                     resDic.Add(item.Key, new List<MethodTraceItemResponse>());
@@ -77,7 +77,7 @@ namespace BeaconTower.Warehouse.APIModels
             if (parent == null)
             {
                 parent = new MethodTraceItemResponse()
-                {
+                {                    
                     MethodEventID = 0
                 };
             }

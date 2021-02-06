@@ -38,7 +38,8 @@ namespace BeaconTower.Client.Abstract
             {
                 return;
             }
-            throw new NotImplementedException();
+            TimeStamp = DateTime.Now.Ticks;
+            this.AfterNodeActivedAsync();
         }
 
         public MethodTracer CreateMethodTrace(
@@ -53,7 +54,10 @@ namespace BeaconTower.Client.Abstract
                 throw new InvalidOperationException($"Parameter:{nameof(methodName)} was null or empty");
             }
             var thisMethodEventID = methodEventID ?? IDGen.GetInstance().NextId();
-            var res = new MethodTracer()
+            var res = new MethodTracer(() =>
+            {
+                _methodStack?.TryPop(out var _);
+            })
             {
                 NodeID = NodeID,
                 TimeStamp = DateTime.Now.Ticks,

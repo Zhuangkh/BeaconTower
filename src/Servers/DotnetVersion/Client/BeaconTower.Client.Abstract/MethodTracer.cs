@@ -7,11 +7,15 @@ namespace BeaconTower.Client.Abstract
 {
     public sealed class MethodTracer : IDisposable, IUseLNJsonExtends
     {
-
         public MethodTracer()
         {
         }
+        public MethodTracer(Action onSendAfterInvoked)
+        {
+            _onSendAfterInvoked = onSendAfterInvoked;
+        }
 
+        private readonly Action _onSendAfterInvoked = null;
 
         private bool _alreadSendAfter = false;
         public long TraceID { get; set; }
@@ -20,10 +24,10 @@ namespace BeaconTower.Client.Abstract
         public long MethodEventID { get; set; } = LuanNiao.Core.IDGen.GetInstance().NextId();
         public long PreMethodEventID { get; set; }
         public long MethodID { get; set; }
-        public long TimeStamp { get;  set; }
+        public long TimeStamp { get; set; }
         public string MethodName { get; set; }
         public string FileName { get; set; }
-        public int LineNumber { get; set; } 
+        public int LineNumber { get; set; }
         public Dictionary<string, string> CustomData { get; } = new Dictionary<string, string>();
 
 
@@ -68,6 +72,7 @@ namespace BeaconTower.Client.Abstract
             {
                 return;
             }
+            _onSendAfterInvoked?.Invoke();
             _alreadSendAfter = true;
             var serverList = ServerManager.Instance.GetAvailableServer();
             var taskList = new Task[serverList.Count];

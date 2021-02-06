@@ -4,6 +4,7 @@ using BeaconTower.TraceDB.NodeTraceDB.Index;
 using LuanNiao.JsonConverterExtends;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DBRoot = BeaconTower.TraceDB.Root.Manager;
 using IndexManager = BeaconTower.TraceDB.NodeTraceDB.Index.Manager;
 
@@ -64,6 +65,17 @@ namespace BeaconTower.TraceDB.NodeTraceDB
         public List<long> GetTraceIDByPath(long pathAlias)
         {
             return _indexManager.PathTraceIDList(pathAlias);
+        }
+        /// <summary>
+        /// you can improve performance here
+        /// </summary>  
+        public long TryGetTraceBeginTime(long traceID)
+        {
+            if (_dbRoot.TryGetItemMetadata(traceID, out var data))
+            {
+                return data.OrderBy(item => item.TimeStamp).Select(item => item.TimeStamp).First();
+            }
+            return 0;
         }
         public int NodeTraceItemCount(NodeIDMapSummaryInfo nodeInfo)
         {

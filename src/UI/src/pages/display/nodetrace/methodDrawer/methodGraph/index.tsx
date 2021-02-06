@@ -96,9 +96,11 @@ const index: FC<indexProps> = (props) => {
             if (model.id == "nodeTraceNode") {
                 props.showNodeTooltips(x, y, 32 * graph.getZoom(), 32 * graph.getZoom());
             }
-            var target = findItemObj(props.data, model.id);
-            if (target == null) { return; }
-            props.showMethodTooltips(x, y, target, 32 * graph.getZoom(), 32 * graph.getZoom());
+            else {
+                var target = findItemObj(props.data, model.id);
+                if (target == null) { return; }
+                props.showMethodTooltips(x, y, target, 32 * graph.getZoom(), 32 * graph.getZoom());
+            }
         }
 
     }
@@ -120,7 +122,7 @@ const index: FC<indexProps> = (props) => {
     }
 
     const pushChildData = (target: TreeGraphData, data: Array<MethodInfoResponse>) => {
-        nodeCount++; 
+        nodeCount++;
         for (let index = 0; index < data.length; index++) {
             const item = data[index];
             let thisLoop = {
@@ -129,7 +131,7 @@ const index: FC<indexProps> = (props) => {
                 type: "image",
                 img: methodSvg.default,
                 label: item.methodName,
-                collapsed: true,
+                collapsed: false,
                 children: []
             };
             item.switchCollapsedState = () => {

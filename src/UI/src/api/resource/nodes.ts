@@ -151,3 +151,11 @@ export const GetTraceIDListByNodeAndPathAlias = async (nodeAlias: string, pathAl
     });
     return res;
 }
+
+export const GetTraceBeginTime=async (nodeAlias: string, pathAlias: string,traceID:string):Promise<Response<string>>=>{
+    let res: any;
+    await Instance.get(`${controllerPrefix}/nodes/alias(${nodeAlias})/items/path/alias(${pathAlias})/items/traceID(${traceID})/begintime`).then((data: any) => {
+        res = data;
+    });
+    return res;
+}
