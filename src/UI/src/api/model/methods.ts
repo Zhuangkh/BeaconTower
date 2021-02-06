@@ -1,21 +1,22 @@
 
 export interface MethodInfoResponse {
-    Key: string;
-    TraceID: string;
-    NodeID: string;
-    EventID: string;
-    MethodEventID: string;
-    PreMethodEventID: string;
-    MethodID: string;
-    MethodName: string;
-    FileName: string;
-    LineNumber: string;
-    BeginTimeStamp: string;
-    BeginTime: string;
-    EndTimeStamp: string | null;
-    EndTime: string | null;
-    Duration: string | null;
-    BeginCustomData: any;
-    EndCustomData: any;
-    Children: Array<MethodInfoResponse>;
+    key: string;
+    traceID: string;
+    nodeID: string;
+    eventID: string;
+    methodEventID: string;
+    preMethodEventID: string;
+    methodID: string;
+    methodName: string;
+    fileName: string;
+    lineNumber: string;
+    beginTimeStamp: string;
+    beginTime: string;
+    endTimeStamp: string | null;
+    endTime: string | null;
+    duration: string | null;
+    beginCustomData: any;
+    endCustomData: any;
+    children: Array<MethodInfoResponse>;
+    switchCollapsedState: () => void;
 }
