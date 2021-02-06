@@ -9,6 +9,7 @@ interface indexProps {
     onOk?: () => void;
     onCancel?: () => void;
     nodeAlias: string;
+    nodeID: string;
     onSelectTraceID: (traceID: string) => void;
 }
 
@@ -21,7 +22,7 @@ const index: FC<indexProps> = (props) => {
     return <Drawer
         maskClosable={false}
         className="node-path"
-        title="Path列表"
+        title={`节点${props.nodeID}的Path列表`}
         width="100vw"
         visible={true}
         closable={false}

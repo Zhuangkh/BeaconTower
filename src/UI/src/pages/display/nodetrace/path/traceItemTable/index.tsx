@@ -5,7 +5,7 @@ import { GetTraceBeginTime, GetTraceIDListByNodeAndPathAlias } from "../../../..
 import "./index.less"
 
 interface indexProps {
-    nodeAlias: string;
+    nodeAlias: string; 
     pathAlias: string | null;
     onSelectTraceItem: (traceID: string) => void;
 }
@@ -27,24 +27,22 @@ const index: FC<indexProps> = (props) => {
         title: "发生时间",
         width: "200px",
         dataIndex: "dateTime"
-    },{
+    }, {
         title: "操作",
         render: (item: any) => {
             return <Button type="primary" shape="round" onClick={() => {
                 props.onSelectTraceItem(item.traceID);
-            }}>查看trace详情</Button>
+            }}>查看节点拓扑图</Button>
         }
     }];
 
-    const fetchTraceDateTimeInfo = async (data: Array<any>) => {
-        console.log(data);
+    const fetchTraceDateTimeInfo = async (data: Array<any>) => { 
         const taskList = [];
-        for (let index = 0; index < data.length; index++) {
-            console.log(data);
+        for (let index = 0; index < data.length; index++) { 
             const element = data[index];
-            let loader=async () => {
+            let loader = async () => {
                 let res = GetTraceBeginTime(props.nodeAlias, props.pathAlias as string, element.traceID);
-                element.dateTime= (await res).data;
+                element.dateTime = (await res).data;
             };
             taskList.push(loader());
         }
@@ -62,7 +60,7 @@ const index: FC<indexProps> = (props) => {
                 currentPageData.push({
                     key: element,
                     traceID: element,
-                    dateTime:"获取中.."
+                    dateTime: "获取中.."
                 });
             });
             fetchTraceDateTimeInfo(currentPageData);

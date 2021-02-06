@@ -74,6 +74,7 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                 onCancel={() => { this.setState({ showPathModel: false }) }}
                 nodeAlias={(this.props.match.params as any).nodeAlias}
                 onSelectTraceID={this.traceIDSelected}
+                nodeID={this.state.nodeInfo?.orignalID!}
             />
             <div className={"display"} >
                 <PageHeader
