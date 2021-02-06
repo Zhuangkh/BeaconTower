@@ -76,7 +76,7 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
             using var mT = item.CreateMethodTrace(2);
             mT.BeforMethodInvokeAsync();
             level++;
-            //CallMethod1(item, ref level);
+            CallMethod1(item, ref level);
         }
         public static void CallMethod2(NodeTracer item, ref int level)
         {
@@ -91,7 +91,7 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
             using var mT = item.CreateMethodTrace(3);
             mT.BeforMethodInvokeAsync();
             level++;
-            //CallMethod2(item, ref level);
+            CallMethod2(item, ref level);
         }
     }
 }
