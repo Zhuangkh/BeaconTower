@@ -180,7 +180,7 @@ const index: FC<MyGraphProps> = (props) => {
         props.onCreated(nodeCount);
     }, []);
 
-    return <div id="graph" className="my-graph" ref={g6Ref} style={{ height: "100vh", width: "100%" }} />
+    return <div   className="node-trace-graph" ref={g6Ref} style={{ height: "100vh", width: "100%" }} />
 
 }
 
