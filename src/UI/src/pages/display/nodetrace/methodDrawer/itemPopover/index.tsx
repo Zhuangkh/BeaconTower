@@ -13,6 +13,7 @@ interface indexProps {
     showClose?: boolean;
     onShowMethodClicked?: (eventID: string) => void;
     onCloseClicked?: () => void;
+    onShowLogInfoClickded?: (methodEventID:string) => void;
     popoverDivID: string;
 }
 
@@ -23,6 +24,9 @@ const index: FC<indexProps> = (props) => {
         bordered
         layout="vertical"
         extra={<Space>
+            <Button onClick={() => {
+                props.onShowLogInfoClickded?.(props.data?.methodEventID!);
+            }}>查看日志输出</Button>
             {props.showClose === true ?
                 <Button
                     size="small"

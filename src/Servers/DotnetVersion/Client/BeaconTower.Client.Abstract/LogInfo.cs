@@ -42,7 +42,7 @@ namespace BeaconTower.Client.Abstract
         public string MethodName { get; set; }
         public string FileName { get; set; }
         public int LineNumber { get; set; }
-        public long TimeStamp { get; } = DateTime.Now.Ticks;
+        public long TimeStamp { get; set; } = DateTime.Now.Ticks;
         public Dictionary<string, string> CustomData { get; } = new Dictionary<string, string>();
 
 

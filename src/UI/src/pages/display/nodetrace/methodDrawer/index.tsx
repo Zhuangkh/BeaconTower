@@ -9,6 +9,7 @@ import { MethodInfoResponse } from "../../../../api/model/methods";
 import { ResponseCode } from "../../../../api/common";
 import NodeitemPopover from "../itemPopover"
 import MethodItemPopover from "./itemPopover"
+import LogInfoDrawer from "./logInfoDrawer"
 
 interface indexProps {
     eventID: string | null;
@@ -25,6 +26,7 @@ const index: FC<indexProps> = (props) => {
     const [nodeY, setNodeY] = useState<number>(0);
     const [nodeSizeHeight, setNodeSizeHeight] = useState<number>(0);
     const [nodeSizeWidth, setNodeSizeWidth] = useState<number>(0);
+    const [showMethodLogMethodEventID, setShowMethodLogMethodEventID] = useState<string | null>(null);
 
     const fetch = async () => {
         const res = await GetMethodInfoByEventID(props.item?.traceID as string, props.eventID as string);
@@ -84,11 +86,21 @@ const index: FC<indexProps> = (props) => {
             nodeY={nodeY}
             nodeSizeHeight={nodeSizeHeight}
             nodeSizeWidth={nodeSizeWidth}
-            showClose={true} 
+            showClose={true}
             onCloseClicked={() => {
                 setMethodItemData(null);
             }}
+            onShowLogInfoClickded={(methodEventID: string) => {
+                setShowMethodLogMethodEventID(methodEventID);
+            }}
             popoverDivID={"methodItemPopover"}
+        />
+        <LogInfoDrawer
+            traceID={props.item?.traceID!}
+            methodEventID={showMethodLogMethodEventID}
+            onColseClicked={() => { setShowMethodLogMethodEventID(null) }}
+            nodeInfo={props.item!}
+            methodInfo={methodItemData!}
         />
 
     </Drawer>

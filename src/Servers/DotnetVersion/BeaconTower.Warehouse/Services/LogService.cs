@@ -53,6 +53,7 @@ namespace BeaconTower.Warehouse.Services
                     EventID = request.EventID,
                     MethodEventID = request.MethodEventID,
                     MethodID = request.TimeStamp,
+                    TimeStamp = request.TimeStamp,
                     TraceID = request.TraceID,
                     MethodName = request.MethodName,
                     Message = request.Message,

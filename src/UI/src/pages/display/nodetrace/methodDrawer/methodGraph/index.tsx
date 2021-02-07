@@ -1,6 +1,5 @@
-import G6, { TreeGraph, TreeGraphData } from "@antv/g6";
-import { Drawer } from "antd";
-import React, { FC, useState, useEffect } from "react"
+import G6, { TreeGraph, TreeGraphData } from "@antv/g6"; 
+import React, { FC,  useEffect } from "react"
 import { MethodInfoResponse } from "../../../../../api/model/methods";
 import { NodeTraceItemResponse, NodeType } from "../../../../../api/model/nodes";
 
@@ -8,8 +7,7 @@ import { NodeTraceItemResponse, NodeType } from "../../../../../api/model/nodes"
 import "./index.less"
 const webapiSvg = require("../../../../../assets/webapi.svg")
 const consoleSvg = require("../../../../../assets/console.svg")
-const methodSvg = require("../../../../../assets/method.svg")
-const manSvg = require("../../../../../assets/man.svg")
+const methodSvg = require("../../../../../assets/method.svg") 
 
 interface indexProps {
     item: NodeTraceItemResponse;

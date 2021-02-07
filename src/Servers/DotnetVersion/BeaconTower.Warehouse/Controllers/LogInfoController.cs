@@ -29,7 +29,7 @@ namespace BeaconTower.Warehouse
             _dbInstance.TryGetMethodTraceItem(traceID, out var rawData);
             if (methodEventID != null)
             {
-                rawData = rawData.Where(item => item.EventID == methodEventID.Value).ToList();
+                rawData = rawData.Where(item => item.MethodEventID == methodEventID.Value).ToList();
             }
             rawData = rawData.OrderBy(item => item.TimeStamp).ToList();
             var result = new List<LogInfoItemResponse>();
