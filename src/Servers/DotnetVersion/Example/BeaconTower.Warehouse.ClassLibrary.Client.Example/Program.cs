@@ -14,14 +14,14 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
 
             var instance = TracerClient.Instance.Init("./appsettings.json");
 
+            Task.Delay(1000).Wait();
             Task.Run(() =>
             {
-                Task.Delay(1000).Wait();
-                //while (true)
-                //{
-                var level = 0;
-                SendTrace(null, "Main", 0, level);
-                //}
+                while (true)
+                {
+                    var level = 0;
+                    SendTrace(null, "Main", 0, level);
+                }
             });
             Console.ReadLine();
             Console.WriteLine("Hello World!");
@@ -57,12 +57,12 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
             }
             using var mT = item.CreateMethodTrace(1);
             mT.BeforMethodInvokeAsync();
-            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Trace)   .SendAsync();
-            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Info)    .SendAsync();
-            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Debug)   .SendAsync();
-            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Warning) .SendAsync();
-            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Error)   .SendAsync();
-            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Panic)   .SendAsync();
+            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Trace).SendAsync();
+            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Info).SendAsync();
+            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Debug).SendAsync();
+            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Warning).SendAsync();
+            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Error).SendAsync();
+            mT.CreateLog(message: $"{nameof(CallMethod)}调用了一下~").SetLevel(LogLevel.Panic).SendAsync();
 
             var level1 = 0;
             CallMethod1(item, ref level1);
@@ -82,11 +82,11 @@ namespace BeaconTower.Warehouse.ClassLibrary.Client.Example
             }
             using var mT = item.CreateMethodTrace(2);
             mT.CreateLog(message: $"这时候进入了{nameof(CallMethod1)}调用了一下~,这时候是level:{level}").SetLevel(LogLevel.Trace).SendAsync();
-            mT.CreateLog(message: $"这时候进入了{nameof(CallMethod1)}调用了一下~,这时候是level:{level}").SetLevel(LogLevel.Info)   .SendAsync();
-            mT.CreateLog(message: $"这时候进入了{nameof(CallMethod1)}调用了一下~,这时候是level:{level}").SetLevel(LogLevel.Debug)  .SendAsync();
+            mT.CreateLog(message: $"这时候进入了{nameof(CallMethod1)}调用了一下~,这时候是level:{level}").SetLevel(LogLevel.Info).SendAsync();
+            mT.CreateLog(message: $"这时候进入了{nameof(CallMethod1)}调用了一下~,这时候是level:{level}").SetLevel(LogLevel.Debug).SendAsync();
             mT.CreateLog(message: $"这时候进入了{nameof(CallMethod1)}调用了一下~,这时候是level:{level}").SetLevel(LogLevel.Warning).SendAsync();
-            mT.CreateLog(message: $"这时候进入了{nameof(CallMethod1)}调用了一下~,这时候是level:{level}").SetLevel(LogLevel.Error)  .SendAsync();
-            mT.CreateLog(message: $"这时候进入了{nameof(CallMethod1)}调用了一下~,这时候是level:{level}").SetLevel(LogLevel.Panic)  .SendAsync();
+            mT.CreateLog(message: $"这时候进入了{nameof(CallMethod1)}调用了一下~,这时候是level:{level}").SetLevel(LogLevel.Error).SendAsync();
+            mT.CreateLog(message: $"这时候进入了{nameof(CallMethod1)}调用了一下~,这时候是level:{level}").SetLevel(LogLevel.Panic).SendAsync();
             mT.BeforMethodInvokeAsync();
             level++;
             CallMethod1(item, ref level);
