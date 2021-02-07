@@ -1,7 +1,7 @@
 import * as React from "react"
 
 const index = () => {
-    return <svg viewBox="0 0 1024 1024" version="1.1" p-id="5437" width="64" height="64">
+    return <svg viewBox="0 0 1024 1024" version="1.1" p-id="5437" width="32" height="32">
         <defs>
             <style type="text/css">
             </style>

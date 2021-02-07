@@ -7,6 +7,7 @@ import MyGraph from "./nodeTraceTreeGraph"
 import ItemPopover from "./itemPopover"
 import PathModal from "./path"
 import MethodDrawer from "./methodDrawer"
+import LogInfoDrawer from "./methodDrawer/logInfoDrawer"
 import "./index.less"
 
 
@@ -24,7 +25,9 @@ interface NodeTraceDisplayState {
     nodeY: number;
     nodeSizeWidth: number;
     nodeSizeHeight: number;
+    showLogEventID: string | null;
     eventID: string | null;
+    showLogDrawer: boolean;
 }
 
 class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplayState>{
@@ -42,7 +45,9 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
             showItemTooltip: null,
             nodeSizeWidth: 32,
             nodeSizeHeight: 32,
-            eventID: null
+            eventID: null,
+            showLogEventID: null,
+            showLogDrawer: false
         }
     }
     fetchData = async () => {
@@ -115,12 +120,23 @@ class nodeTraceDisplay extends Component<NodeTraceDisplayProps, NodeTraceDisplay
                 data={this.state.showItemTooltip}
                 nodeX={this.state.nodeX}
                 nodeY={this.state.nodeY}
+                showNodeLogBtn={true}
+                onShowNodeLogClicked={(eventID: string) => { this.setState({ showLogEventID: eventID, showLogDrawer: true }) }}
                 nodeSizeHeight={this.state.nodeSizeHeight}
                 nodeSizeWidth={this.state.nodeSizeWidth}
                 onShowMethodClicked={(eventID) => {
                     this.setState({ eventID: eventID });
                 }}
                 popoverDivID={"nodeTraceItemPopover"}
+            />
+            <LogInfoDrawer
+                eventID={this.state.showLogEventID}
+                show={this.state.showLogDrawer}
+                traceID={this.state.showItemTooltip?.traceID!}
+                methodEventID={null}
+                onColseClicked={() => { this.setState({ showLogEventID: null, showLogDrawer: false }) }}
+                nodeInfo={this.state.showItemTooltip!}
+                methodInfo={null}
             />
             <MethodDrawer eventID={this.state.eventID} item={this.state.showItemTooltip} onClose={() => {
                 this.setState({
