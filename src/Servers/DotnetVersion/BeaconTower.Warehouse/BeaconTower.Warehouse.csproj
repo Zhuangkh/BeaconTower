@@ -28,4 +28,25 @@
     <ItemGroup>
       <Folder Include="Properties\" />
     </ItemGroup>
+
+    <ItemGroup>
+      <None Update="UI\1c27caa3652a03fca8c50c5e313a82fe.svg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="UI\59cb3317f3036da12d550ec40bf3819b.svg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="UI\92d1524ce837afc875aae313bfc21638.svg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="UI\app.js">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="UI\ead9bc152016edd643a7c7305b7e2540.svg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="UI\index.html">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 </Project>
