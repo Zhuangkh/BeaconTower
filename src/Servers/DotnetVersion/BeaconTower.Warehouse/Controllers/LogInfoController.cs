@@ -23,13 +23,18 @@ namespace BeaconTower.Warehouse
         [HttpGet("items/traceid({traceID})")]
         public Response<List<LogInfoItemResponse>> GetLogInfoByMethodEventID(
             [FromRoute] long traceID,
-            [FromQuery] long? methodEventID)
+            [FromQuery] long? methodEventID,
+            [FromQuery] long? eventID)
         {
 
             _dbInstance.TryGetMethodTraceItem(traceID, out var rawData);
             if (methodEventID != null)
             {
                 rawData = rawData.Where(item => item.MethodEventID == methodEventID.Value).ToList();
+            }
+            if (eventID != null)
+            {
+                rawData = rawData.Where(item => item.EventID == eventID).ToList();
             }
             rawData = rawData.OrderBy(item => item.TimeStamp).ToList();
             var result = new List<LogInfoItemResponse>();

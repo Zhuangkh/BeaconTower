@@ -12,8 +12,10 @@ interface indexProps {
     nodeSizeWidth: number;
     showClose?: boolean;
     onShowMethodClicked?: (eventID: string) => void;
+    onShowNodeLogClicked?: (eventID: string) => void;
     onCloseClicked?: () => void;
     showMethodGraphBtn?: boolean;
+    showNodeLogBtn?: boolean;
     popoverDivID: string;
 }
 
@@ -26,10 +28,14 @@ const index: FC<indexProps> = (props) => {
         extra={<Space>
             {props.showMethodGraphBtn === false ? null :
                 <Button shape="round" onClick={() => {
-                    if (props.onShowMethodClicked != null && props.onShowMethodClicked != undefined) {
-                        props.onShowMethodClicked(props.data?.eventID as string);
-                    }
+                    props.onShowMethodClicked?.(props.data?.eventID!);
                 }}>节点函数</Button>
+            }
+            {props.showNodeLogBtn === true ?
+                <Button shape="round" onClick={() => {
+                    props.onShowNodeLogClicked?.(props.data?.eventID!);
+                }}>节点日志</Button>
+                : null
             }
             {props.showClose === true ?
                 <Button

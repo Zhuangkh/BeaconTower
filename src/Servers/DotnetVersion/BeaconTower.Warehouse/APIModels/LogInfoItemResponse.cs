@@ -1,8 +1,7 @@
 ﻿using BeaconTower.Client.Abstract;
+using LuanNiao.JsonConverterExtends;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BeaconTower.Warehouse.APIModels
 {
@@ -38,6 +37,7 @@ namespace BeaconTower.Warehouse.APIModels
         public string FileName { get; set; }
         public int LineNumber { get; set; }
         public long TimeStamp { get; } = DateTime.Now.Ticks;
+        [DateTime2String("yyyy-MM-dd HH:mm:ss.ffff")]
         public DateTime TimeInfo
         {
             get

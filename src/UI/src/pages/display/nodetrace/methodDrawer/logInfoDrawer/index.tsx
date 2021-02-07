@@ -16,21 +16,24 @@ import { MethodInfoResponse } from "../../../../../api/model/methods";
 
 
 interface indexProps {
+    show: boolean;
     traceID: string;
     methodEventID: string | null;
+    eventID: string | null;
     nodeInfo: NodeTraceItemResponse;
-    methodInfo: MethodInfoResponse;
+    methodInfo: MethodInfoResponse | null;
     onColseClicked: () => void;
 }
 
 const index: FC<indexProps> = (props) => {
-    if (props.methodEventID == null) {
+    if (!props.show) {
         return null;
     }
     const [data, setData] = useState<Array<LogInfoItemResponse>>([]);
 
     const fetch = async () => {
-        let data = await GetLogInfoByMethodEventID(props.traceID, props.methodEventID!);
+        console.log(props)
+        let data = await GetLogInfoByMethodEventID(props.traceID, props.methodEventID, props.eventID);
         setData(data.data!);
     }
 
@@ -38,10 +41,19 @@ const index: FC<indexProps> = (props) => {
         fetch();
     }, []);
 
-
+    const getDrawerTitle = (): string => {
+        let base = `${props.nodeInfo.nodeID}在${props.nodeInfo.path}上的`;
+        if (props.methodInfo != null) {
+            base += `函数${props.methodInfo.methodName}的日志输出`;
+        }
+        else {
+            base += "所有函数的日志输出";
+        }
+        return base;
+    }
     return <Drawer
         visible={true}
-        title={`${props.nodeInfo.nodeID}在${props.nodeInfo.path}上的函数${props.methodInfo.methodName}的日志输出`}
+        title={getDrawerTitle()}
         onClose={() => {
             props.onColseClicked();
         }}

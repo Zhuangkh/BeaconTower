@@ -27,6 +27,8 @@ const index: FC<indexProps> = (props) => {
     const [nodeSizeHeight, setNodeSizeHeight] = useState<number>(0);
     const [nodeSizeWidth, setNodeSizeWidth] = useState<number>(0);
     const [showMethodLogMethodEventID, setShowMethodLogMethodEventID] = useState<string | null>(null);
+    const [showMethodLogEventID, setShowMethodLogEventID] = useState<string | null>(null);
+    const [showLogDrawer, setShowLogDrawer] = useState<boolean>(false);
 
     const fetch = async () => {
         const res = await GetMethodInfoByEventID(props.item?.traceID as string, props.eventID as string);
@@ -42,7 +44,7 @@ const index: FC<indexProps> = (props) => {
 
     return <Drawer
         visible={true}
-        title={"函数追踪详情"}
+        title={`${props.item?.nodeID}的函数追踪详情`}
         onClose={() => { props.onClose() }}
         width="100vw"
         bodyStyle={{ padding: "0px" }}
@@ -71,6 +73,11 @@ const index: FC<indexProps> = (props) => {
             data={nodeItemData}
             nodeX={nodeX}
             nodeY={nodeY}
+            showNodeLogBtn={true}
+            onShowNodeLogClicked={(eventID: string) => {
+                setShowMethodLogEventID(eventID); 
+                setShowLogDrawer(true);
+            }}
             nodeSizeHeight={nodeSizeHeight}
             nodeSizeWidth={nodeSizeWidth}
             showClose={true}
@@ -92,15 +99,18 @@ const index: FC<indexProps> = (props) => {
             }}
             onShowLogInfoClickded={(methodEventID: string) => {
                 setShowMethodLogMethodEventID(methodEventID);
+                setShowLogDrawer(true);
             }}
             popoverDivID={"methodItemPopover"}
         />
         <LogInfoDrawer
+            eventID={showMethodLogEventID}
+            show={showLogDrawer}
             traceID={props.item?.traceID!}
             methodEventID={showMethodLogMethodEventID}
-            onColseClicked={() => { setShowMethodLogMethodEventID(null) }}
+            onColseClicked={() => { setShowLogDrawer(false) }}
             nodeInfo={props.item!}
-            methodInfo={methodItemData!}
+            methodInfo={methodItemData}
         />
 
     </Drawer>
