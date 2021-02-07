@@ -1,4 +1,4 @@
-import { Drawer, List } from "antd";
+import { Button, Card, Checkbox, Divider, Drawer, List, Space } from "antd";
 import React, { FC, useState, useEffect } from "react"
 import { GetLogLevelStr, LogInfoItemResponse, LogLevel } from "../../../../../api/model/loginfo";
 import { NodeTraceItemResponse } from "../../../../../api/model/nodes";
@@ -30,6 +30,12 @@ const index: FC<indexProps> = (props) => {
         return null;
     }
     const [data, setData] = useState<Array<LogInfoItemResponse>>([]);
+    const [showTrace, setShowTrace] = useState<boolean>(true);
+    const [showDebug, setShowDebug] = useState<boolean>(true);
+    const [showInfo, setShowInfo] = useState<boolean>(true);
+    const [showWarning, setShowWarning] = useState<boolean>(true);
+    const [showError, setShowError] = useState<boolean>(true);
+    const [showPainc, setShowPainc] = useState<boolean>(true);
 
     const fetch = async () => {
         console.log(props)
@@ -41,7 +47,7 @@ const index: FC<indexProps> = (props) => {
         fetch();
     }, []);
 
-    const getDrawerTitle = (): string => {
+    const getDrawerTitle = () => {
         let base = `${props.nodeInfo.nodeID}在${props.nodeInfo.path}上的`;
         if (props.methodInfo != null) {
             base += `函数${props.methodInfo.methodName}的日志输出`;
@@ -49,7 +55,17 @@ const index: FC<indexProps> = (props) => {
         else {
             base += "所有函数的日志输出";
         }
-        return base;
+        return <>{base}
+            <Space >
+                <Checkbox checked={showTrace} onChange={(e) => { setShowTrace(e.target.checked); }}><TraceIcon width={"16px"} height={"16px"} />{GetLogLevelStr(LogLevel.Trace)}</Checkbox>
+                <Checkbox checked={showDebug} onChange={(e) => { setShowDebug(e.target.checked); }}><DebugIcon width={"16px"} height={"16px"} />{GetLogLevelStr(LogLevel.Debug)}</Checkbox>
+                <Checkbox checked={showInfo} onChange={(e) => { setShowInfo(e.target.checked); }}><InfoIcon width={"16px"} height={"16px"} />{GetLogLevelStr(LogLevel.Info)}</Checkbox>
+                <Checkbox checked={showWarning} onChange={(e) => { setShowWarning(e.target.checked); }}><WarningIcon width={"16px"} height={"16px"} />{GetLogLevelStr(LogLevel.Warning)}</Checkbox>
+                <Checkbox checked={showError} onChange={(e) => { setShowError(e.target.checked); }}><ErrorIcon width={"16px"} height={"16px"} />{GetLogLevelStr(LogLevel.Error)}</Checkbox>
+                <Checkbox checked={showPainc} onChange={(e) => { setShowPainc(e.target.checked); }}><CrashIcon width={"16px"} height={"16px"} />{GetLogLevelStr(LogLevel.Panic)}</Checkbox>
+
+
+            </Space></>;
     }
     return <Drawer
         visible={true}
@@ -59,29 +75,37 @@ const index: FC<indexProps> = (props) => {
         }}
         width="100vw"
     >
+        <Divider orientation="left">数据详情</Divider>
         <List
+            size="small"
             bordered
             itemLayout="horizontal"
         >
             {data.map(item => {
-                let icon = <FileUnknownTwoTone />;
+                let icon = <FileUnknownTwoTone />;                
                 switch (item.level) {
                     case LogLevel.Trace:
+                        if(!showTrace){return null;}
                         icon = <TraceIcon />;
                         break;
                     case LogLevel.Info:
+                        if(!showInfo){return null;}
                         icon = <InfoIcon />;
                         break;
                     case LogLevel.Debug:
+                        if(!showDebug){return null;}
                         icon = <DebugIcon />;
                         break;
                     case LogLevel.Warning:
+                        if(!showWarning){return null;}
                         icon = <WarningIcon />;
                         break;
                     case LogLevel.Error:
+                        if(!showError){return null;}
                         icon = <ErrorIcon />;
                         break;
                     case LogLevel.Panic:
+                        if(!showPainc){return null;}
                         icon = <CrashIcon />;
                         break;
                 }
