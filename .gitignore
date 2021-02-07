@@ -351,6 +351,5 @@ MigrationBackup/
 .ionide/
 
 
-# Custom
-
-/src/Servers/DotnetVersion/BeaconTower.Warehouse/UI
+ 
+ 

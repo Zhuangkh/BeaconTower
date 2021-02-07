@@ -14,6 +14,9 @@ using System.Text.Unicode;
 using NodeDB = BeaconTower.TraceDB.NodeTraceDB.DBManager;
 using MethodDB = BeaconTower.TraceDB.MethodTraceDB.DBManager;
 using LogDB = BeaconTower.TraceDB.LogDB.DBManager;
+#if !DEBUG
+using Microsoft.Extensions.FileProviders;
+#endif
 
 namespace BeaconTower.Warehouse
 {
